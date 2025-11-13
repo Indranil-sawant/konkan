@@ -1,0 +1,66 @@
+{
+    "sourceFile": "food/admin.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 12,
+            "patches": [
+                {
+                    "date": 1763037013795,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763037039379,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,4 @@\n from django.contrib import admin\n-\n+from . models import Spots\n # Register your models here.\n \n"
+                },
+                {
+                    "date": 1763037111160,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n from django.contrib import admin\n from . models import Spots\n # Register your models here.\n \n+admin.site.register(Spots)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052091507,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,32 @@\n from django.contrib import admin\n-from . models import Spots\n-# Register your models here.\n+from .models import Category, Tag, Spot, SpotInfo, Photo, Review\n \n\\ No newline at end of file\n-admin.site.register(Spots)\n+@admin.register(Category)\n+class CategoryAdmin(admin.ModelAdmin):\n+    list_display = (\"name\",)\n+\n+@admin.register(Tag)\n+class TagAdmin(admin.ModelAdmin):\n+    list_display = (\"name\",)\n+\n+class PhotoInline(admin.TabularInline):\n+    model = Photo\n+    extra = 1\n+\n+class SpotInfoInline(admin.StackedInline):\n+    model = SpotInfo\n+    max_num = 1\n+    can_delete = True\n+\n+@admin.register(Spot)\n+class SpotAdmin(admin.ModelAdmin):\n+    list_display = (\"name\", \"category\", \"distance_km\", \"rate\", \"created\")\n+    list_filter = (\"category\", \"tags\")\n+    search_fields = (\"name\",)\n+    inlines = (SpotInfoInline, PhotoInline)\n+    filter_horizontal = (\"tags\",)\n+\n+@admin.register(Review)\n+class ReviewAdmin(admin.ModelAdmin):\n+    list_display = (\"spot\", \"user\", \"rating\", \"created\")\n+    list_filter = (\"rating\",)\n"
+                },
+                {
+                    "date": 1763052167800,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,32 +1,5 @@\n from django.contrib import admin\n-from .models import Category, Tag, Spot, SpotInfo, Photo, Review\n+from . models import Spots\n+# Register your models here.\n \n-@admin.register(Category)\n-class CategoryAdmin(admin.ModelAdmin):\n-    list_display = (\"name\",)\n-\n-@admin.register(Tag)\n-class TagAdmin(admin.ModelAdmin):\n-    list_display = (\"name\",)\n-\n-class PhotoInline(admin.TabularInline):\n-    model = Photo\n-    extra = 1\n-\n-class SpotInfoInline(admin.StackedInline):\n-    model = SpotInfo\n-    max_num = 1\n-    can_delete = True\n-\n-@admin.register(Spot)\n-class SpotAdmin(admin.ModelAdmin):\n-    list_display = (\"name\", \"category\", \"distance_km\", \"rate\", \"created\")\n-    list_filter = (\"category\", \"tags\")\n-    search_fields = (\"name\",)\n-    inlines = (SpotInfoInline, PhotoInline)\n-    filter_horizontal = (\"tags\",)\n-\n-@admin.register(Review)\n-class ReviewAdmin(admin.ModelAdmin):\n\\ No newline at end of file\n-    list_display = (\"spot\", \"user\", \"rating\", \"created\")\n-    list_filter = (\"rating\",)\n+admin.site.register(Spots)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052180369,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n from django.contrib import admin\n from . models import Spots\n # Register your models here.\n \n-admin.site.register(Spots)\n\\ No newline at end of file\n+admin.site.register(Spots) \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052267426,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,7 @@\n from django.contrib import admin\n from . models import Spots\n # Register your models here.\n \n-admin.site.register(Spots) \n\\ No newline at end of file\n+admin.site.register(Spots) \n+\n+admin.site.register(Category)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052314923,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.contrib import admin\n-from . models import Spots\n+from . models import Spots , Category\n # Register your models here.\n \n admin.site.register(Spots) \n \n\\ No newline at end of file\n-admin.site.register(Category)\n+admin.site.register()\n"
+                },
+                {
+                    "date": 1763052320765,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,5 @@\n # Register your models here.\n \n admin.site.register(Spots) \n \n-admin.site.register()\n\\ No newline at end of file\n+admin.site.register(Category)\n"
+                },
+                {
+                    "date": 1763053642710,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n from django.contrib import admin\n-from . models import Spots , Category\n+\n # Register your models here.\n+from .models import Spots   \n \n-admin.site.register(Spots) \n-\n-admin.site.register(Category)\n+admin.site.register(Spots)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763054551799,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+from django.contrib import admin\n+\n+# Register your models here.\n+from .models import Spots  , Category\n+\n+admin.site.register(Category)\n+\n+admin.site.register(Spots)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055453110,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,8 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import Spots  , Category\n+from .models import Spots  , Category , spot_info\n \n admin.site.register(Category)\n \n-admin.site.register(Spots)\n-from django.contrib import admin\n-\n-# Register your models here.\n-from .models import Spots   \n-\n admin.site.register(Spots)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055479471,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,12 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import Spots  , Category , spot_info\n+from .models import Spots  , Category , spot_info , Tag\n \n admin.site.register(Category)\n \n\\ No newline at end of file\n-admin.site.register(Spots)\n+admin.site.register(Spots)\n+\n+admin.site.register(spot_info)  \n+\n+admin.site.register(Tag)\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763037013795,
+            "name": "Commit-0",
+            "content": "from django.contrib import admin\n\n# Register your models here.\n\n"
+        }
+    ]
+}

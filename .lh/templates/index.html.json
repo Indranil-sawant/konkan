@@ -1,0 +1,42 @@
+{
+    "sourceFile": "templates/index.html",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 6,
+            "patches": [
+                {
+                    "date": 1762924976454,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1762925644937,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,12 @@\n         <meta name=\"description\" content=\"\">\n         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n         <link rel=\"stylesheet\" href=\"\">\n     </head>\n+    {{% include \"navbar.html\" %}}\n     <body>\n-       \n+        <h1>index page</h1>\n+        <p>Hello world! This is index page.</p>\n+\n         <script src=\"\" async defer></script>\n     </body>\n </html>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925661979,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n         <meta name=\"description\" content=\"\">\n         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n         <link rel=\"stylesheet\" href=\"\">\n     </head>\n-    {{% include \"navbar.html\" %}}\n+    {% include \"navbar.html\" %}\n     <body>\n         <h1>index page</h1>\n         <p>Hello world! This is index page.</p>\n \n"
+                },
+                {
+                    "date": 1762926138263,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,9 @@\n         <link rel=\"stylesheet\" href=\"\">\n     </head>\n     {% include \"navbar.html\" %}\n     <body>\n+        \n         <h1>index page</h1>\n         <p>Hello world! This is index page.</p>\n \n         <script src=\"\" async defer></script>\n"
+                },
+                {
+                    "date": 1762926309358,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,11 +11,10 @@\n         <meta name=\"description\" content=\"\">\n         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n         <link rel=\"stylesheet\" href=\"\">\n     </head>\n-    {% include \"navbar.html\" %}\n     <body>\n-        \n+\n         <h1>index page</h1>\n         <p>Hello world! This is index page.</p>\n \n         <script src=\"\" async defer></script>\n"
+                },
+                {
+                    "date": 1762926331867,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,7 @@\n+\n+\n+\n <!DOCTYPE html>\n <!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n <!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n <!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n@@ -12,9 +15,9 @@\n         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n         <link rel=\"stylesheet\" href=\"\">\n     </head>\n     <body>\n-\n+        \n         <h1>index page</h1>\n         <p>Hello world! This is index page.</p>\n \n         <script src=\"\" async defer></script>\n"
+                },
+                {
+                    "date": 1762926387457,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n+{% extends \"base.html\" %}\n \n \n-\n <!DOCTYPE html>\n <!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n <!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n <!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n@@ -16,10 +16,12 @@\n         <link rel=\"stylesheet\" href=\"\">\n     </head>\n     <body>\n         \n-        <h1>index page</h1>\n-        <p>Hello world! This is index page.</p>\n+{% block content %}\n+         <h1>index page</h1>\n+          <p>Hello world! This is index page.</p>\n+{% endblock content %}\n \n         <script src=\"\" async defer></script>\n     </body>\n </html>\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1762924976454,
+            "name": "Commit-0",
+            "content": "<!DOCTYPE html>\n<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n<!--[if gt IE 8]>      <html class=\"no-js\"> <!--<![endif]-->\n<html>\n    <head>\n        <meta charset=\"utf-8\">\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n        <title>index </title>\n        <meta name=\"description\" content=\"\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n        <link rel=\"stylesheet\" href=\"\">\n    </head>\n    <body>\n       \n        <script src=\"\" async defer></script>\n    </body>\n</html>"
+        }
+    ]
+}

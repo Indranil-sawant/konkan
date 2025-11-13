@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>index </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+{% block content %}
+         <h1>foods</h1>
+         {% for category, items in foods.items %}
+        <h2> For best {{ category }} ratnagiri</h2>
+        <ul>
+            {% for item in items %}
+                <li> try {{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    <h1>spots</h1>
+    {% for category, items in spots.items %}
+        <h2> For best {{ category }} ratnagiri</h2>
+        <ul>
+            {% for item in items %}
+                <li>{{ item.name }} - {{ item.distance_km }} km - {{ item.rates }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+        
+{% endblock content %}
+
+
+
+        <script src="" async defer></script>
+    </body>
+</html>     

@@ -1,0 +1,162 @@
+{
+    "sourceFile": "food/models.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 36,
+            "patches": [
+                {
+                    "date": 1763036604540,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763036650660,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,8 @@\n \n \n class Name(models.Model):\n     name = models.CharField(max_length=100)\n-    \n\\ No newline at end of file\n+    category = models.CharField(max_length=100)\n+    distance = models.IntegerField()\n+    rate = models.CharField(max_length=50)  \n+    id = models.UUIDField(primary_key=True, editable=False)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763036662775,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,5 +7,5 @@\n     name = models.CharField(max_length=100)\n     category = models.CharField(max_length=100)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n-    id = models.UUIDField(primary_key=True, editable=False)\n\\ No newline at end of file\n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763036694535,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,11 @@\n+import uuid\n from django.db import models\n \n # Create your models here.\n \n \n-class Name(models.Model):\n+class Spots(models.Model):\n     name = models.CharField(max_length=100)\n     category = models.CharField(max_length=100)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n"
+                },
+                {
+                    "date": 1763036847998,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,5 +8,10 @@\n     name = models.CharField(max_length=100)\n     category = models.CharField(max_length=100)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n\\ No newline at end of file\n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n+    \n+    def __str__(self):\n+        return self.name\n+    def __str__(self):\n+        return self.id\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763037182285,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,6 +12,6 @@\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     \n     def __str__(self):\n         return self.name\n-    def __str__(self):\n+    def __int__(self):\n         return self.id\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763037265144,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n     name = models.CharField(max_length=100)\n     category = models.CharField(max_length=100)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n+    created = models.DateTimeField(auto_now_add=True)\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     \n     def __str__(self):\n         return self.name\n"
+                },
+                {
+                    "date": 1763052085160,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,18 +1,68 @@\n-import uuid\n from django.db import models\n+from django.contrib.auth import get_user_model\n \n-# Create your models here.\n+User = get_user_model()\n \n+class Category(models.Model):\n+    \"\"\"One Category -> Many Spots (One-to-Many)\"\"\"\n+    name = models.CharField(max_length=100, unique=True)\n \n-class Spots(models.Model):\n-    name = models.CharField(max_length=100)\n-    category = models.CharField(max_length=100)\n-    distance = models.IntegerField()\n-    rate = models.CharField(max_length=50)  \n+    def __str__(self):\n+        return self.name\n\\ No newline at end of file\n+\n+\n+class Tag(models.Model):\n+    \"\"\"Many-to-Many tags for flexible labeling\"\"\"\n+    name = models.CharField(max_length=50, unique=True)\n+\n+    def __str__(self):\n+        return self.name\n+\n+\n+class Spot(models.Model):\n+    \"\"\"Main place model\"\"\"\n+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name=\"spots\")\n+    name = models.CharField(max_length=200)\n+    description_short = models.CharField(max_length=255, blank=True)\n+    distance_km = models.PositiveIntegerField(null=True, blank=True)\n+    rate = models.CharField(max_length=50, default=\"Free\")      # string because some rates are \"Free\"\n+    tags = models.ManyToManyField(Tag, blank=True, related_name=\"spots\")\n     created = models.DateTimeField(auto_now_add=True)\n-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n-    \n+    updated = models.DateTimeField(auto_now=True)\n+\n     def __str__(self):\n         return self.name\n-    def __int__(self):\n-        return self.id\n+\n+\n+class SpotInfo(models.Model):\n+    \"\"\"One-to-One extra details for a Spot (One-to-One)\"\"\"\n+    spot = models.OneToOneField(Spot, on_delete=models.CASCADE, related_name=\"info\")\n+    long_description = models.TextField(blank=True)\n+    map_iframe = models.TextField(blank=True)   # store google-maps iframe or link\n+    opening_hours = models.CharField(max_length=200, blank=True)\n+\n+    def __str__(self):\n+        return f\"Info for {self.spot.name}\"\n+\n+\n+class Photo(models.Model):\n+    \"\"\"Photos: One Spot -> Many Photos (One-to-Many)\"\"\"\n+    spot = models.ForeignKey(Spot, on_delete=models.CASCADE, related_name=\"photos\")\n+    image = models.ImageField(upload_to=\"spots/photos/\")\n+    caption = models.CharField(max_length=200, blank=True)\n+    order = models.PositiveSmallIntegerField(default=0)\n+\n+    def __str__(self):\n+        return f\"Photo {self.id} for {self.spot.name}\"\n+\n+\n+class Review(models.Model):\n+    \"\"\"User reviews for Spots (One-to-Many from Spot; One-to-Many from User)\"\"\"\n+    spot = models.ForeignKey(Spot, on_delete=models.CASCADE, related_name=\"reviews\")\n+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name=\"spot_reviews\")\n+    rating = models.PositiveSmallIntegerField(default=5)   # 1-5\n+    comment = models.TextField(blank=True)\n+    created = models.DateTimeField(auto_now_add=True)\n+\n+    def __str__(self):\n+        return f\"{self.spot.name} - {self.rating} ★\"\n"
+                },
+                {
+                    "date": 1763052163963,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,68 +1,18 @@\n+import uuid\n from django.db import models\n-from django.contrib.auth import get_user_model\n \n-User = get_user_model()\n+# Create your models here.\n \n-class Category(models.Model):\n-    \"\"\"One Category -> Many Spots (One-to-Many)\"\"\"\n-    name = models.CharField(max_length=100, unique=True)\n \n-    def __str__(self):\n-        return self.name\n-\n-\n-class Tag(models.Model):\n-    \"\"\"Many-to-Many tags for flexible labeling\"\"\"\n-    name = models.CharField(max_length=50, unique=True)\n-\n-    def __str__(self):\n-        return self.name\n-\n-\n-class Spot(models.Model):\n-    \"\"\"Main place model\"\"\"\n-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name=\"spots\")\n-    name = models.CharField(max_length=200)\n-    description_short = models.CharField(max_length=255, blank=True)\n-    distance_km = models.PositiveIntegerField(null=True, blank=True)\n-    rate = models.CharField(max_length=50, default=\"Free\")      # string because some rates are \"Free\"\n-    tags = models.ManyToManyField(Tag, blank=True, related_name=\"spots\")\n+class Spots(models.Model):\n+    name = models.CharField(max_length=100)\n+    category = models.CharField(max_length=100)\n+    distance = models.IntegerField()\n+    rate = models.CharField(max_length=50)  \n     created = models.DateTimeField(auto_now_add=True)\n-    updated = models.DateTimeField(auto_now=True)\n-\n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n+    \n     def __str__(self):\n         return self.name\n-\n-\n-class SpotInfo(models.Model):\n-    \"\"\"One-to-One extra details for a Spot (One-to-One)\"\"\"\n-    spot = models.OneToOneField(Spot, on_delete=models.CASCADE, related_name=\"info\")\n-    long_description = models.TextField(blank=True)\n-    map_iframe = models.TextField(blank=True)   # store google-maps iframe or link\n-    opening_hours = models.CharField(max_length=200, blank=True)\n-\n-    def __str__(self):\n-        return f\"Info for {self.spot.name}\"\n-\n-\n-class Photo(models.Model):\n-    \"\"\"Photos: One Spot -> Many Photos (One-to-Many)\"\"\"\n-    spot = models.ForeignKey(Spot, on_delete=models.CASCADE, related_name=\"photos\")\n-    image = models.ImageField(upload_to=\"spots/photos/\")\n-    caption = models.CharField(max_length=200, blank=True)\n-    order = models.PositiveSmallIntegerField(default=0)\n-\n-    def __str__(self):\n-        return f\"Photo {self.id} for {self.spot.name}\"\n-\n-\n-class Review(models.Model):\n\\ No newline at end of file\n-    \"\"\"User reviews for Spots (One-to-Many from Spot; One-to-Many from User)\"\"\"\n-    spot = models.ForeignKey(Spot, on_delete=models.CASCADE, related_name=\"reviews\")\n-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name=\"spot_reviews\")\n-    rating = models.PositiveSmallIntegerField(default=5)   # 1-5\n-    comment = models.TextField(blank=True)\n-    created = models.DateTimeField(auto_now_add=True)\n-\n-    def __str__(self):\n-        return f\"{self.spot.name} - {self.rating} ★\"\n+    def __int__(self):\n+        return self.id\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052203689,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,16 +3,23 @@\n \n # Create your models here.\n \n \n+class Catergory(models.Model):\n+    name = models.CharField(max_length=100)\n+    \n+    def __str__(self):\n+        return self.name\n+\n class Spots(models.Model):\n     name = models.CharField(max_length=100)\n-    category = models.CharField(max_length=100)\n+    category = models.ForeignKey(Catergory, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n\\ No newline at end of file\n     created = models.DateTimeField(auto_now_add=True)\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     \n     def __str__(self):\n         return self.name\n     def __int__(self):\n-        return self.id\n+        return self.id\n+    \n"
+                },
+                {
+                    "date": 1763052280987,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,17 +3,17 @@\n \n # Create your models here.\n \n \n-class Catergory(models.Model):\n+class Category(models.Model):\n     name = models.CharField(max_length=100)\n     \n     def __str__(self):\n         return self.name\n \n class Spots(models.Model):\n     name = models.CharField(max_length=100)\n-    category = models.ForeignKey(Catergory, on_delete=models.CASCADE)\n+    category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n     created = models.DateTimeField(auto_now_add=True)\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n@@ -21,5 +21,5 @@\n     def __str__(self):\n         return self.name\n     def __int__(self):\n         return self.id\n-    \n\\ No newline at end of file\n+    \n"
+                },
+                {
+                    "date": 1763052694492,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,25 +1,20 @@\n-import uuid\n from django.db import models\n \n-# Create your models here.\n+class Category(models.Model):\n+    name = models.CharField(max_length=100, unique=True)\n \n-\n-class Category(models.Model):\n-    name = models.CharField(max_length=100)\n-    \n     def __str__(self):\n         return self.name\n \n-class Spots(models.Model):\n-    name = models.CharField(max_length=100)\n-    category = models.ForeignKey(Category, on_delete=models.CASCADE)\n-    distance = models.IntegerField()\n-    rate = models.CharField(max_length=50)  \n+\n+class Spot(models.Model):\n+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name=\"spots\")\n+    name = models.CharField(max_length=200)\n+    distance_km = models.PositiveIntegerField(null=True, blank=True)\n+    rate = models.CharField(max_length=50, default=\"Free\")\n     created = models.DateTimeField(auto_now_add=True)\n-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n-    \n+\n     def __str__(self):\n         return self.name\n-    def __int__(self):\n-        return self.id\n-    \n+\n+\n"
+                },
+                {
+                    "date": 1763052710580,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n     def __str__(self):\n         return self.name\n \n \n-class Spot(models.Model):\n+class Spots(models.Model):\n     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name=\"spots\")\n     name = models.CharField(max_length=200)\n     distance_km = models.PositiveIntegerField(null=True, blank=True)\n     rate = models.CharField(max_length=50, default=\"Free\")\n"
+                },
+                {
+                    "date": 1763053625774,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,20 +1,12 @@\n+import uuid\n from django.db import models\n \n-class Category(models.Model):\n-    name = models.CharField(max_length=100, unique=True)\n+# Create your models here.\n \n-    def __str__(self):\n-        return self.name\n \n-\n class Spots(models.Model):\n-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name=\"spots\")\n-    name = models.CharField(max_length=200)\n-    distance_km = models.PositiveIntegerField(null=True, blank=True)\n-    rate = models.CharField(max_length=50, default=\"Free\")\n-    created = models.DateTimeField(auto_now_add=True)\n-\n-    def __str__(self):\n-        return self.name\n-\n-\n+    name = models.CharField(max_length=100)\n+    category = models.CharField(max_length=100)\n+    distance = models.IntegerField()\n+    rate = models.CharField(max_length=50)  \n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763054531509,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,19 @@\n import uuid\n from django.db import models\n \n # Create your models here.\n+class Category(models.Model):\n+    name = models.CharField(max_length=100)\n+    \n+    def __str__(self):\n+        return self.name\n \n-\n class Spots(models.Model):\n\\ No newline at end of file\n     name = models.CharField(max_length=100)\n     category = models.CharField(max_length=100)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n+    \n+    def __str__(self):\n+        return self.name\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763054541405,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n         return self.name\n \n class Spots(models.Model):\n     name = models.CharField(max_length=100)\n-    category = models.CharField(max_length=100)\n+    category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     \n"
+                },
+                {
+                    "date": 1763054829748,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,5 +15,6 @@\n     rate = models.CharField(max_length=50)  \n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     \n     def __str__(self):\n-        return self.name\n\\ No newline at end of file\n+        return self.name\n+    \n"
+                },
+                {
+                    "date": 1763054847552,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,4 +17,13 @@\n     \n     def __str__(self):\n         return self.name\n     \n+class spots(models.Model):\n+    name = models.CharField(max_length=100)\n+    category = models.CharField(max_length=100)\n+    distance = models.IntegerField()\n+    rate = models.CharField(max_length=50)  \n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n+    \n+    def __str__(self):\n+        return self.name\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763054857182,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,13 +17,4 @@\n     \n     def __str__(self):\n         return self.name\n     \n-class spots(models.Model):\n-    name = models.CharField(max_length=100)\n-    category = models.CharField(max_length=100)\n-    distance = models.IntegerField()\n-    rate = models.CharField(max_length=50)  \n-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n-    \n-    def __str__(self):\n-        return self.name\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055181546,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,13 +8,13 @@\n     def __str__(self):\n         return self.name\n \n class Spots(models.Model):\n+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     \n     def __str__(self):\n         return self.name\n     \n"
+                },
+                {
+                    "date": 1763055236798,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,9 @@\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n     rate = models.CharField(max_length=50)  \n+    photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n     \n     def __str__(self):\n         return self.name\n     \n"
+                },
+                {
+                    "date": 1763055251703,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n-    rate = models.CharField(max_length=50)  \n+    rating = models.CharField(max_length=50)  \n     photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n     \n     def __str__(self):\n         return self.name\n"
+                },
+                {
+                    "date": 1763055264454,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n-    rating = models.CharField(max_length=50)  \n+    rating = models.FloatField() \n     photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n     \n     def __str__(self):\n         return self.name\n"
+                },
+                {
+                    "date": 1763055269790,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n-    rating = models.FloatField() \n+    rating = models.FloatField(default=0.0) \n     photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n     \n     def __str__(self):\n         return self.name\n"
+                },
+                {
+                    "date": 1763055282003,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,8 +14,10 @@\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     distance = models.IntegerField()\n     rating = models.FloatField(default=0.0) \n     photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n+    created_at = models.DateTimeField(auto_now_add=True)\n+    updated_at = models.DateTimeField(auto_now=True)\n     \n     def __str__(self):\n         return self.name\n     \n"
+                },
+                {
+                    "date": 1763055302762,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,4 +20,6 @@\n     \n     def __str__(self):\n         return self.name\n     \n+def spot_info(self):\n+    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055310597,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,5 +21,5 @@\n     def __str__(self):\n         return self.name\n     \n def spot_info(self):\n-    \n\\ No newline at end of file\n+    spot = models\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055317113,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,5 +21,5 @@\n     def __str__(self):\n         return self.name\n     \n def spot_info(self):\n-    spot = models\n\\ No newline at end of file\n+    spot = models.OneToOneField\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055324184,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,5 +21,7 @@\n     def __str__(self):\n         return self.name\n     \n def spot_info(self):\n-    spot = models.OneToOneField\n\\ No newline at end of file\n+    spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n+    description = models.TextField()\n+    opening_hours = models.CharField(max_length=100)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055330192,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,5 +23,6 @@\n     \n def spot_info(self):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n-    opening_hours = models.CharField(max_length=100)\n\\ No newline at end of file\n+    opening_hours = models.CharField(max_length=100)    \n+    contact_info = models.CharField(max_length=100\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055341437,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,6 +23,6 @@\n     \n def spot_info(self):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n-    opening_hours = models.CharField(max_length=100)    \n-    contact_info = models.CharField(max_length=100\n\\ No newline at end of file\n+    opening_hours = models.CharField(max_length=100)\n+    closinfg_hours = models.CharField(max_length=100)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055356226,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,5 +24,8 @@\n def spot_info(self):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n     opening_hours = models.CharField(max_length=100)\n-    closinfg_hours = models.CharField(max_length=100)\n\\ No newline at end of file\n+    closing_hours = models.CharField(max_length=100)\n+\n+    def __str__(self):\n+        return f\"Info for {self.spot.name}\"\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763055380791,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n     \n     def __str__(self):\n         return self.name\n     \n-def spot_info(self):\n+class spot_info(self):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n     opening_hours = models.CharField(max_length=100)\n     closing_hours = models.CharField(max_length=100)\n"
+                },
+                {
+                    "date": 1763055389914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n     \n     def __str__(self):\n         return self.name\n     \n-class spot_info(self):\n+class spot_info(models.Model):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n     opening_hours = models.CharField(max_length=100)\n     closing_hours = models.CharField(max_length=100)\n"
+                },
+                {
+                    "date": 1763055421990,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,9 @@\n     \n class spot_info(models.Model):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n+    map_location = models.URLField()\n     opening_hours = models.CharField(max_length=100)\n     closing_hours = models.CharField(max_length=100)\n \n     def __str__(self):\n"
+                },
+                {
+                    "date": 1763055437202,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n     \n class spot_info(models.Model):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n-    map_location = models.URLField()\n+    map_location = models.URLField(blank=True, null=True)\n     opening_hours = models.CharField(max_length=100)\n     closing_hours = models.CharField(max_length=100)\n \n     def __str__(self):\n"
+                },
+                {
+                    "date": 1763055470013,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,15 @@\n     name = models.CharField(max_length=100)\n     \n     def __str__(self):\n         return self.name\n+    \n+class Tag(models.Model):\n+    name = models.CharField(max_length=50)\n \n+    def __str__(self):\n+        return self.name\n+\n class Spots(models.Model):\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n"
+                }
+            ],
+            "date": 1763036604540,
+            "name": "Commit-0",
+            "content": "from django.db import models\n\n# Create your models here.\n\n\nclass Name(models.Model):\n    name = models.CharField(max_length=100)\n    "
+        }
+    ]
+}

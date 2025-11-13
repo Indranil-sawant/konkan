@@ -1,0 +1,282 @@
+{
+    "sourceFile": "food/views.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 66,
+            "patches": [
+                {
+                    "date": 1762922915381,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1762923079774,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,3 +1,8 @@\n from django.shortcuts import render\n from django.http import HttpResponse    \n # Create your views here.\n+\n+\n+def home(request):\n+    return HttpResponse(\"initail project page\")\n+\n"
+                },
+                {
+                    "date": 1762924029384,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,4 +5,6 @@\n \n def home(request):\n     return HttpResponse(\"initail project page\")\n \n+def home2(request):\n+    return HttpResponse(\"second page \")\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762924086102,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,5 @@\n def home(request):\n     return HttpResponse(\"initail project page\")\n \n def home2(request):\n-    return HttpResponse(\"second page \")\n\\ No newline at end of file\n+    return HttpResponse(\"second page of the project\")\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762924348568,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,6 +5,6 @@\n \n def home(request):\n     return HttpResponse(\"initail project page\")\n \n-def home2(request):\n+def home2(request, pk):\n     return HttpResponse(\"second page of the project\")\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762924459653,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,5 @@\n def home(request):\n     return HttpResponse(\"initail project page\")\n \n def home2(request, pk):\n-    return HttpResponse(\"second page of the project\")\n\\ No newline at end of file\n+    return HttpResponse(\"second page of the project\" + '  ' + str(pk))\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925085762,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,8 @@\n # Create your views here.\n \n \n def home(request):\n-    return HttpResponse(\"initail project page\")\n+    return render(request, 'hinedx.html')\n \n def home2(request, pk):\n     return HttpResponse(\"second page of the project\" + '  ' + str(pk))\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925099628,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,8 @@\n # Create your views here.\n \n \n def home(request):\n-    return render(request, 'hinedx.html')\n+    return render(request, 'index.html')\n \n def home2(request, pk):\n\\ No newline at end of file\n-    return HttpResponse(\"second page of the project\" + '  ' + str(pk))\n+    return render(request, 'second.html', {'pk': pk})))\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925108883,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,5 @@\n def home(request):\n     return render(request, 'index.html')\n \n def home2(request, pk):\n-    return render(request, 'second.html', {'pk': pk})))\n\\ No newline at end of file\n+    return render(request, 'second.html', {'pk': pk})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925248648,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,5 @@\n def home(request):\n     return render(request, 'index.html')\n \n def home2(request, pk):\n-    return render(request, 'second.html', {'pk': pk})\n\\ No newline at end of file\n+    return render(request, 'second.html', )\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925258845,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,5 @@\n def home(request):\n     return render(request, 'index.html')\n \n def home2(request, pk):\n-    return render(request, 'second.html', )\n\\ No newline at end of file\n+    return render(request, 'second.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762925284834,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,5 @@\n def home(request):\n     return render(request, 'index.html')\n \n def home2(request, pk):\n-    return render(request, 'second.html',)\n\\ No newline at end of file\n+    return render(request, 'about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762926802189,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,8 @@\n # Create your views here.\n \n \n def home(request):\n-    return render(request, 'index.html')\n+    return render(request, 'food/index.html')\n \n def home2(request, pk):\n\\ No newline at end of file\n-    return render(request, 'about.html',)\n+    return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763018686667,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n # Create your views here.\n \n \n def home(request):\n+    msg\n     return render(request, 'food/index.html')\n \n def home2(request, pk):\n     return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763018715824,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n # Create your views here.\n \n \n def home(request):\n-    msg\n+    msg \n     return render(request, 'food/index.html')\n \n def home2(request, pk):\n     return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763018842777,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,26 @@\n # Create your views here.\n \n \n def home(request):\n-    msg \n-    return render(request, 'food/index.html')\n+    foods = {\n+        \"Seafood\": [\n+            \"Bangda Fry\",\n+            \"Pomfret Fry\",\n+            \"Prawns Sukka\",\n+            \"Bombil Fry\",\n+        ],\n+        \"Veg Dishes\": [\n+            \"Solkadhi\",\n+            \"Alu Vadi\",\n+            \"Konkani Dal\",\n+        ],\n+        \"Rice & Bread\": [\n+            \"Ghavan\",\n+            \"Amboli\",\n+            \"Varan Bhaat\",\n+        ],\n+    }\n+    return render(request, 'food/index.html', foods:'foods')\n \n def home2(request, pk):\n     return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763018981277,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,8 @@\n             \"Amboli\",\n             \"Varan Bhaat\",\n         ],\n     }\n-    return render(request, 'food/index.html', foods:'foods')\n+    return render(request, 'food/index.html', 'foods':foods)\n \n def home2(request, pk):\n     return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763018987445,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,8 @@\n             \"Amboli\",\n             \"Varan Bhaat\",\n         ],\n     }\n-    return render(request, 'food/index.html', 'foods':foods)\n+    return render(request, 'food/index.html', {'foods':foods})\n \n def home2(request, pk):\n     return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763019401039,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n         ],\n         \"Veg Dishes\": [\n             \"Solkadhi\",\n             \"Alu Vadi\",\n-            \"Konkani Dal\",\n+            \"Konkani Dal\",   \n         ],\n         \"Rice & Bread\": [\n             \"Ghavan\",\n             \"Amboli\",\n"
+                },
+                {
+                    "date": 1763022439778,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,30 @@\n+from django.shortcuts import render\n+from django.http import HttpResponse    \n+# Create your views here.\n+\n+\n+def home(request):\n+    foods = {\n+        \"Seafood\": [\n+            \"Bangda Fry\",\n+            \"Pomfret Fry\",\n+            \"Prawns Sukka\",\n+            \"Bombil Fry\",\n+        ],\n+        \"Veg Dishes\": [\n+            \"Solkadhi\",\n+            \"Alu Vadi\",\n+            \"Konkani Dal\",   \n+        ],\n+        \"Rice & Bread\": [\n+            \"Ghavan\",\n+            \"Amboli\",\n+            \"Varan Bhaat\",\n+        ],\n+    }\n+    \n+    spots = \n+    return render(request, 'food/index.html', {'foods':foods})\n+\n+def home2(request, pk):\n+    return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763022513357,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,37 +22,58 @@\n             \"Varan Bhaat\",\n         ],\n     }\n     \n-    spots = \n-    return render(request, 'food/index.html', {'foods':foods})\n+    spots = {\n+    \"Beaches\": [\n+        \"Ganpatipule Beach\",\n+        \"Bhatye Beach\",\n+        \"Aare Ware Beach\",\n+        \"Pawas Beach\",\n+        \"Mirya Beach\"\n+    ],\n \n-def home2(request, pk):\n-    return render(request, 'food/about.html',)\n-from django.shortcuts import render\n-from django.http import HttpResponse    \n-# Create your views here.\n+    \"Temples\": [\n+        \"Ganpatipule Mandir\",\n+        \"Pawas Swami Swaroopanand Ashram\",\n+        \"Karhateshwar Temple\",\n+        \"Kadyavarcha Ganpati\"\n+    ],\n \n+    \"Historical Places\": [\n+        \"Ratnadurg Fort (Bhagawati Fort)\",\n+        \"Tilak Residency (Lokmanya Tilak Birthplace)\",\n+        \"Thiba Palace\",\n+        \"Khare Patan Port Ruins\"\n+    ],\n \n-def home(request):\n-    foods = {\n-        \"Seafood\": [\n-            \"Bangda Fry\",\n-            \"Pomfret Fry\",\n-            \"Prawns Sukka\",\n-            \"Bombil Fry\",\n-        ],\n-        \"Veg Dishes\": [\n-            \"Solkadhi\",\n-            \"Alu Vadi\",\n-            \"Konkani Dal\",   \n-        ],\n-        \"Rice & Bread\": [\n-            \"Ghavan\",\n-            \"Amboli\",\n-            \"Varan Bhaat\",\n-        ],\n+    \"Nature & Viewpoints\": [\n+        \"Aare Ware Sunset Point\",\n+        \"Jaigad Creek View\",\n+        \"Harehareshwar Cliff\",\n+        \"Ambolgad Viewpoint\",\n+        \"Bhandarpule Scenic Point\"\n+    ],\n+\n+    \"Waterfalls\": [\n+        \"Purnagad Waterfall\",\n+        \"Kasheli Waterfall\",\n+        \"Devghali Waterfall\"\n+    ],\n+\n+    \"Other Attractions\": [\n+        \"Jaigad Lighthouse\",\n+        \"Swayambhu Ganesh Plateau\",\n+        \"Marine Aquarium & Museum\",\n+        \"Thiba Point\",\n+        \"Ratnagiri Fish Market (Morning Auction)\"\n+    ]\n+}\n+\n+    context = {\n+        'foods': foods,\n+        'spots': spots\n     }\n-    return render(request, 'food/index.html', {'foods':foods})\n+    return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n     return render(request, 'food/about.html',)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763022980431,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,73 +3,8 @@\n # Create your views here.\n \n \n def home(request):\n-    foods = {\n-        \"Seafood\": [\n-            \"Bangda Fry\",\n-            \"Pomfret Fry\",\n-            \"Prawns Sukka\",\n-            \"Bombil Fry\",\n-        ],\n-        \"Veg Dishes\": [\n-            \"Solkadhi\",\n-            \"Alu Vadi\",\n-            \"Konkani Dal\",   \n-        ],\n-        \"Rice & Bread\": [\n-            \"Ghavan\",\n-            \"Amboli\",\n-            \"Varan Bhaat\",\n-        ],\n-    }\n-    \n-    spots = {\n-    \"Beaches\": [\n-        \"Ganpatipule Beach\",\n-        \"Bhatye Beach\",\n-        \"Aare Ware Beach\",\n-        \"Pawas Beach\",\n-        \"Mirya Beach\"\n-    ],\n-\n-    \"Temples\": [\n-        \"Ganpatipule Mandir\",\n-        \"Pawas Swami Swaroopanand Ashram\",\n-        \"Karhateshwar Temple\",\n-        \"Kadyavarcha Ganpati\"\n-    ],\n-\n-    \"Historical Places\": [\n-        \"Ratnadurg Fort (Bhagawati Fort)\",\n-        \"Tilak Residency (Lokmanya Tilak Birthplace)\",\n-        \"Thiba Palace\",\n-        \"Khare Patan Port Ruins\"\n-    ],\n-\n-    \"Nature & Viewpoints\": [\n-        \"Aare Ware Sunset Point\",\n-        \"Jaigad Creek View\",\n-        \"Harehareshwar Cliff\",\n-        \"Ambolgad Viewpoint\",\n-        \"Bhandarpule Scenic Point\"\n-    ],\n-\n-    \"Waterfalls\": [\n-        \"Purnagad Waterfall\",\n-        \"Kasheli Waterfall\",\n-        \"Devghali Waterfall\"\n-    ],\n-\n-    \"Other Attractions\": [\n-        \"Jaigad Lighthouse\",\n-        \"Swayambhu Ganesh Plateau\",\n-        \"Marine Aquarium & Museum\",\n-        \"Thiba Point\",\n-        \"Ratnagiri Fish Market (Morning Auction)\"\n-    ]\n-}\n-\n     context = {\n         'foods': foods,\n         'spots': spots\n     }\n"
+                },
+                {
+                    "date": 1763023019475,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n from django.shortcuts import render\n from django.http import HttpResponse    \n+from .data import foods, spots\n # Create your views here.\n \n \n def home(request):\n"
+                },
+                {
+                    "date": 1763023176483,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.shortcuts import render\n from django.http import HttpResponse    \n-from .data import foods, spots\n+from .  data import foods, spots\n # Create your views here.\n \n \n def home(request):\n"
+                },
+                {
+                    "date": 1763023225392,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.shortcuts import render\n from django.http import HttpResponse    \n-from .  data import foods, spots\n+from . data import foods, spots\n # Create your views here.\n \n \n def home(request):\n"
+                },
+                {
+                    "date": 1763023287273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.shortcuts import render\n from django.http import HttpResponse    \n-from . data import foods, spots\n+from .data.spots import foods, spots\n # Create your views here.\n \n \n def home(request):\n"
+                },
+                {
+                    "date": 1763023308044,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.shortcuts import render\n from django.http import HttpResponse    \n-from .data.spots import foods, spots\n+from .data.spots     import foods, spots\n # Create your views here.\n \n \n def home(request):\n"
+                },
+                {
+                    "date": 1763023628877,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,5 +11,5 @@\n     }\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n-    return render(request, 'food/about.html',)\n\\ No newline at end of file\n+    return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023653341,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+from multiprocessing import context\n from django.shortcuts import render\n from django.http import HttpResponse    \n from .data.spots     import foods, spots\n # Create your views here.\n"
+                },
+                {
+                    "date": 1763023659465,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n from multiprocessing import context\n from django.shortcuts import render\n from django.http import HttpResponse    \n-from .data.spots     import foods, spots\n+from .data.spots import foods, spots\n # Create your views here.\n \n \n def home(request):\n"
+                },
+                {
+                    "date": 1763023673889,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-from multiprocessing import context\n+\n from django.shortcuts import render\n from django.http import HttpResponse    \n from .data.spots import foods, spots\n # Create your views here.\n@@ -12,5 +12,9 @@\n     }\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n+      context = {\n+        'foods': foods,\n+        'spots': spots\n+    }\n     return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023690092,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n     }\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n-      context = {\n+    context = {\n         'foods': foods,\n         'spots': spots\n     }\n     return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023836589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,16 +5,9 @@\n # Create your views here.\n \n \n def home(request):\n-    context = {\n-        'foods': foods,\n-        'spots': spots\n-    }\n+\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n-    context = {\n-        'foods': foods,\n-        'spots': spots\n-    }\n     return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023845547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,18 @@\n \n from django.shortcuts import render\n-from django.http import HttpResponse    \n+from django.http import HttpResponse\n+from requests import request    \n from .data.spots import foods, spots\n # Create your views here.\n \n \n+  context = {\n+        'foods': foods,\n+        'spots': spots\n+    }\n+\n def home(request):\n-\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n     return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023863865,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n from .data.spots import foods, spots\n # Create your views here.\n \n \n-  context = {\n+context = {\n         'foods': foods,\n         'spots': spots\n     }\n \n"
+                },
+                {
+                    "date": 1763023900924,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,18 +1,20 @@\n \n from django.shortcuts import render\n-from django.http import HttpResponse\n-from requests import request    \n+from django.http import HttpResponse    \n from .data.spots import foods, spots\n # Create your views here.\n \n \n-context = {\n+def home(request):\n+    context = {\n         'foods': foods,\n         'spots': spots\n     }\n-\n-def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n+    context = {\n+        'foods': foods,\n+        'spots': spots\n+    }\n     return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023940885,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,17 +4,15 @@\n from .data.spots import foods, spots\n # Create your views here.\n \n \n-def home(request):\n-    context = {\n+\n+context = {\n         'foods': foods,\n         'spots': spots\n     }\n+\n+def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request, pk):\n-    context = {\n-        'foods': foods,\n-        'spots': spots\n-    }\n     return render(request, 'food/about.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023970377,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,6 +13,9 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request, pk):\n-    return render(request, 'food/about.html', context)\n\\ No newline at end of file\n+def home2(request):\n+    return render(request, 'food/about.html', context)\n+\n+def single_post(request, pk):\n+    return HttpResponse(\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763023980129,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,7 +15,4 @@\n     return render(request, 'food/index.html', context)\n \n def home2(request):\n     return render(request, 'food/about.html', context)\n-\n-def single_post(request, pk):\n-    return HttpResponse(\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763024265957,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,6 +13,6 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request):\n+def home2(request ,pk):\n     return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024331127,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,5 +14,13 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk):\n-    return render(request, 'food/about.html', context)\n+    spotobj = None\n+    for items in spots.items():\n+        for item in items:\n+            if item['name'] == pk:\n+                spotobj = item\n+                break\n+        if spotobj:\n+            break   \n+    return render(request, 'food/about.html', {'spot': spotobj})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763024399046,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,12 +15,12 @@\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk):\n     spotobj = None\n-    for items in spots.items():\n+    for category, items in spots.items():\n         for item in items:\n             if item['name'] == pk:\n                 spotobj = item\n                 break\n         if spotobj:\n             break   \n\\ No newline at end of file\n-    return render(request, 'food/about.html', {'spot': spotobj})\n+    return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024429781,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,13 +14,5 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk):\n-    spotobj = None\n-    for category, items in spots.items():\n-        for item in items:\n-            if item['name'] == pk:\n-                spotobj = item\n-                break\n-        if spotobj:\n-            break   \n-    return render(request, 'food/about.html', context)\n\\ No newline at end of file\n+    return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024798958,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,6 +13,7 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request ,pk):\n-    return render(request, 'food/about.html', context)\n+def home2(request ,pk=None):\n+    spot= None\n+    for s in spo    return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024898893,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,6 +14,10 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk=None):\n-    spot= None\n-    for s in spo    return render(request, 'food/about.html', context)\n+    item= None\n+    for i in item:\n+        if s['id']==int(pk):\n+            item = i\n+            breaks\n+    return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024913374,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,8 @@\n \n def home2(request ,pk=None):\n     item= None\n     for i in item:\n-        if s['id']==int(pk):\n+        if i['id']==int(pk):\n             item = i\n             breaks\n     return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024920631,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,6 +18,6 @@\n     item= None\n     for i in item:\n         if i['id']==int(pk):\n             item = i\n-            breaks\n+            break\n     return render(request, 'food/about.html', context)\n"
+                },
+                {
+                    "date": 1763024936789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,5 +19,5 @@\n     for i in item:\n         if i['id']==int(pk):\n             item = i\n             break\n-    return render(request, 'food/about.html', context)\n+    return render(request, 'food/about.html', \"spot\":item)\n"
+                },
+                {
+                    "date": 1763025173065,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,10 +14,10 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk=None):\n-    item= None\n+    item = None\n     for i in item:\n         if i['id']==int(pk):\n             item = i\n             break\n-    return render(request, 'food/about.html', \"spot\":item)\n+    return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763025271963,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,11 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request ,pk=None):\n+def home2(request ,pk=Non):\n     item = None\n-    for i in item:\n+    for i in spots:\n         if i['id']==int(pk):\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763025281802,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,11 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request ,pk=Non):\n+def home2(request ,pk):\n     item = None\n     for i in spots:\n-        if i['id']==int(pk):\n+        if i['id']==pk:\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763025313653,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,8 @@\n \n def home2(request ,pk):\n     item = None\n     for i in spots:\n-        if i['id']==pk:\n+        if i['id']== pk:\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763025592252,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,8 @@\n \n def home2(request ,pk):\n     item = None\n     for i in spots:\n-        if i['id']== pk:\n+        if i(str['id'])== pk:\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763025636575,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,8 @@\n \n def home2(request ,pk):\n     item = None\n     for i in spots:\n-        if i(str['id'])== pk:\n+        if str(i['id'])== pk:\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763026079709,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,8 @@\n \n def home2(request ,pk):\n     item = None\n     for i in spots:\n-        if str(i['id'])== pk:\n+        if i['id'] == \"pk\":\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n"
+                },
+                {
+                    "date": 1763026129022,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,4 +20,13 @@\n         if i['id'] == \"pk\":\n             item = i\n             break\n     return render(request, 'food/about.html', {\"spot\":item})\n+\n+def home3(request ,pk):\n+     item = None\n+    for i in spots:\n+        if i['id'] == \"pk\":\n+            item = i\n+            break\n+    return render(request, 'food/about.html', {\"spot\":item})\n+    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026147439,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,17 +14,12 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk):\n-    item = None\n-    for i in spots:\n-        if i['id'] == \"pk\":\n-            item = i\n-            break\n-    return render(request, 'food/about.html', {\"spot\":item})\n+    return render(request, 'food/about.html', {\"spot\":pk})\n \n def home3(request ,pk):\n-     item = None\n+    item = None\n     for i in spots:\n         if i['id'] == \"pk\":\n             item = i\n             break\n"
+                },
+                {
+                    "date": 1763026166225,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,14 +14,14 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk):\n-    return render(request, 'food/about.html', {\"spot\":pk})\n+    return render(request, 'food/a.html', {\"spot\":pk})\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n         if i['id'] == \"pk\":\n             item = i\n             break\n-    return render(request, 'food/about.html', {\"spot\":item})\n+    return render(request, 'food/details.html', {\"spot\":item})\n     \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026307728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request ,pk):\n-    return render(request, 'food/a.html', {\"spot\":pk})\n+    return render(request, 'food/about.html', {\"spot\":pk})\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n"
+                },
+                {
+                    "date": 1763026366755,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request ,pk):\n+def home2(request ):\n     return render(request, 'food/about.html', {\"spot\":pk})\n \n def home3(request ,pk):\n     item = None\n"
+                },
+                {
+                    "date": 1763026376327,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n \n def home(request):\n     return render(request, 'food/index.html', context)\n \n-def home2(request ):\n-    return render(request, 'food/about.html', {\"spot\":pk})\n+def home2(request):\n+    return render(request, 'food/about.html', {\"spot\":spots})\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n"
+                },
+                {
+                    "date": 1763026388254,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request):\n-    return render(request, 'food/about.html', {\"spot\":spots})\n+    return render(request, 'food/about.html', {\"spots   \":spots})\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n"
+                },
+                {
+                    "date": 1763026443677,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n def home(request):\n     return render(request, 'food/index.html', context)\n \n def home2(request):\n-    return render(request, 'food/about.html', {\"spots   \":spots})\n+    return render(request, 'food/about.html', {\"spots\":spots})\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n"
+                },
+                {
+                    "date": 1763026637650,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n-        if i['id'] == \"pk\":\n+        if str(i['id'])  == pk:\n             item = i\n             break\n     return render(request, 'food/details.html', {\"spot\":item})\n     \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026728683,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n \n def home3(request ,pk):\n     item = None\n     for i in spots:\n-        if str(i['id'])  == pk:\n+        if str(i['id']) == pk:\n             item = i\n             break\n     return render(request, 'food/details.html', {\"spot\":item})\n     \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052134720,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,5 +23,25 @@\n         if str(i['id']) == pk:\n             item = i\n             break\n     return render(request, 'food/details.html', {\"spot\":item})\n-    \n\\ No newline at end of file\n+\n+from django.shortcuts import render, get_object_or_404\n+from .models import Spot, Category, Tag\n+\n+def spot_list(request):\n+    spots = Spot.objects.select_related(\"category\").prefetch_related(\"tags\", \"photos\")[:100]\n+    return render(request, \"spots/list.html\", {\"spots\": spots})\n+\n+def spot_detail(request, pk):\n+    spot = get_object_or_404(Spot.objects.prefetch_related(\"photos\", \"reviews__user\", \"tags\"), pk=pk)\n+    return render(request, \"spots/detail.html\", {\"spot\": spot})\n+\n+def category_spots(request, category_slug):\n+    cat = get_object_or_404(Category, name=category_slug)   # or slugify & store slug\n+    spots = cat.spots.all()\n+    return render(request, \"spots/category.html\", {\"category\": cat, \"spots\": spots})\n+\n+def tag_spots(request, tag_name):\n+    tag = get_object_or_404(Tag, name=tag_name)\n+    spots = tag.spots.all()\n+    return render(request, \"spots/tag.html\", {\"tag\": tag, \"spots\": spots})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763052157623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,24 +24,4 @@\n             item = i\n             break\n     return render(request, 'food/details.html', {\"spot\":item})\n \n-from django.shortcuts import render, get_object_or_404\n-from .models import Spot, Category, Tag\n-\n-def spot_list(request):\n-    spots = Spot.objects.select_related(\"category\").prefetch_related(\"tags\", \"photos\")[:100]\n-    return render(request, \"spots/list.html\", {\"spots\": spots})\n-\n-def spot_detail(request, pk):\n-    spot = get_object_or_404(Spot.objects.prefetch_related(\"photos\", \"reviews__user\", \"tags\"), pk=pk)\n-    return render(request, \"spots/detail.html\", {\"spot\": spot})\n-\n-def category_spots(request, category_slug):\n-    cat = get_object_or_404(Category, name=category_slug)   # or slugify & store slug\n-    spots = cat.spots.all()\n-    return render(request, \"spots/category.html\", {\"category\": cat, \"spots\": spots})\n-\n-def tag_spots(request, tag_name):\n-    tag = get_object_or_404(Tag, name=tag_name)\n-    spots = tag.spots.all()\n-    return render(request, \"spots/tag.html\", {\"tag\": tag, \"spots\": spots})\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1762922915381,
+            "name": "Commit-0",
+            "content": "from django.shortcuts import render\nfrom django.http import HttpResponse    \n# Create your views here.\n"
+        }
+    ]
+}

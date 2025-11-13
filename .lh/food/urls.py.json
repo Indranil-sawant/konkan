@@ -1,0 +1,70 @@
+{
+    "sourceFile": "food/urls.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 13,
+            "patches": [
+                {
+                    "date": 1762924712958,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1762924735112,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n from django.urls import path\n-from food.views import home , home2\n \n urlpatterns = [\n     path('', home, name='home'),\n     path('second/<str:pk>/', home2, name='home2'),\n-]\n\\ No newline at end of file\n+]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762924754988,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n-\n+from . import views\n urlpatterns = [\n     path('', home, name='home'),\n     path('second/<str:pk>/', home2, name='home2'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1762924765548,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', home, name='home'),\n-    path('second/<str:pk>/', home2, name='home2'),\n+    path('', views.home, name='home'),\n+    path('second/<str:pk>/', views.home2, name='home2'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763024010942,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('second/<str:pk>/', views.home2, name='home2'),\n+    path('about/', views.home2, name='home2'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763024273201,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about/', views.home2, name='home2'),\n+    path('about/<str:pk>/', views.home2, name='home2'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763025059986,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about/<str:pk>/', views.home2, name='home2'),\n+    path('about/<str:pk>/', views.home2, name='about'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763025574728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about/<str:pk>/', views.home2, name='about'),\n+    path('about/<int:pk>/', views.home2, name='about'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763025582458,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about/<int:pk>/', views.home2, name='about'),\n+    path('about/<str:pk>/', views.home2, name='about'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026272563,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about/<str:pk>/', views.home2, name='about'),\n+    path('details/<str:pk>/', views.home3, name='about'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026288772,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('details/<str:pk>/', views.home3, name='about'),\n+    path('about', views.home2, name='about'),\n+    path('details/<str:pk>/', views.home3, name='details'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026324160,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about', views.home2, name='about'),\n+    path('aboud/t', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026483273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('aboud/t', views.home2, name='about'),\n+    path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n ]   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763026535704,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,5 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n-]   \n\\ No newline at end of file\n+]   # URL patterns for food app\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1762924712957,
+            "name": "Commit-0",
+            "content": "from django.urls import path\nfrom food.views import home , home2\n\nurlpatterns = [\n    path('', home, name='home'),\n    path('second/<str:pk>/', home2, name='home2'),\n]"
+        }
+    ]
+}
