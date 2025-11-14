@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 6,
+            "activePatchIndex": 10,
             "patches": [
                 {
                     "date": 1762925594093,
@@ -32,6 +32,22 @@
                 {
                     "date": 1763033417991,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,11 +23,8 @@\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url 'details' %}\">details</a>\n-        </li>\n-        <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'about' %}\">About</a>\n         </li>\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"#\">Contact</a>\n"
+                },
+                {
+                    "date": 1763132148552,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n           <a class=\"nav-link\" href=\"{% url 'about' %}\">About</a>\n         </li>\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"#\">Contact</a>\n-        </li>\n+        </li> \n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n         </li>\n       </ul>\n"
+                },
+                {
+                    "date": 1763135473769,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,10 +26,11 @@\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'about' %}\">About</a>\n         </li>\n         <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"#\">Contact</a>\n+          <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Contact</a>\n         </li> \n+\n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n         </li>\n       </ul>\n"
+                },
+                {
+                    "date": 1763135491316,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'about' %}\">About</a>\n         </li>\n         <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Contact</a>\n+          <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Add spot</a>\n         </li> \n \n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n"
+                },
+                {
+                    "date": 1763135673269,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,7 +56,7 @@\n }\n \n .nav-link:hover,\n .nav-link.active {\n-  color: #007bff;\n+  color: #000000ff;\n }\n </style>\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1762925594093,

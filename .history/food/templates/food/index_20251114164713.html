@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Spots -->
+    <h2 class="mb-3">Spots</h2>
+    <div class="row g-4">
+        {% for s in spots %}
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                {% if s.image_url %}
+                <img src="{{ s.image_url }}" class="card-img-top" alt="{{ s.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ s.name }}</h5>
+                    <p class="card-text text-muted">{{ s.short_desc }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr class="my-5">
+
+    <!-- Spot Info List -->
+    <h2 class="mb-3">Spot Extra Info</h2>
+    <div class="row g-4">
+        {% for info in spot_info_list %}
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ info.title }}</h5>
+                    <p class="card-text">{{ info.description }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

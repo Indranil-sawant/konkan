@@ -1,0 +1,50 @@
+{
+    "sourceFile": "food/forms.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 8,
+            "patches": [
+                {
+                    "date": 1763135757322,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763135776931,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,2 +1,5 @@\n-from model.forms import ModelForm\n+from django.forms import ModelForm\n \n+from models import Spots\n+\n+\n"
+                },
+                {
+                    "date": 1763135801296,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,8 @@\n from django.forms import ModelForm\n \n from models import Spots\n \n-\n+class SpotForm(ModelForm):\n+    class Meta:\n+        model = Spots\n+        fields = \"__all__\"\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135996704,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.forms import ModelForm\n \n-from models import Spots\n+from  . models import Spots\n \n class SpotForm(ModelForm):\n     class Meta:\n         model = Spots\n"
+                },
+                {
+                    "date": 1763143481199,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,5 @@\n \n class SpotForm(ModelForm):\n     class Meta:\n         model = Spots\n-        fields = \"__all__\"\n\\ No newline at end of file\n+        fields = []\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763143968337,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,5 @@\n \n class SpotForm(ModelForm):\n     class Meta:\n         model = Spots\n-        fields = []\n\\ No newline at end of file\n+        fields = \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763144012326,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,5 @@\n \n class SpotForm(ModelForm):\n     class Meta:\n         model = Spots\n-        fields = \n\\ No newline at end of file\n+        fields = \"__all__\"\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763144347828,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,12 @@\n from django.forms import ModelForm\n \n-from  . models import Spots\n+from  . models import Spots , spot_info\n \n class SpotForm(ModelForm):\n     class Meta:\n         model = Spots\n+        fields = \"__all__\"\n+class spot_infoForm(ModelForm):\n+    class Meta:\n+        model = spot_info\n         fields = \"__all__\"\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763144455342,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,5 +8,5 @@\n         fields = \"__all__\"\n class spot_infoForm(ModelForm):\n     class Meta:\n         model = spot_info\n-        fields = \"__all__\"\n\\ No newline at end of file\n+        fields = [\"description\", \"map_location\", \"opening_hours\", \"closing_hours\"]\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763135757322,
+            "name": "Commit-0",
+            "content": "from model.forms import ModelForm\n\n"
+        }
+    ]
+}

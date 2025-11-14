@@ -1,0 +1,70 @@
+{
+    "sourceFile": "food/templates/food/spot_form.html",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 13,
+            "patches": [
+                {
+                    "date": 1763135182613,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763135200529,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,10 @@\n {% block content %}\n \n <h1>Spot Form</h1>\n \n-< form method=\"post\" enctype=\"multipart/form-data\">\n+<form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n+    {{ form.as_p }}\n     <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n-\n+</form\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135210146,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,6 @@\n <h1>Spot Form</h1>\n \n <form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n-    {{ form.as_p }}\n-    <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n-</form\n+</form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135219388,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,6 +5,7 @@\n <h1>Spot Form</h1>\n \n <form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n+    <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135261124,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,7 +5,7 @@\n <h1>Spot Form</h1>\n \n <form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n-    <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n+   <input type=\"submit\" name=\"name\" placeholder=\"Enter spot name\"><br><br>\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135282173,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,7 +5,7 @@\n <h1>Spot Form</h1>\n \n <form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n-   <input type=\"submit\" name=\"name\" placeholder=\"Enter spot name\"><br><br>\n+   <input type=\"submit\" >\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135287874,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,7 +5,7 @@\n <h1>Spot Form</h1>\n \n <form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n-   <input type=\"submit\" >\n+   <input type=\"submit\" value=\"Submit\">\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135294978,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,7 +5,7 @@\n <h1>Spot Form</h1>\n \n <form  method=\"post\" enctype=\"multipart/form-data\">\n     {% csrf_token %}\n-   <input type=\"submit\" value=\"Submit\">\n+   <input type=\"submit\">\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135309163,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n {% block content %}\n \n <h1>Spot Form</h1>\n \n-<form  method=\"post\" enctype=\"multipart/form-data\">\n+<form  method=\"post\">\n     {% csrf_token %}\n    <input type=\"submit\">\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135316676,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n {% block content %}\n \n <h1>Spot Form</h1>\n \n-<form  method=\"post\">\n+<form  method=\"POST\">\n     {% csrf_token %}\n    <input type=\"submit\">\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135942569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,7 +5,8 @@\n <h1>Spot Form</h1>\n \n <form  method=\"POST\">\n     {% csrf_token %}\n+    {{ form }}\n    <input type=\"submit\">\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135969871,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,8 @@\n <h1>Spot Form</h1>\n \n <form  method=\"POST\">\n     {% csrf_token %}\n-    {{ form }}\n+    {{ form.as_p }}\n    <input type=\"submit\">\n </form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763142481496,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n {% block content %}\n \n <h1>Spot Form</h1>\n \n-<form  method=\"POST\">\n+<form action=\"\" method=\"POST\">\n     {% csrf_token %}\n     {{ form.as_p }}\n    <input type=\"submit\">\n </form>\n"
+                },
+                {
+                    "date": 1763144410885,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,5 +8,11 @@\n     {% csrf_token %}\n     {{ form.as_p }}\n    <input type=\"submit\">\n </form>\n+\n+<form action=\"\" method=\"POST\">\n+    {% csrf_token %}\n+    {{ info.as_p }}\n+   <input type=\"submit\">\n+</form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763135182613,
+            "name": "Commit-0",
+            "content": "{% extends \"base.html\" %}\n\n{% block content %}\n\n<h1>Spot Form</h1>\n\n< form method=\"post\" enctype=\"multipart/form-data\">\n    {% csrf_token %}\n    <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n\n{% endblock content %}"
+        }
+    ]
+}

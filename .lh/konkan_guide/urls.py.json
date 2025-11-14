@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 7,
+            "activePatchIndex": 9,
             "patches": [
                 {
                     "date": 1762923096841,
@@ -36,6 +36,14 @@
                 {
                     "date": 1762924835268,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,6 +18,6 @@\n from django.urls import path , include\n from food.views import home , home2\n urlpatterns = [\n     path('admin/', admin.site.urls),\n-    path('', include('food.urls'),\n+    path('', include('food.urls')},\n ]\n"
+                },
+                {
+                    "date": 1763117935022,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,8 @@\n     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))\n \"\"\"\n from django.contrib import admin\n from django.urls import path , include\n-from food.views import home , home2\n urlpatterns = [\n     path('admin/', admin.site.urls),\n-    path('', include('food.urls')},\n+    path('', include('food.urls')),\n ]\n"
+                },
+                {
+                    "date": 1763117965398,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))\n \"\"\"\n from django.contrib import admin\n from django.urls import path , include\n+\n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n ]\n"
                 }
             ],
             "date": 1762923096841,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 36,
+            "activePatchIndex": 42,
             "patches": [
                 {
                     "date": 1763036604540,
@@ -152,6 +152,30 @@
                 {
                     "date": 1763055470013,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,15 @@\n     name = models.CharField(max_length=100)\n     \n     def __str__(self):\n         return self.name\n+    \n+class Tag(models.Model):\n+    name = models.CharField(max_length=50)\n \n+    def __str__(self):\n+        return self.name\n+\n class Spots(models.Model):\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n"
+                },
+                {
+                    "date": 1763057589062,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,8 @@\n         return self.name\n     \n class Tag(models.Model):\n     name = models.CharField(max_length=50)\n-\n     def __str__(self):\n         return self.name\n \n class Spots(models.Model):\n"
+                },
+                {
+                    "date": 1763119926308,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,8 +27,9 @@\n         return self.name\n     \n class spot_info(models.Model):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n+    name= models.CharField(max_length=100)\n     description = models.TextField()\n     map_location = models.URLField(blank=True, null=True)\n     opening_hours = models.CharField(max_length=100)\n     closing_hours = models.CharField(max_length=100)\n"
+                },
+                {
+                    "date": 1763119931733,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,8 @@\n         return self.name\n     \n class spot_info(models.Model):\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n-    name= models.CharField(max_length=100)\n     description = models.TextField()\n     map_location = models.URLField(blank=True, null=True)\n     opening_hours = models.CharField(max_length=100)\n     closing_hours = models.CharField(max_length=100)\n"
+                },
+                {
+                    "date": 1763132998215,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n     rating = models.FloatField(default=0.0) \n     photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n-    \n+        \n     def __str__(self):\n         return self.name\n     \n class spot_info(models.Model):\n"
+                },
+                {
+                    "date": 1763143512068,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,13 +21,14 @@\n     rating = models.FloatField(default=0.0) \n     photo = models.ImageField(upload_to='spots_photos/', null=True, blank=True)\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n-        \n+\n     def __str__(self):\n         return self.name\n     \n class spot_info(models.Model):\n+    name = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n     map_location = models.URLField(blank=True, null=True)\n     opening_hours = models.CharField(max_length=100)\n"
+                },
+                {
+                    "date": 1763143521842,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,8 @@\n     def __str__(self):\n         return self.name\n     \n class spot_info(models.Model):\n-    name = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     spot = models.OneToOneField(Spots, on_delete=models.CASCADE)\n     description = models.TextField()\n     map_location = models.URLField(blank=True, null=True)\n     opening_hours = models.CharField(max_length=100)\n"
                 }
             ],
             "date": 1763036604540,

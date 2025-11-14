@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+<div class="spot-details">
+
+    <h2>{{ spot.name }}</h2>
+
+    {% if spot.photo %}
+        <img src="{{ spot.photo.url }}" class="img-fluid mb-3" alt="{{ spot.name }}">
+    {% endif %}
+
+    <p><strong>Category:</strong> {{ spot.category.name }}</p>
+    <p><strong>Distance from City:</strong> {{ spot.distance }} km</p>
+    <p><strong>Rating:</strong> ⭐ {{ spot.rating }}</p>
+
+    <hr>
+
+    <h4>About This Place</h4>
+    <p>{{ spot.spot_info.description }}</p>
+
+    <h4>Timings</h4>
+    <p><strong>Opens:</strong> {{ spot.spot_info.opening_hours }}</p>
+    <p><strong>Closes:</strong> {{ spot.spot_info.closing_hours }}</p>
+
+    {% if spot.spot_info.map_location %}
+        <h4>Location</h4>
+        <a href="{{ spot.spot_info.map_location }}" target="_blank" class="btn btn-warning">
+            View on Google Maps
+        </a>
+    {% endif %}
+</div>
+
+{% endblock content %}

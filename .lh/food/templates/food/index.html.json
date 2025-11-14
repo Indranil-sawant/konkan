@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 14,
+            "activePatchIndex": 54,
             "patches": [
                 {
                     "date": 1763018149724,
@@ -64,6 +64,166 @@
                 {
                     "date": 1763023563150,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,18 +26,8 @@\n                 <li> try {{ item }}</li>\n             {% endfor %}\n         </ul>\n     {% endfor %}\n-    <h1>spots</h1>\n-    {% for category, items in spots.items %}\n-        <h2> For best {{ category }} ratnagiri</h2>\n-        <ul>\n-            {% for item in items %}\n-                <li>{{ item.name }} - {{ item.distance_km }} km - {{ item.rate }}</li>\n-            {% endfor %}\n-        </ul>\n-    {% endfor %}\n-        \n {% endblock content %}\n \n \n \n"
+                },
+                {
+                    "date": 1763116854649,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n     <body>\n         \n {% block content %}\n          <h1>foods</h1>\n-         {% for category, items in foods.items %}\n+         {% for category, items in spots.items %}\n         <h2> For best {{ category }} ratnagiri</h2>\n         <ul>\n             {% for item in items %}\n                 <li> try {{ item }}</li>\n"
+                },
+                {
+                    "date": 1763116899340,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,12 +18,12 @@\n     <body>\n         \n {% block content %}\n          <h1>foods</h1>\n-         {% for category, items in spots.items %}\n-        <h2> For best {{ category }} ratnagiri</h2>\n+         {% for spot in spots %}\n+        <h2> For best {{ spot.category }} ratnagiri</h2>\n         <ul>\n-            {% for item in items %}\n+            {% for item in spot.items %}\n                 <li> try {{ item }}</li>\n             {% endfor %}\n         </ul>\n     {% endfor %}\n"
+                },
+                {
+                    "date": 1763116930337,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,13 +20,8 @@\n {% block content %}\n          <h1>foods</h1>\n          {% for spot in spots %}\n         <h2> For best {{ spot.category }} ratnagiri</h2>\n-        <ul>\n-            {% for item in spot.items %}\n-                <li> try {{ item }}</li>\n-            {% endfor %}\n-        </ul>\n     {% endfor %}\n {% endblock content %}\n \n \n"
+                },
+                {
+                    "date": 1763116937067,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n         \n {% block content %}\n          <h1>foods</h1>\n          {% for spot in spots %}\n-        <h2> For best {{ spot.category }} ratnagiri</h2>\n+        <h2> For best {{ spot }} ratnagiri</h2>\n     {% endfor %}\n {% endblock content %}\n \n \n"
+                },
+                {
+                    "date": 1763116953244,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n         \n {% block content %}\n          <h1>foods</h1>\n          {% for spot in spots %}\n-        <h2> For best {{ spot }} ratnagiri</h2>\n+        <h2>  {{ spot }} </h2>\n     {% endfor %}\n {% endblock content %}\n \n \n"
+                },
+                {
+                    "date": 1763116959378,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,10 +18,15 @@\n     <body>\n         \n {% block content %}\n          <h1>foods</h1>\n-         {% for spot in spots %}\n-        <h2>  {{ spot }} </h2>\n+         {% for category, items in foods.items %}\n+        <h2> For best {{ category }} ratnagiri</h2>\n+        <ul>\n+            {% for item in items %}\n+                <li> try {{ item }}</li>\n+            {% endfor %}\n+        </ul>\n     {% endfor %}\n {% endblock content %}\n \n \n"
+                },
+                {
+                    "date": 1763117302380,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n     <body>\n         \n {% block content %}\n          <h1>foods</h1>\n-         {% for category, items in foods.items %}\n+         {% for category, items in spots.items %}\n         <h2> For best {{ category }} ratnagiri</h2>\n         <ul>\n             {% for item in items %}\n                 <li> try {{ item }}</li>\n"
+                },
+                {
+                    "date": 1763117325849,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,10 +18,10 @@\n     <body>\n         \n {% block content %}\n          <h1>foods</h1>\n-         {% for category, items in spots.items %}\n-        <h2> For best {{ category }} ratnagiri</h2>\n+         {% for category, items in spots %}\n+        <h2> For best {{  }} ratnagiri</h2>\n         <ul>\n             {% for item in items %}\n                 <li> try {{ item }}</li>\n             {% endfor %}\n"
+                },
+                {
+                    "date": 1763117377544,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,15 +18,10 @@\n     <body>\n         \n {% block content %}\n          <h1>foods</h1>\n-         {% for category, items in spots %}\n-        <h2> For best {{  }} ratnagiri</h2>\n-        <ul>\n-            {% for item in items %}\n-                <li> try {{ item }}</li>\n-            {% endfor %}\n-        </ul>\n+         {% for item in spots %}\n+        <h2>  {{ item }} </h2>\n     {% endfor %}\n {% endblock content %}\n \n \n"
+                },
+                {
+                    "date": 1763118339856,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,31 +1,31 @@\n {% extends \"base.html\" %}\n \n-\n-<!DOCTYPE html>\n-<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n-<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n-<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n-<!--[if gt IE 8]>      <html class=\"no-js\"> <!--<![endif]-->\n-<html>\n-    <head>\n-        <meta charset=\"utf-8\">\n-        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n-        <title>index </title>\n-        <meta name=\"description\" content=\"\">\n-        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n-        <link rel=\"stylesheet\" href=\"\">\n-    </head>\n-    <body>\n-        \n {% block content %}\n-         <h1>foods</h1>\n-         {% for item in spots %}\n-        <h2>  {{ item }} </h2>\n-    {% endfor %}\n-{% endblock content %}\n+<div class=\"container py-4\">\n+    <h1 class=\"mb-4\">Foods</h1>\n \n+    <div class=\"row g-4\">\n+        {% for item in spots %}\n+        <div class=\"col-12 col-md-6 col-lg-4\">\n\\ No newline at end of file\n+            <div class=\"card shadow-sm h-100\">\n+                {% if item.image_url %}\n+                    <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n+                {% endif %}\n \n+                <div class=\"card-body\">\n+                    <h5 class=\"card-title\">{{ item.name }}</h5>\n+                    <p class=\"card-text text-muted\">\n+                        {{ item.short_desc|default:\"No description available.\" }}\n+                    </p>\n \n-        <script src=\"\" async defer></script>\n-    </body>\n-</html>     \n+                    <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n+                        View Details\n+                    </a>\n+                </div>\n+            </div>\n+        </div>\n+        {% endfor %}\n+    </div>\n+\n+</div>\n+{% endblock content %}\n"
+                },
+                {
+                    "date": 1763118360952,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n {% extends \"base.html\" %}\n \n {% block content %}\n <div class=\"container py-4\">\n-    <h1 class=\"mb-4\">Foods</h1>\n+    <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n         {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n@@ -27,5 +27,5 @@\n         {% endfor %}\n     </div>\n \n </div>\n-{% endblock content %}\n\\ No newline at end of file\n+{% endblock content %}\n"
+                },
+                {
+                    "date": 1763118572269,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n {% extends \"base.html\" %}\n \n {% block content %}\n <div class=\"container py-4\">\n-    <h1 class=\"mb-4\">Spots</h1>\n+    <h1 class=\"mb-4\">spots</h1>\n \n     <div class=\"row g-4\">\n         {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n"
+                },
+                {
+                    "date": 1763118642183,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n {% block content %}\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">spots</h1>\n \n-    <div class=\"row g-4\">\n+    <div class=\"row g-4\"> \n         {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n"
+                },
+                {
+                    "date": 1763118724208,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.short_desc|default:\"No description available.\" }}\n+                        {{ item.short_de|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763118761484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,19 +4,19 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">spots</h1>\n \n     <div class=\"row g-4\"> \n-        {% for item in spots %}\n+        {% for item in spot%}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n \n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ item.name }}</h5>\n+                    <h5 class=\"card-title\">{{ spot_info_list.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.short_de|default:\"No description available.\" }}\n+                        {{ item.|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763118775726,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">spots</h1>\n \n     <div class=\"row g-4\"> \n-        {% for item in spot%}\n+        {% for item in spots%}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763118784486,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">spots</h1>\n \n     <div class=\"row g-4\"> \n-        {% for item in spots%}\n+        {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763118807764,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,17 +4,17 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">spots</h1>\n \n     <div class=\"row g-4\"> \n-        {% for item in spots %}\n+        {% for  item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n \n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ spot_info_list.name }}</h5>\n+                    <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n                         {{ item.|default:\"No description available.\" }}\n                     </p>\n \n"
+                },
+                {
+                    "date": 1763119033557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,31 +1,42 @@\n {% extends \"base.html\" %}\n \n {% block content %}\n <div class=\"container py-4\">\n-    <h1 class=\"mb-4\">spots</h1>\n \n-    <div class=\"row g-4\"> \n-        {% for  item in spots %}\n-        <div class=\"col-12 col-md-6 col-lg-4\">\n-            <div class=\"card shadow-sm h-100\">\n-                {% if item.image_url %}\n-                    <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n+    <!-- Spots -->\n+    <h2 class=\"mb-3\">Spots</h2>\n+    <div class=\"row g-4\">\n+        {% for s in spots %}\n+        <div class=\"col-md-4\">\n+            <div class=\"card h-100 shadow-sm\">\n+                {% if s.image_url %}\n+                <img src=\"{{ s.image_url }}\" class=\"card-img-top\" alt=\"{{ s.name }}\">\n                 {% endif %}\n+                <div class=\"card-body\">\n+                    <h5 class=\"card-title\">{{ s.name }}</h5>\n+                    <p class=\"card-text text-muted\">{{ s.short_desc }}</p>\n+                </div>\n+            </div>\n+        </div>\n+        {% endfor %}\n+    </div>\n \n+    <hr class=\"my-5\">\n+\n+    <!-- Spot Info List -->\n+    <h2 class=\"mb-3\">Spot Extra Info</h2>\n+    <div class=\"row g-4\">\n+        {% for info in spot_info_list %}\n+        <div class=\"col-md-4\">\n+            <div class=\"card h-100 shadow-sm\">\n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ item.name }}</h5>\n-                    <p class=\"card-text text-muted\">\n-                        {{ item.|default:\"No description available.\" }}\n-                    </p>\n-\n-                    <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n-                        View Details\n-                    </a>\n+                    <h5 class=\"card-title\">{{ info.title }}</h5>\n+                    <p class=\"card-text\">{{ info.description }}</p>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n     </div>\n \n </div>\n-{% endblock content %}\n+{% endblock %}\n"
+                },
+                {
+                    "date": 1763119052084,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,42 +1,31 @@\n {% extends \"base.html\" %}\n \n {% block content %}\n <div class=\"container py-4\">\n+    <h1 class=\"mb-4\">spots</h1>\n \n-    <!-- Spots -->\n-    <h2 class=\"mb-3\">Spots</h2>\n-    <div class=\"row g-4\">\n-        {% for s in spots %}\n-        <div class=\"col-md-4\">\n-            <div class=\"card h-100 shadow-sm\">\n-                {% if s.image_url %}\n-                <img src=\"{{ s.image_url }}\" class=\"card-img-top\" alt=\"{{ s.name }}\">\n+    <div class=\"row g-4\"> \n+        {% for item in spots%}\n+        <div class=\"col-12 col-md-6 col-lg-4\">\n+            <div class=\"card shadow-sm h-100\">\n+                {% if item.image_url %}\n+                    <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n+\n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ s.name }}</h5>\n-                    <p class=\"card-text text-muted\">{{ s.short_desc }}</p>\n-                </div>\n-            </div>\n-        </div>\n-        {% endfor %}\n-    </div>\n+                    <h5 class=\"card-title\">{{ item.name }}</h5>\n+                    <p class=\"card-text text-muted\">\n+                        {{ item.|default:\"No description available.\" }}\n+                    </p>\n \n-    <hr class=\"my-5\">\n-\n-    <!-- Spot Info List -->\n-    <h2 class=\"mb-3\">Spot Extra Info</h2>\n-    <div class=\"row g-4\">\n-        {% for info in spot_info_list %}\n-        <div class=\"col-md-4\">\n-            <div class=\"card h-100 shadow-sm\">\n-                <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ info.title }}</h5>\n-                    <p class=\"card-text\">{{ info.description }}</p>\n+                    <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n+                        View Details\n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n     </div>\n \n </div>\n-{% endblock %}\n+{% endblock content %}\n"
+                },
+                {
+                    "date": 1763119211734,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,12 +11,13 @@\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n \n+                {% for spot in spot_info_list %}\n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ item.name }}</h5>\n+                    <h5 class=\"card-title\">{{ spot.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.|default:\"No description available.\" }}\n+                        {{ spot.description|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763119223563,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n                     <h5 class=\"card-title\">{{ spot.name }}</h5>\n                     <p class=\"card-text text-muted\">\n                         {{ spot.description|default:\"No description available.\" }}\n                     </p>\n-\n+                { % endfor %}\n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n                 </div>\n"
+                },
+                {
+                    "date": 1763119243490,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,12 +17,13 @@\n                     <h5 class=\"card-title\">{{ spot.name }}</h5>\n                     <p class=\"card-text text-muted\">\n                         {{ spot.description|default:\"No description available.\" }}\n                     </p>\n-                { % endfor %}\n+               \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n+                 {% endfor %}\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763119263976,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,29 +1,27 @@\n {% extends \"base.html\" %}\n \n {% block content %}\n <div class=\"container py-4\">\n-    <h1 class=\"mb-4\">spots</h1>\n+    <h1 class=\"mb-4\">Spots</h1>\n \n-    <div class=\"row g-4\"> \n-        {% for item in spots%}\n+    <div class=\"row g-4\">\n+        {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n \n-                {% for spot in spot_info_list %}\n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ spot.name }}</h5>\n+                    <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ spot.description|default:\"No description available.\" }}\n+                        {{ item.short_desc|default:\"No description available.\" }}\n                     </p>\n-               \n+\n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n-                 {% endfor %}\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763119294072,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n {% extends \"base.html\" %}\n \n+{% include \"navbar.html\" %}\n {% block content %}\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n"
+                },
+                {
+                    "date": 1763119310954,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n {% extends \"base.html\" %}\n \n-{% include \"navbar.html\" %}\n+\n {% block content %}\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n"
+                },
+                {
+                    "date": 1763119537561,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in spots %}\n+        {% for item in context.spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763119567887,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in context.spots %}\n+        {% for item in context %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763119578243,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in context %}\n+        {% for item in context.spots  %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763119640078,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in context.spots  %}\n+        {% for item in spots  %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763119658414,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in spots  %}\n+        {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.image_url %}\n                     <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.short_desc|default:\"No description available.\" }}\n+                        {{ item.descrpition|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763119669510,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.descrpition|default:\"No description available.\" }}\n+                        {{ item.|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763119677160,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.|default:\"No description available.\" }}\n+                        {{ item|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763119727211,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item|default:\"No description available.\" }}\n+                        {{ item.spot_info_list.description|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763119787037,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.spot_info_list.description|default:\"No description available.\" }}\n+                        {{ item.spot_info_list|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763120035338,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.spot_info_list|default:\"No description available.\" }}\n+                        {{ item.spot_info_list.description|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763120048090,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,10 +8,10 @@\n     <div class=\"row g-4\">\n         {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n-                {% if item.image_url %}\n-                    <img src=\"{{ item.image_url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n+                {% if item.photo %}\n+                    <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n"
+                },
+                {
+                    "date": 1763128066831,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.spot_info_list.description|default:\"No description available.\" }}\n+                        {{ item.spot_info.description|default:\"No description available.\" }}\n                     </p>\n \n                     <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763128179808,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n                     <p class=\"card-text text-muted\">\n                         {{ item.spot_info.description|default:\"No description available.\" }}\n                     </p>\n \n-                    <a href=\"{% url 'details' pk=item.id %}\" class=\"btn btn-primary btn-sm\">\n+                    <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n                 </div>\n             </div>\n"
+                },
+                {
+                    "date": 1763128636547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.spot_info.description|default:\"No description available.\" }}\n+                        {{ item.spot_info.description }}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
                 }
             ],
             "date": 1763018149724,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 13,
+            "activePatchIndex": 22,
             "patches": [
                 {
                     "date": 1762924712958,
@@ -60,6 +60,42 @@
                 {
                     "date": 1763026535704,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,5 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n-]   \n\\ No newline at end of file\n+]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763117628623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,6 @@\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n-    path('details/<str:pk>/', views.home3, name='details'),\n+    path('details/<slug:pk>/', views.home3, name='details'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763117753014,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.urls import path\n-from . import views\n+from . import views.home_view as view\n urlpatterns = [\n-    path('', views.home, name='home'),\n-    path('about/', views.home2, name='about'),\n-    path('details/<slug:pk>/', views.home3, name='details'),\n+    path('', view.home, name='home'),\n+    path('about/', view.home2, name='about'),\n+    path('details/<slug:pk>/', view.home3, name='details'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763117776395,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n-from . import views.home_view as view\n+from . import views as view\n urlpatterns = [\n     path('', view.home, name='home'),\n     path('about/', view.home2, name='about'),\n     path('details/<slug:pk>/', view.home3, name='details'),\n"
+                },
+                {
+                    "date": 1763117831364,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n-from . import views as view\n+from . views import home_view as view\n urlpatterns = [\n     path('', view.home, name='home'),\n     path('about/', view.home2, name='about'),\n     path('details/<slug:pk>/', view.home3, name='details'),\n"
+                },
+                {
+                    "date": 1763117854753,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.urls import path\n-from . views import home_view as view\n+from . views import home_view \n urlpatterns = [\n-    path('', view.home, name='home'),\n-    path('about/', view.home2, name='about'),\n-    path('details/<slug:pk>/', view.home3, name='details'),\n+    path('', home_view.home, name='home'),\n+    path('about/', home_view.home2, name='about'),\n+    path('details/<slug:pk>/', home_view.home3, name='details'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763117903728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,6 @@\n from . views import home_view \n urlpatterns = [\n     path('', home_view.home, name='home'),\n     path('about/', home_view.home2, name='about'),\n-    path('details/<slug:pk>/', home_view.home3, name='details'),\n+    path('details/<uuid:pk>/', home_view.home3, name='details'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763117976234,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,6 @@\n from . views import home_view \n urlpatterns = [\n     path('', home_view.home, name='home'),\n     path('about/', home_view.home2, name='about'),\n-    path('details/<uuid:pk>/', home_view.home3, name='details'),\n+    path('details/<str:pk>/', home_view.home3, name='details'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763117991304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.urls import path\n-from . views import home_view \n+from . import views\n urlpatterns = [\n-    path('', home_view.home, name='home'),\n-    path('about/', home_view.home2, name='about'),\n-    path('details/<str:pk>/', home_view.home3, name='details'),\n+    path('', views.home, name='home'),\n+    path('about/', views.home2, name='about'),\n+    path('details/<str:pk>/', views.home3, name='details'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763135422966,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,6 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n+    path('create-spot/', views.create_spot, name='create_spot'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1762924712957,

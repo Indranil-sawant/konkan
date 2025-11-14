@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Spot Form</h1>
+
+<form  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+   <input type="submit" >Submit</input>
+</form>
+{% endblock content %}
