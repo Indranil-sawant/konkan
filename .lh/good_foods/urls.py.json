@@ -1,0 +1,26 @@
+{
+    "sourceFile": "good_foods/urls.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1763189438941,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763189456229,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,6 @@\n+from django.urls import path\n+from . import views\n+urlpatterns = [\n+    path('', views.home, name='home'),\n+ \n+]   # URL patterns for good_foods app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763189558751,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.home, name='home'),\n+    path('', views.home, name='food_home'),\n  \n ]   # URL patterns for good_foods app\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763189438941,
+            "name": "Commit-0",
+            "content": ""
+        }
+    ]
+}

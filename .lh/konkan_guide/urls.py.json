@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 9,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1762923096841,
@@ -44,6 +44,14 @@
                 {
                     "date": 1763117965398,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))\n \"\"\"\n from django.contrib import admin\n from django.urls import path , include\n+\n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n ]\n"
+                },
+                {
+                    "date": 1763189520828,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,5 +19,6 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n+    path('good_foods/', include('good_foods.urls')),\n ]\n"
+                },
+                {
+                    "date": 1763213812930,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,6 +19,5 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n-    path('good_foods/', include('good_foods.urls')),\n ]\n"
                 }
             ],
             "date": 1762923096841,

@@ -1,0 +1,26 @@
+{
+    "sourceFile": "static/css/main.css",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1763213213743,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763213314612,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,4 +13,14 @@\n .nav-link:hover,\n .nav-link.active {\n   color: #000000ff;\n }\n+\n+    :root {\n+        --yellow-dark: #FF9B00;\n+        --yellow-main: #FFC900;\n+        --yellow-light: #FFE100;\n+        --bg-light: #EBE389;\n+    }\n+    body {\n+        background: var(--bg-light);\n+    }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763213324925,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,13 +14,13 @@\n .nav-link.active {\n   color: #000000ff;\n }\n \n-    :root {\n+:root {\n         --yellow-dark: #FF9B00;\n         --yellow-main: #FFC900;\n         --yellow-light: #FFE100;\n         --bg-light: #EBE389;\n-    }\n-    body {\n+}\n\\ No newline at end of file\n+body {\n         background: var(--bg-light);\n-    }\n+}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763213213743,
+            "name": "Commit-0",
+            "content": "\n.navbar-brand {\n  font-family: 'Poppins', sans-serif;\n  font-size: 1.5rem;\n  letter-spacing: 0.5px;\n}\n\n.nav-link {\n  font-weight: 500;\n  transition: color 0.3s;\n}\n\n.nav-link:hover,\n.nav-link.active {\n  color: #000000ff;\n}\n"
+        }
+    ]
+}

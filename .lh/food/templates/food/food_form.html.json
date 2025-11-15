@@ -1,0 +1,30 @@
+{
+    "sourceFile": "food/templates/food/food_form.html",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1763193818691,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763208347811,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,46 @@\n {% extends \"base.html\" %}\n \n {% block content %}\n \n-<h1>Spot Form</h1>\n+<h2 class=\"text-center my-4 fw-bold\">Add / Edit Food Item</h2>\n \n-<form action=\"\" method=\"POST\">\n-    {% csrf_token %}\n-    {{ food_items.as_p }}\n-   <input type=\"submit\">\n-</form>\n+<div class=\"container\">\n+    <div class=\"row justify-content-center\">\n+        <div class=\"col-12 col-md-8 col-lg-6\">\n+\n+            <div class=\"card shadow-sm border-0\">\n+                <div class=\"card-body p-4\">\n+\n+                    <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\n+                        {% csrf_token %}\n+\n+                        {% for field in food_items %}\n+                            <div class=\"mb-3\">\n+                                <label class=\"form-label fw-semibold\">{{ field.label }}</label>\n+\n+                                {{ field }}\n+\n+                                {% if field.errors %}\n+                                    <div class=\"text-danger small\">\n+                                        {{ field.errors }}\n+                                    </div>\n+                                {% endif %}\n+                            </div>\n+                        {% endfor %}\n+\n+                        <div class=\"d-grid\">\n+                            <button type=\"submit\" class=\"btn btn-warning fw-bold py-2\">\n+                                Save Food Item\n+                            </button>\n+                        </div>\n+\n+                    </form>\n+\n+                </div>\n+            </div>\n+\n+        </div>\n+    </div>\n+</div>\n+\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763208379149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,6 +41,22 @@\n \n         </div>\n     </div>\n </div>\n+form input, \n+form select, \n+form textarea {\n+    width: 100%;\n+    padding: 10px;\n+    border: 1px solid #ddd;\n+    border-radius: 8px;\n+    background: #fff;\n+}\n \n+form input:focus,\n+form select:focus,\n+form textarea:focus {\n+    border-color: #FFC900;\n+    box-shadow: 0 0 5px rgba(255, 201, 0, 0.5);\n+}\n+\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763208423933,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,9 +41,14 @@\n \n         </div>\n     </div>\n </div>\n-form input, \n+\n+{% endblock content %}\n+\n+\n+<style>\n+    form input, \n form select, \n form textarea {\n     width: 100%;\n     padding: 10px;\n@@ -57,6 +62,5 @@\n form textarea:focus {\n     border-color: #FFC900;\n     box-shadow: 0 0 5px rgba(255, 201, 0, 0.5);\n }\n-\n-{% endblock content %}\n\\ No newline at end of file\n+</style>\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763193818691,
+            "name": "Commit-0",
+            "content": "{% extends \"base.html\" %}\n\n{% block content %}\n\n<h1>Spot Form</h1>\n\n<form action=\"\" method=\"POST\">\n    {% csrf_token %}\n    {{ food_items.as_p }}\n   <input type=\"submit\">\n</form>\n{% endblock content %}"
+        }
+    ]
+}

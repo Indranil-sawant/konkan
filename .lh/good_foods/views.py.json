@@ -1,0 +1,22 @@
+{
+    "sourceFile": "good_foods/views.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1763189472025,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763191553066,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n from django.shortcuts import render\n \n # Create your views here.\n def home(request):\n-    return render(request, 'good_foods/home.html')\n\\ No newline at end of file\n+    return render(request, 'good_foods/home.html')\n+\n"
+                }
+            ],
+            "date": 1763189472025,
+            "name": "Commit-0",
+            "content": "from django.shortcuts import render\n\n# Create your views here.\ndef home(request):\n    return render(request, 'good_foods/home.html')"
+        }
+    ]
+}

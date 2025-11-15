@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 10,
             "patches": [
                 {
                     "date": 1762922608566,
@@ -24,6 +24,30 @@
                 {
                     "date": 1763128019732,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,9 +45,9 @@\n     'django.contrib.sessions.middleware.SessionMiddleware',\n     'django.middleware.common.CommonMiddleware',\n     'django.middleware.csrf.CsrfViewMiddleware',\n     'django.contrib.auth.middleware.AuthenticationMiddleware',\n-    'django.contrib.messages.middleware.MessageMiddleware',\n+    'django.contrib.messages.middleware.MessageMiddleware', \n     'django.middleware.clickjacking.XFrameOptionsMiddleware',\n     \n ]\n \n"
+                },
+                {
+                    "date": 1763189366685,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -37,8 +37,9 @@\n     'django.contrib.sessions',\n     'django.contrib.messages',\n     'django.contrib.staticfiles',\n     'food.apps.FoodConfig',\n+    'good_foods.apps.GoodFoodsConfig',\n ]\n \n MIDDLEWARE = [\n     'django.middleware.security.SecurityMiddleware',\n"
+                },
+                {
+                    "date": 1763213166271,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -118,8 +118,9 @@\n # https://docs.djangoproject.com/en/5.2/howto/static-files/\n \n STATIC_URL = 'static/'\n \n+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]\n # Default primary key field type\n # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field\n \n DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n"
+                },
+                {
+                    "date": 1763213453089,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n \n # SECURITY WARNING: don't run with debug turned on in production!\n DEBUG = True\n \n-ALLOWED_HOSTS = []\n+ALLOWED_HOSTS = ['']\n \n \n # Application definition\n \n"
+                },
+                {
+                    "date": 1763213629941,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n \n # SECURITY WARNING: don't run with debug turned on in production!\n DEBUG = True\n \n-ALLOWED_HOSTS = ['']\n+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.X']\n \n \n # Application definition\n \n"
+                },
+                {
+                    "date": 1763213638133,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n \n # SECURITY WARNING: don't run with debug turned on in production!\n DEBUG = True\n \n-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.X']\n+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.246.117']\n \n \n # Application definition\n \n"
+                },
+                {
+                    "date": 1763213866871,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -37,9 +37,8 @@\n     'django.contrib.sessions',\n     'django.contrib.messages',\n     'django.contrib.staticfiles',\n     'food.apps.FoodConfig',\n-    'good_foods.apps.GoodFoodsConfig',\n ]\n \n MIDDLEWARE = [\n     'django.middleware.security.SecurityMiddleware',\n"
                 }
             ],
             "date": 1762922608565,

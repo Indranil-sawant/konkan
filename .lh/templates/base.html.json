@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 8,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1762926077140,
@@ -40,6 +40,18 @@
                 {
                     "date": 1763119323035,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,14 +7,14 @@\n     \n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n </head>\n-\n+{% include \"navbar.html\" %}\n <body>\n \n     {% block content %}\n-    \n+\n     {% endblock %}\n \n     <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"></script>\n\\ No newline at end of file\n </body>\n-</html>\n+</html>\n"
+                },
+                {
+                    "date": 1763208362915,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,8 +6,10 @@\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n     \n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n+    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n+\n </head>\n {% include \"navbar.html\" %}\n <body>\n \n@@ -16,5 +18,5 @@\n     {% endblock %}\n \n     <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"></script>\n </body>\n-</html>\n\\ No newline at end of file\n+</html>\n"
+                },
+                {
+                    "date": 1763213370091,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n <head>\n     <meta charset=\"utf-8\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n-    \n+    <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n \n"
+                },
+                {
+                    "date": 1763213777887,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n <!doctype html>\n+{% load static %}\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n"
                 }
             ],
             "date": 1762926077140,

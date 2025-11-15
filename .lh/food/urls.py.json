@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 22,
+            "activePatchIndex": 32,
             "patches": [
                 {
                     "date": 1762924712958,
@@ -96,6 +96,46 @@
                 {
                     "date": 1763135422966,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,6 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n+    path('create-spot/', views.create_spot, name='create_spot'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763187608370,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,6 @@\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n     path('create-spot/', views.create_spot, name='create_spot'),\n+    path('update-spot/<str:pk>/', views.update_spot, name='update_spot'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763189007361,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,5 +5,6 @@\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n     path('create-spot/', views.create_spot, name='create_spot'),\n     path('update-spot/<str:pk>/', views.update_spot, name='update_spot'),\n+    path('delete-spot/<str:pk>/', views.delete_spot, name='delete_spot'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763192825178,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,5 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n-    path('create-spot/', views.create_spot, name='create_spot'),\n-    path('update-spot/<str:pk>/', views.update_spot, name='update_spot'),\n-    path('delete-spot/<str:pk>/', views.delete_spot, name='delete_spot'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763193328378,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,6 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n+    path('create_food/', views.create_food, name='create_food'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763193347703,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('about/', views.home2, name='about'),\n     path('details/<str:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n ]   # URL patterns for food app\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763200825200,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,6 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('details/<str:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n-]   # URL patterns for food app\n\\ No newline at end of file\n+    path('update_food/<str:pk>/', views.update_food, name='update_food'),\n+]   # URL patterns for food app\n"
+                },
+                {
+                    "date": 1763201157690,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,6 +3,6 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('details/<str:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n-    path('update_food/<str:pk>/', views.update_food, name='update_food'),\n+    path('update_food/<str:pk>/', views.update_food, name='update_food'),   \n ]   # URL patterns for food app\n"
+                },
+                {
+                    "date": 1763201292206,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,6 @@\n     path('', views.home, name='home'),\n     path('details/<str:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n     path('update_food/<str:pk>/', views.update_food, name='update_food'),   \n+    path('delete_food/<str:pk>/', views.delete_food, name='delete_food'),   \n ]   # URL patterns for food app\n"
+                },
+                {
+                    "date": 1763204441554,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.home, name='home'),\n-    path('details/<str:pk>/', views.home3, name='details'),\n+    path('details/<uuid:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n     path('update_food/<str:pk>/', views.update_food, name='update_food'),   \n     path('delete_food/<str:pk>/', views.delete_food, name='delete_food'),   \n ]   # URL patterns for food app\n"
+                },
+                {
+                    "date": 1763204449902,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,7 +3,7 @@\n urlpatterns = [\n     path('', views.home, name='home'),\n     path('details/<uuid:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n-    path('update_food/<str:pk>/', views.update_food, name='update_food'),   \n-    path('delete_food/<str:pk>/', views.delete_food, name='delete_food'),   \n+    path('update_food/<uuid:pk>/', views.update_food, name='update_food'),   \n+    path('delete_food/<uuid:pk>/', views.delete_food, name='delete_food'),   \n ]   # URL patterns for food app\n"
                 }
             ],
             "date": 1762924712957,

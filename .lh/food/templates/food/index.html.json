@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 54,
+            "activePatchIndex": 91,
             "patches": [
                 {
                     "date": 1763018149724,
@@ -224,6 +224,154 @@
                 {
                     "date": 1763128636547,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.spot_info.description|default:\"No description available.\" }}\n+                        {{ item.spot_info.description }}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763187649023,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,11 @@\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n+                    <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-primary btn-sm\">\n+                        Edit\n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763189045969,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,8 +24,11 @@\n                     </a>\n                     <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         Edit\n                     </a>\n+                    <a href=\"{% url 'delete_spot' item.id %}\" class=\"btn btn-danger btn-sm\">\n+                        Delete\n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763192901420,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in spots %}\n+        {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.spot_info.description }}\n+                        {{ item.foodinfo.description }}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763192913503,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,15 +20,8 @@\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n-                    </a>\n-                    <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-primary btn-sm\">\n-                        Edit\n-                    </a>\n-                    <a href=\"{% url 'delete_spot' item.id %}\" class=\"btn btn-danger btn-sm\">\n-                        Delete\n-                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763192931872,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,8 +20,9 @@\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763200845870,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,11 @@\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n+                      <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n+                        View Details\n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763200857003,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,10 +21,10 @@\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n-                      <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n-                        View Details\n+                      <a href=\"{% url 'update_food' item.id %}\" class=\"btn btn-secondary btn-sm\">\n+                        Edit\n                     </a>\n                 </div>\n             </div>\n         </div>\n"
+                },
+                {
+                    "date": 1763201301033,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,8 +24,11 @@\n                     </a>\n                       <a href=\"{% url 'update_food' item.id %}\" class=\"btn btn-secondary btn-sm\">\n                         Edit\n                     </a>\n+                    <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n+                        Delete\n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763201358142,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.foodinfo.description }}\n+                        {{ item.food_info.description }}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763201526719,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.food_info.description }}\n+                        {{ item.description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763201620259,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.description}}\n+                        {{ item.food_info.description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763201702938,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in food_items %}\n+        {% for item in context %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.food_info.description}}\n+                        {{ item.food_in fo.description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763201710881,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in context %}\n+        {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763201910992,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.food_in fo.description}}\n+                        {{ item.food_info.description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763201947028,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in food_items %}\n+        {% for item in food_items , food_info %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763201958449,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in food_items , food_info %}\n+        {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763201990622,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in food_items %}\n+        {% for item in context %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763202009120,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Spots</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in context %}\n+        {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n"
+                },
+                {
+                    "date": 1763202640872,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.food_info.description}}\n+                        {{ item.food_info   .description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763202721105,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.food_info   .description}}\n+                        {{ item.food_info.description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763205163653,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.food_info.description}}\n+                        {{ item.foodinfo.description}}\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763205191110,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,11 @@\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n                         {{ item.foodinfo.description}}\n                     </p>\n+                      <p class=\"card-text text-muted\">\n+                        {{ item.foodinfo.rating}} ⭐\n+                    </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n"
+                },
+                {
+                    "date": 1763205203218,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n                     <p class=\"card-text text-muted\">\n                         {{ item.foodinfo.description}}\n                     </p>\n                       <p class=\"card-text text-muted\">\n-                        {{ item.foodinfo.rating}} ⭐\n+                        {{ item.rating}} ⭐\n                     </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763205233377,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,8 +20,10 @@\n                     </p>\n                       <p class=\"card-text text-muted\">\n                         {{ item.rating}} ⭐\n                     </p>\n+                    <p class=\"card-text text-muted\">\n+                        {{ item.price}\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n"
+                },
+                {
+                    "date": 1763205264480,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,10 @@\n                       <p class=\"card-text text-muted\">\n                         {{ item.rating}} ⭐\n                     </p>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.price}\n+                        {{ item.price}}\n+                   </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n"
+                },
+                {
+                    "date": 1763205279356,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n                       <p class=\"card-text text-muted\">\n                         {{ item.rating}} ⭐\n                     </p>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.price}}\n+                    Price - {{ item.price}}\n                    </p>\n \n                     <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n"
+                },
+                {
+                    "date": 1763206285960,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n                 <div class=\"card-body\">\n                     <h5 class=\"card-title\">{{ item.name }}</h5>\n                     <p class=\"card-text text-muted\">\n-                        {{ item.foodinfo.description}}\n+                        {{ item.description}}\n                     </p>\n                       <p class=\"card-text text-muted\">\n                         {{ item.rating}} ⭐\n                     </p>\n"
+                },
+                {
+                    "date": 1763208691567,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n \n \n {% block content %}\n <div class=\"container py-4\">\n-    <h1 class=\"mb-4\">Spots</h1>\n+    <h1 class=\"mb-4\">Best Foods inKonkan</h1>\n \n     <div class=\"row g-4\">\n         {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n"
+                },
+                {
+                    "date": 1763209092785,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n \n \n {% block content %}\n <div class=\"container py-4\">\n-    <h1 class=\"mb-4\">Best Foods inKonkan</h1>\n+    <h1 class=\"mb-4\">Best Foods in Konkan</h1>\n \n     <div class=\"row g-4\">\n         {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n@@ -13,9 +13,9 @@\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n                 {% endif %}\n \n                 <div class=\"card-body\">\n-                    <h5 class=\"card-title\">{{ item.name }}</h5>\n+                    <h3 class=\"card-title\">{{ item.name }}</h3>\n                     <p class=\"card-text text-muted\">\n                         {{ item.description}}\n                     </p>\n                       <p class=\"card-text text-muted\">\n"
+                },
+                {
+                    "date": 1763209163935,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,8 +33,11 @@\n                     </a>\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n+                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n+                            {{ item.recipe}}     \n+                    </a>\n                 </div>\n             </div>\n         </div>\n         {% endfor %}\n"
+                },
+                {
+                    "date": 1763209169697,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,9 +34,9 @@\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n                      <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n-                            {{ item.recipe}}     \n+                            {{ item.recipe  }}     \n                     </a>\n                 </div>\n             </div>\n         </div>\n"
+                },
+                {
+                    "date": 1763209190753,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,9 +34,9 @@\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n                      <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n-                            {{ item.recipe  }}     \n+                            {{ item.recipe_link }}     \n                     </a>\n                 </div>\n             </div>\n         </div>\n"
+                },
+                {
+                    "date": 1763209212246,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,10 +33,10 @@\n                     </a>\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n-                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n-                            {{ item.recipe_link }}     \n+                     <a href\" class=\"btn btn-danger btn-sm\">\n+                             \n                     </a>\n                 </div>\n             </div>\n         </div>\n"
+                },
+                {
+                    "date": 1763209220504,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,9 +33,9 @@\n                     </a>\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n-                     <a href\" class=\"btn btn-danger btn-sm\">\n+                     <a href=\"  {{ item.recipe_link }}  \" class=\"btn btn-danger btn-sm\">\n                              \n                     </a>\n                 </div>\n             </div>\n"
+                },
+                {
+                    "date": 1763209238792,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,9 +33,9 @@\n                     </a>\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n-                     <a href=\"  {{ item.recipe_link }}  \" class=\"btn btn-danger btn-sm\">\n+                     <a href=\"{{ item.recipe_link }}\" class=\"btn btn-info btn-sm\" target=\"_blank\">\n                              \n                     </a>\n                 </div>\n             </div>\n"
+                },
+                {
+                    "date": 1763211835260,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,9 +34,9 @@\n                     <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n                      <a href=\"{{ item.recipe_link }}\" class=\"btn btn-info btn-sm\" target=\"_blank\">\n-                             \n+                        Recipe\n                     </a>\n                 </div>\n             </div>\n         </div>\n"
+                },
+                {
+                    "date": 1763213760672,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n {% extends \"base.html\" %}\n+{% load static %}\n \n-\n {% block content %}\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Best Foods in Konkan</h1>\n \n"
                 }
             ],
             "date": 1763018149724,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 13,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1763135182613,
@@ -60,6 +60,10 @@
                 {
                     "date": 1763144410885,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,5 +8,11 @@\n     {% csrf_token %}\n     {{ form.as_p }}\n    <input type=\"submit\">\n </form>\n+\n+<form action=\"\" method=\"POST\">\n+    {% csrf_token %}\n+    {{ info.as_p }}\n+   <input type=\"submit\">\n+</form>\n {% endblock content %}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763185757063,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,11 +8,5 @@\n     {% csrf_token %}\n     {{ form.as_p }}\n    <input type=\"submit\">\n </form>\n-\n-<form action=\"\" method=\"POST\">\n-    {% csrf_token %}\n-    {{ info.as_p }}\n-   <input type=\"submit\">\n-</form>\n {% endblock content %}\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763135182613,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 116,
+            "activePatchIndex": 189,
             "patches": [
                 {
                     "date": 1762922915381,
@@ -472,6 +472,298 @@
                 {
                     "date": 1763144715491,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,6 +33,6 @@\n         form = SpotForm(request.POST)\n         if form.is_valid():\n             form.save()\n         redirect('home')\n-    context = {'form': form, 'info': info}\n+    context = {'form': form, }\n     return render(request, 'food/spot_form.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763186662424,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,7 +32,7 @@\n     if request.method == 'POST':\n         form = SpotForm(request.POST)\n         if form.is_valid():\n             form.save()\n-        redirect('home')\n+            return redirect('home')\n     context = {'form': form, }\n     return render(request, 'food/spot_form.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763187529122,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,5 +34,16 @@\n         if form.is_valid():\n             form.save()\n             return redirect('home')\n     context = {'form': form, }\n+    return render(request, 'food/spot_form.html', context)\n+\n+def update_spot(request, pk):\n+    spot = Spots.objects.get(id=pk)\n+    form = SpotForm(instance=spot)\n+    if request.method == 'POST':\n+        form = SpotForm(request.POST, instance=spot)\n+        if form.is_valid():\n+            form.save()\n+            return redirect('home')\n+    context = {'form': form, }\n     return render(request, 'food/spot_form.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763187556299,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,9 +38,10 @@\n     return render(request, 'food/spot_form.html', context)\n \n def update_spot(request, pk):\n     spot = Spots.objects.get(id=pk)\n-    form = SpotForm(instance=spot)\n+    form = SpotForm(instance=spot)\\\n+        \n     if request.method == 'POST':\n         form = SpotForm(request.POST, instance=spot)\n         if form.is_valid():\n             form.save()\n"
+                },
+                {
+                    "date": 1763188397191,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,5 +46,6 @@\n         if form.is_valid():\n             form.save()\n             return redirect('home')\n     context = {'form': form, }\n-    return render(request, 'food/spot_form.html', context)\n\\ No newline at end of file\n+    return render(request, 'food/spot_form.html', context)\n+ \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763188896125,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,59 @@\n+\n+from django.shortcuts import render , redirect\n+from django.http import HttpResponse\n+from .data.spots import foods, spots\n+\n+from  . models import Spots, Category, spot_info\n+\n+from .forms import SpotForm , spot_infoForm\n+# Create your views here.\n+\n+\n+\n+\n+def home(request):\n+    spots = Spots.objects.all()\n+    spot_info_list = spot_info.objects.all()\n+    context = { 'spots': spots, 'spot_info': spot_info_list }\n+    return render(request, 'food/index.html', context)\n+\n+def home2(request):\n+    spots1 = Spots.objects.all()\n+    return render(request, 'food/about.html', {\"spots1\":spots1})\n+\n+def home3(request ,pk):\n+    spots3 = Spots.objects.get(id=pk)\n+    details = spots3.spot_info\n+    return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n+\n+\n+def create_spot(request):\n+    form = SpotForm()\n+    if request.method == 'POST':\n+        form = SpotForm(request.POST)\n+        if form.is_valid():\n+            form.save()\n+            return redirect('home')\n+    context = {'form': form, }\n+    return render(request, 'food/spot_form.html', context)\n+\n+def update_spot(request, pk):\n+    spot = Spots.objects.get(id=pk)\n+    form = SpotForm(instance=spot)\\\n+        \n+    if request.method == 'POST':\n+        form = SpotForm(request.POST, instance=spot)\n+        if form.is_valid():\n+            form.save()\n+            return redirect('home')\n+    context = {'form': form, }\n+    return render(request, 'food/spot_form.html', context)\n+ \n+ \n+def delete_spot(request, pk):\n+    spot = Spots.objects.get(id=pk)\n+    if request.method == 'POST':\n+        spot.delete()\n+        return redirect('home')\n+    context = {'item': spot}\n+    return render(request, 'food/delete.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763192772315,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,20 +2,19 @@\n from django.shortcuts import render , redirect\n from django.http import HttpResponse\n from .data.spots import foods, spots\n \n-from  . models import Spots, Category, spot_info\n+from  . models import FoodItem , FoodInfo\n \n-from .forms import SpotForm , spot_infoForm\n # Create your views here.\n \n \n \n \n def home(request):\n-    spots = Spots.objects.all()\n-    spot_info_list = spot_info.objects.all()\n-    context = { 'spots': spots, 'spot_info': spot_info_list }\n+    food_items = FoodItem.objects.all()\n+    food_info_list = FoodInfo.objects.all()\n+    context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def home2(request):\n     spots1 = Spots.objects.all()\n@@ -55,56 +54,5 @@\n     if request.method == 'POST':\n         spot.delete()\n         return redirect('home')\n     context = {'item': spot}\n-    return render(request, 'food/delete.html', context)\n-\n-from django.shortcuts import render , redirect\n-from django.http import HttpResponse\n-from .data.spots import foods, spots\n-\n-from  . models import Spots, Category, spot_info\n-\n-from .forms import SpotForm , spot_infoForm\n-# Create your views here.\n-\n-\n-\n-\n-def home(request):\n-    spots = Spots.objects.all()\n-    spot_info_list = spot_info.objects.all()\n-    context = { 'spots': spots, 'spot_info': spot_info_list }\n-    return render(request, 'food/index.html', context)\n-\n-def home2(request):\n-    spots1 = Spots.objects.all()\n-    return render(request, 'food/about.html', {\"spots1\":spots1})\n-\n-def home3(request ,pk):\n-    spots3 = Spots.objects.get(id=pk)\n-    details = spots3.spot_info\n-    return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n-\n-\n-def create_spot(request):\n-    form = SpotForm()\n-    if request.method == 'POST':\n-        form = SpotForm(request.POST)\n-        if form.is_valid():\n-            form.save()\n-            return redirect('home')\n-    context = {'form': form, }\n-    return render(request, 'food/spot_form.html', context)\n-\n-def update_spot(request, pk):\n-    spot = Spots.objects.get(id=pk)\n-    form = SpotForm(instance=spot)\\\n-        \n-    if request.method == 'POST':\n-        form = SpotForm(request.POST, instance=spot)\n-        if form.is_valid():\n-            form.save()\n-            return redirect('home')\n-    context = {'form': form, }\n-    return render(request, 'food/spot_form.html', context)\n- \n\\ No newline at end of file\n+    return render(request, 'food/delete.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763192804760,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,39 +20,7 @@\n     spots1 = Spots.objects.all()\n     return render(request, 'food/about.html', {\"spots1\":spots1})\n \n def home3(request ,pk):\n-    spots3 = Spots.objects.get(id=pk)\n-    details = spots3.spot_info\n-    return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n-\n-\n-def create_spot(request):\n-    form = SpotForm()\n-    if request.method == 'POST':\n-        form = SpotForm(request.POST)\n-        if form.is_valid():\n-            form.save()\n-            return redirect('home')\n-    context = {'form': form, }\n-    return render(request, 'food/spot_form.html', context)\n-\n-def update_spot(request, pk):\n-    spot = Spots.objects.get(id=pk)\n-    form = SpotForm(instance=spot)\\\n-        \n-    if request.method == 'POST':\n-        form = SpotForm(request.POST, instance=spot)\n-        if form.is_valid():\n-            form.save()\n-            return redirect('home')\n-    context = {'form': form, }\n-    return render(request, 'food/spot_form.html', context)\n- \n- \n-def delete_spot(request, pk):\n-    spot = Spots.objects.get(id=pk)\n-    if request.method == 'POST':\n-        spot.delete()\n-        return redirect('home')\n-    context = {'item': spot}\n-    return render(request, 'food/delete.html', context)\n\\ No newline at end of file\n+    food3 = FoodItem.objects.get(id=pk)\n+    details = food3.foodinfo\n+    return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763193262826,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,11 +15,12 @@\n     food_info_list = FoodInfo.objects.all()\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n-def home2(request):\n-    spots1 = Spots.objects.all()\n-    return render(request, 'food/about.html', {\"spots1\":spots1})\n+def create_food(request):\n+    food_items = FoodItem.objects.all()\n+    \n+    return render(request, 'food/about.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n"
+                },
+                {
+                    "date": 1763193300394,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,10 +17,14 @@\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n     food_items = FoodItem.objects.all()\n-    \n-    return render(request, 'food/about.html', {\"food_items\":food_items})\n+    if request.method == 'POST':\n+        name = request.POST.get('name')\n+        photo = request.FILES.get('photo')\n+        new_food = FoodItem.objects.create(name=name, photo=photo)\n+        return redirect('food_home')\n+    return render(request, 'food/create_food.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n"
+                },
+                {
+                    "date": 1763193498453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n         name = request.POST.get('name')\n         photo = request.FILES.get('photo')\n         new_food = FoodItem.objects.create(name=name, photo=photo)\n         return redirect('food_home')\n-    return render(request, 'food/create_food.html', {\"food_items\":food_items})\n+    return render(request, 'food/food_fom.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n"
+                },
+                {
+                    "date": 1763193507744,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n         name = request.POST.get('name')\n         photo = request.FILES.get('photo')\n         new_food = FoodItem.objects.create(name=name, photo=photo)\n         return redirect('food_home')\n-    return render(request, 'food/food_fom.html', {\"food_items\":food_items})\n+    return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n"
+                },
+                {
+                    "date": 1763193568804,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,14 +16,9 @@\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n-    food_items = FoodItem.objects.all()\n-    if request.method == 'POST':\n-        name = request.POST.get('name')\n-        photo = request.FILES.get('photo')\n-        new_food = FoodItem.objects.create(name=name, photo=photo)\n-        return redirect('food_home')\n+    \n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763193640928,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,9 @@\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n-    \n+    food_item = Fo\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763193728730,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,10 @@\n from .data.spots import foods, spots\n \n from  . models import FoodItem , FoodInfo\n \n+from . forms import FoodItemForm , FoodInfoForm\n+\n # Create your views here.\n \n \n \n"
+                },
+                {
+                    "date": 1763193738366,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,10 @@\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n-    food_item = Fo\n+    food_item = FoodItemForm()\n+    \n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763193765215,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,13 @@\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n     food_item = FoodItemForm()\n-    \n+    if request.method == 'POST':\n+        food_item = FoodItemForm(request.POST)\n+        if food_item.is_valid():\n+            food_item.save()\n+            return redirect('home')\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763193971747,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n-    food_item = FoodItemForm()\n+    food_items = FoodItemForm()\n     if request.method == 'POST':\n         food_item = FoodItemForm(request.POST)\n         if food_item.is_valid():\n             food_item.save()\n"
+                },
+                {
+                    "date": 1763200113245,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,11 +8,8 @@\n from . forms import FoodItemForm , FoodInfoForm\n \n # Create your views here.\n \n-\n-\n-\n def home(request):\n     food_items = FoodItem.objects.all()\n     food_info_list = FoodInfo.objects.all()\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n"
+                },
+                {
+                    "date": 1763200181786,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,12 @@\n             food_item.save()\n             return redirect('home')\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n+def delete_food(request ,pk):\n+    food_item = FoodItem.objects.get(id=pk)\n+    food_item.delete()\n+\n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763200526849,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,19 @@\n             food_item.save()\n             return redirect('home')\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n+\n+def update_food(request):\n+    food_items = FoodItemForm()\n+    if request.method == 'POST':\n+        food_item = FoodItemForm(request.POST)\n+        if food_item.is_valid():\n+            food_item.save()\n+            return redirect('home')\n+    return render(request, 'food/food_form.html', {\"food_items\":food_items})\n+\n+\n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n     food_item.delete()\n \n"
+                },
+                {
+                    "date": 1763200538639,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,9 @@\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n def update_food(request):\n-    food_items = FoodItemForm()\n+    food_items = FoodItemForm(instance=food_items)\n     if request.method == 'POST':\n         food_item = FoodItemForm(request.POST)\n         if food_item.is_valid():\n             food_item.save()\n"
+                },
+                {
+                    "date": 1763200544281,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n             return redirect('home')\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n-def update_food(request):\n+def update_food(request , pk):\n     food_items = FoodItemForm(instance=food_items)\n     if request.method == 'POST':\n         food_item = FoodItemForm(request.POST)\n         if food_item.is_valid():\n"
+                },
+                {
+                    "date": 1763200561392,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,10 @@\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n def update_food(request , pk):\n-    food_items = FoodItemForm(instance=food_items)\n+    food_items = FoodItem.objects.get(id=pk)\n+    food_item = FoodItemForm(instance=food_items)\n     if request.method == 'POST':\n         food_item = FoodItemForm(request.POST)\n         if food_item.is_valid():\n             food_item.save()\n"
+                },
+                {
+                    "date": 1763200746234,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,10 +25,10 @@\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n def update_food(request , pk):\n-    food_items = FoodItem.objects.get(id=pk)\n-    food_item = FoodItemForm(instance=food_items)\n+    food = FoodItem.objects.get(id=pk)\n+    food_item = FoodItemForm(instance=food)\n     if request.method == 'POST':\n         food_item = FoodItemForm(request.POST)\n         if food_item.is_valid():\n             food_item.save()\n"
+                },
+                {
+                    "date": 1763200812970,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,13 +28,13 @@\n def update_food(request , pk):\n     food = FoodItem.objects.get(id=pk)\n     food_item = FoodItemForm(instance=food)\n     if request.method == 'POST':\n-        food_item = FoodItemForm(request.POST)\n+        food_item = FoodItemForm(request.POST, instance=food)\n         if food_item.is_valid():\n             food_item.save()\n             return redirect('home')\n-    return render(request, 'food/food_form.html', {\"food_items\":food_items})\n+    return render(request, 'food/food_form.html', {\"food_item\":food_item})\n \n \n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763200889113,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n         food_item = FoodItemForm(request.POST, instance=food)\n         if food_item.is_valid():\n             food_item.save()\n             return redirect('home')\n-    return render(request, 'food/food_form.html', {\"food_item\":food_item})\n+    return render(request, 'food/food_form.html', {\"food\":food})\n \n \n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763200930802,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n         food_item = FoodItemForm(request.POST, instance=food)\n         if food_item.is_valid():\n             food_item.save()\n             return redirect('home')\n-    return render(request, 'food/food_form.html', {\"food\":food})\n+    return render(request, 'food/food_form.html', {\"food_item\":food_item})\n \n \n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763200975256,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,15 +26,15 @@\n \n \n def update_food(request , pk):\n     food = FoodItem.objects.get(id=pk)\n-    food_item = FoodItemForm(instance=food)\n+    food_items = FoodItemForm(instance=food)\n     if request.method == 'POST':\n         food_item = FoodItemForm(request.POST, instance=food)\n         if food_item.is_valid():\n             food_item.save()\n             return redirect('home')\n-    return render(request, 'food/food_form.html', {\"food_item\":food_item})\n+    return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763201061608,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,14 +33,14 @@\n         if food_item.is_valid():\n             food_item.save()\n             return redirect('home')\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n-\n-\n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n     food_item.delete()\n-\n+    \n+    \n+    \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763201121324,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,8 +33,10 @@\n         if food_item.is_valid():\n             food_item.save()\n             return redirect('home')\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n+\n+\n def delete_food(request ,pk):\n     food_item = FoodItem.objects.get(id=pk)\n     food_item.delete()\n     \n"
+                },
+                {
+                    "date": 1763201267511,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,13 +36,15 @@\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n def delete_food(request ,pk):\n-    food_item = FoodItem.objects.get(id=pk)\n-    food_item.delete()\n+    food = FoodItem.objects.get(id=pk)\n+    if request.method == 'POST':\n+        food.delete()\n+        return redirect('home')\n+    return render(request, 'food/delete.html', {\"item\":food})\n     \n     \n-    \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n     details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763201451970,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n from .data.spots import foods, spots\n \n from  . models import FoodItem , FoodInfo\n \n-from . forms import FoodItemForm , FoodInfoForm\n+from . forms import FoodItemForm \n \n # Create your views here.\n \n def home(request):\n"
+                },
+                {
+                    "date": 1763201668887,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,9 @@\n # Create your views here.\n \n def home(request):\n     food_items = FoodItem.objects.all()\n-    food_info_list = FoodInfo.objects.all()\n+    food_info = FoodInfo.objects.all()\n     context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n"
+                },
+                {
+                    "date": 1763202738779,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n \n def home(request):\n     food_items = FoodItem.objects.all()\n     food_info = FoodInfo.objects.all()\n-    context = { 'food_items': food_items, 'food_info': food_info_list }\n+    context = { 'food_items': food_items, 'food_info': food_info }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n     food_items = FoodItemForm()\n"
+                },
+                {
+                    "date": 1763202800334,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,7 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n+    \n     details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763202814798,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,7 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    \n     details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763202837664,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.foodinfo\n+    details = food3.FoodInfo.all()\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203052131,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.FoodInfo.all()\n+    details = food3.FoodInfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203335087,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n from django.shortcuts import render , redirect\n from django.http import HttpResponse\n from .data.spots import foods, spots\n \n-from  . models import FoodItem , FoodInfo\n+from  . models import FoodItem , FoodInfo \n \n from . forms import FoodItemForm \n \n # Create your views here.\n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.FoodInfo\n+    details = food3.food_info\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203368463,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.food_info\n+    details = food3.\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203387100,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.\n+    details = food3.    \n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203394143,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.    \n+    details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203416503,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,18 +2,18 @@\n from django.shortcuts import render , redirect\n from django.http import HttpResponse\n from .data.spots import foods, spots\n \n-from  . models import FoodItem , FoodInfo \n+from  . models import FoodItem , FoodInfo\n \n-from . forms import FoodItemForm \n+from . forms import FoodItemForm , FoodInfoForm\n \n # Create your views here.\n \n def home(request):\n     food_items = FoodItem.objects.all()\n-    food_info = FoodInfo.objects.all()\n-    context = { 'food_items': food_items, 'food_info': food_info }\n+    food_info_list = FoodInfo.objects.all()\n+    context = { 'food_items': food_items, 'food_info': food_info_list }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n     food_items = FoodItemForm()\n@@ -36,13 +36,13 @@\n     return render(request, 'food/food_form.html', {\"food_items\":food_items})\n \n \n def delete_food(request ,pk):\n-    food = FoodItem.objects.get(id=pk)\n+    food_item = FoodItem.objects.get(id=pk)\n     if request.method == 'POST':\n-        food.delete()\n+        food_item.delete()\n         return redirect('home')\n-    return render(request, 'food/delete.html', {\"item\":food})\n+    return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n"
+                },
+                {
+                    "date": 1763203429733,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n from .data.spots import foods, spots\n \n from  . models import FoodItem , FoodInfo\n \n-from . forms import FoodItemForm , FoodInfoForm\n+from . forms import FoodItemForm \n \n # Create your views here.\n \n def home(request):\n"
+                },
+                {
+                    "date": 1763203535409,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.foodinfo\n+    details = food3.food_info\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203642749,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,7 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.food_info\n+    \n+    details = food3.FoodInfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203690569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,7 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    \n-    details = food3.FoodInfo\n+    details = food3.FoodIn\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203755741,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.FoodIn\n+    details = food3.FoodInfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203762095,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.FoodInfo\n+    details = food3.FoodInfo()\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203971387,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,5 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n-    \n-def home3(request ,pk):\n-    food3 = FoodItem.objects.get(id=pk)\n-    details = food3.FoodInfo()\n-    return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n+c\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763203977790,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,5 +42,9 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n-c\n\\ No newline at end of file\n+    \n+def home3(request ,pk):\n+    food3 = FoodItem.objects.get(id=pk)\n+    details = food3.FoodInfo\n+    return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204008708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n     \n def home3(request ,pk):\n     food3 = FoodItem.objects.get(id=pk)\n-    details = food3.FoodInfo\n+    details = food3.foodinfo\n     return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204073085,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,4 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n-    \n-def home3(request ,pk):\n-    food3 = FoodItem.objects.get(id=pk)\n-    details = food3.foodinfo\n-    return render(request, 'food/details.html', {\"food3\":food3, \"details\": details})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204109127,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,4 +42,9 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n+def home3(request , pk):\n+    food_item = FoodItem.objects.get(id=pk)\n+    food_info = food_irem.FoodInfo\n+    context = { 'food_item': food_item , 'food_info': food_info }\n+    return render(request, 'food/food_details.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204116132,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,7 +44,7 @@\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_item = FoodItem.objects.get(id=pk)\n-    food_info = food_irem.FoodInfo\n+    food_info = food_item.FoodInfo()\n     context = { 'food_item': food_item , 'food_info': food_info }\n     return render(request, 'food/food_details.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204170171,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,7 +44,7 @@\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_item = FoodItem.objects.get(id=pk)\n-    food_info = food_item.FoodInfo()\n+    spot3 = food_item.foodinfo\n     context = { 'food_item': food_item , 'food_info': food_info }\n     return render(request, 'food/food_details.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204182143,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n def home3(request , pk):\n     food_item = FoodItem.objects.get(id=pk)\n     spot3 = food_item.foodinfo\n-    context = { 'food_item': food_item , 'food_info': food_info }\n+    context = { 'food_item': food_item , 'spot3': spot3 }\n     return render(request, 'food/food_details.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204198188,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,4 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n-def home3(request , pk):\n-    food_item = FoodItem.objects.get(id=pk)\n-    spot3 = food_item.foodinfo\n-    context = { 'food_item': food_item , 'spot3': spot3 }\n-    return render(request, 'food/food_details.html', context)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204243589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,4 +42,8 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n+def home3(request ,pk):\n+    spots3 = FoodInfo.objects.get(id=pk)\n+    details = spots3.description\n+    return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n"
+                },
+                {
+                    "date": 1763204255273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,6 +44,6 @@\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n def home3(request ,pk):\n     spots3 = FoodInfo.objects.get(id=pk)\n-    details = spots3.description\n+    details = spots3.food\n     return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n"
+                },
+                {
+                    "date": 1763204279116,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,6 +44,6 @@\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n def home3(request ,pk):\n     spots3 = FoodInfo.objects.get(id=pk)\n-    details = spots3.food\n+    details = spots3.FoodInfo\n     return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n"
+                },
+                {
+                    "date": 1763204716307,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,8 +42,9 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n-def home3(request ,pk):\n-    spots3 = FoodInfo.objects.get(id=pk)\n-    details = spots3.FoodInfo\n-    return render(request, 'food/details.html', {\"spot3\":spots3, \"details\": details})\n+def home(request , pk):\n+    food_items = FoodItem.objects.get(id=pk)\n+    details = food_items.food_info\n+    context = { 'spot3': food_items , 'details': details }\n+    return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204726353,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,9 @@\n         food_item.delete()\n         return redirect('home')\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n-def home(request , pk):\n+def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n     details = food_items.food_info\n     context = { 'spot3': food_items , 'details': details }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204846569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,7 +44,7 @@\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n-    details = food_items.food_info\n+    details = food_items.foodinfo\n     context = { 'spot3': food_items , 'details': details }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204866912,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,7 +44,7 @@\n     return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n-    details = food_items.foodinfo\n+    food3 = food_items.foodinfo\n     context = { 'spot3': food_items , 'details': details }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763204873541,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n     food3 = food_items.foodinfo\n-    context = { 'spot3': food_items , 'details': details }\n+    context = { 'spot3': food_items , 'food3': food3 }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763205036948,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n     food3 = food_items.foodinfo\n-    context = { 'spot3': food_items , 'food3': food3 }\n+    context = { 'spot3': food_items , 'food3    ': food3 }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763205111848,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,6 +45,6 @@\n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n     food3 = food_items.foodinfo\n-    context = { 'spot3': food_items , 'food3    ': food3 }\n+    context = { 'spot3': food_items , 'food3': food3 }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763205307814,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,9 +40,9 @@\n     food_item = FoodItem.objects.get(id=pk)\n     if request.method == 'POST':\n         food_item.delete()\n         return redirect('home')\n-    return render(request, 'food/delete_food.html', {\"food_item\":food_item})        \n+    return render(request, 'food/delete.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n     food3 = food_items.foodinfo\n"
+                },
+                {
+                    "date": 1763206038200,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n from django.shortcuts import render , redirect\n from django.http import HttpResponse\n from .data.spots import foods, spots\n \n-from  . models import FoodItem , FoodInfo\n+from  . models import FoodItem \n \n from . forms import FoodItemForm \n \n # Create your views here.\n"
+                },
+                {
+                    "date": 1763206059527,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,10 +10,9 @@\n # Create your views here.\n \n def home(request):\n     food_items = FoodItem.objects.all()\n-    food_info_list = FoodInfo.objects.all()\n-    context = { 'food_items': food_items, 'food_info': food_info_list }\n+    context = { 'food_items': food_items }\n     return render(request, 'food/index.html', context)\n \n def create_food(request):\n     food_items = FoodItemForm()\n"
+                },
+                {
+                    "date": 1763206174336,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,7 +43,6 @@\n     return render(request, 'food/delete.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n-    food3 = food_items.foodinfo\n-    context = { 'spot3': food_items , 'food3': food3 }\n+    context = { 'spot3': food_items }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763206186042,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,6 +43,6 @@\n     return render(request, 'food/delete.html', {\"food_item\":food_item})        \n     \n def home3(request , pk):\n     food_items = FoodItem.objects.get(id=pk)\n-    context = { 'spot3': food_items }\n+    context = { 'food_items': food_items }\n     return render(request, 'food/details.html', context)    \n\\ No newline at end of file\n"
                 }
             ],
             "date": 1762922915381,

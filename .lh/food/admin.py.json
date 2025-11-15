@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 12,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1763037013795,
@@ -56,6 +56,34 @@
                 {
                     "date": 1763055479471,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,12 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import Spots  , Category , spot_info\n+from .models import Spots  , Category , spot_info , Tag\n \n admin.site.register(Category)\n \n\\ No newline at end of file\n-admin.site.register(Spots)\n+admin.site.register(Spots)\n+\n+admin.site.register(spot_info)  \n+\n+admin.site.register(Tag)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763191950070,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,6 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import Spots  , Category , spot_info , Tag\n+from .models import FoodInfo \n \n-admin.site.register(Category)\n-\n-admin.site.register(Spots)\n-\n-admin.site.register(spot_info)  \n-\n\\ No newline at end of file\n-admin.site.register(Tag)\n+admin.site.register(FoodInfo)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763192601499,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.contrib import admin\n \n # Register your models here.\n from .models import FoodInfo \n-\n+                                                                    \n admin.site.register(FoodInfo)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763192705763,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,8 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import FoodInfo \n-                                                                    \n+from .models import FoodItem, FoodInfo\n+\n+admin.site.register(FoodItem)\n+\n admin.site.register(FoodInfo)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763197153856,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,10 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import FoodItem, FoodInfo\n+from .models import FoodItem, FoodInfo , \n \n admin.site.register(FoodItem)\n \n\\ No newline at end of file\n-admin.site.register(FoodInfo)\n+admin.site.register(FoodInfo)\n+\n+admin\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763197184944,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,12 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import FoodItem, FoodInfo , \n+from .models import FoodItem, FoodInfo , Tag   , Category\n \n admin.site.register(FoodItem)\n \n admin.site.register(FoodInfo)\n \n\\ No newline at end of file\n-admin\n+admin.site.register(Tag)\n+\n+admin.site.register(Category)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763206018817,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,8 @@\n from .models import FoodItem, FoodInfo , Tag   , Category\n \n admin.site.register(FoodItem)\n \n-admin.site.register(FoodInfo)\n \n admin.site.register(Tag)\n \n admin.site.register(Category)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763206024313,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n from django.contrib import admin\n \n # Register your models here.\n-from .models import FoodItem, FoodInfo , Tag   , Category\n+from .models import FoodItem, Tag   , Category\n \n admin.site.register(FoodItem)\n \n \n"
                 }
             ],
             "date": 1763037013795,

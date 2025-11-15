@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 10,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1762925594093,
@@ -48,6 +48,42 @@
                 {
                     "date": 1763135673269,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,7 +56,7 @@\n }\n \n .nav-link:hover,\n .nav-link.active {\n-  color: #007bff;\n+  color: #000000ff;\n }\n </style>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763189545004,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,8 +28,11 @@\n         </li>\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Add spot</a>\n         </li> \n+          <li class=\"nav-item\">\n+          <a class=\"nav-link\" href=\"{% url '' %}\">Add spot</a>\n+        </li> \n \n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n         </li>\n"
+                },
+                {
+                    "date": 1763189570535,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Add spot</a>\n         </li> \n           <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url '' %}\">Add spot</a>\n+          <a class=\"nav-link\" href=\"{% url 'good_foods' %}\">Add spot</a>\n         </li> \n \n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n"
+                },
+                {
+                    "date": 1763189581246,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n         <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Add spot</a>\n         </li> \n           <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url 'good_foods' %}\">Add spot</a>\n+          <a class=\"nav-link\" href=\"{% url 'food_home' %}\">Foods</a>\n         </li> \n \n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n"
+                },
+                {
+                    "date": 1763193043898,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,14 +22,8 @@\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n-        <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url 'about' %}\">About</a>\n-        </li>\n-        <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url 'create_spot' %}\">Add spot</a>\n-        </li> \n           <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'food_home' %}\">Foods</a>\n         </li> \n \n"
+                },
+                {
+                    "date": 1763193448051,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,8 +22,11 @@\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n+        <li class=\"nav-item\">\n+          <a class=\"nav-link active\" href=\"{% url 'create_food' %}\">Create Food</a>\n+        </li>\n           <li class=\"nav-item\">\n           <a class=\"nav-link\" href=\"{% url 'food_home' %}\">Foods</a>\n         </li> \n \n"
+                },
+                {
+                    "date": 1763213199428,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,21 +42,4 @@\n <!-- Navbar End -->\n <hr>\n <hr>\n \n-<style>\n-    .navbar-brand {\n-  font-family: 'Poppins', sans-serif;\n-  font-size: 1.5rem;\n-  letter-spacing: 0.5px;\n-}\n-\n-.nav-link {\n-  font-weight: 500;\n-  transition: color 0.3s;\n-}\n-\n-.nav-link:hover,\n-.nav-link.active {\n-  color: #000000ff;\n-}\n-</style>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763213220955,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,6 @@\n+\n+\n <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\"></script>\n \n \n"
+                },
+                {
+                    "date": 1763213227703,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,10 @@\n+{% load static %}\n \n-\n <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\"></script>\n \n-\n+<link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n <!-- Navbar Start -->\n <!-- Navbar Start -->\n <nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n   <div class=\"container\">\n"
+                },
+                {
+                    "date": 1763213819776,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,11 +27,8 @@\n         </li>\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'create_food' %}\">Create Food</a>\n         </li>\n-          <li class=\"nav-item\">\n-          <a class=\"nav-link\" href=\"{% url 'food_home' %}\">Foods</a>\n-        </li> \n \n         <li class=\"nav-item\">\n           <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n         </li>\n"
                 }
             ],
             "date": 1762925594093,

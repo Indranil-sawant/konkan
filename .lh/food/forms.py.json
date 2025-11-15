@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 8,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1763135757322,
@@ -40,6 +40,30 @@
                 {
                     "date": 1763144455342,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,5 +8,5 @@\n         fields = \"__all__\"\n class spot_infoForm(ModelForm):\n     class Meta:\n         model = spot_info\n-        fields = \"__all__\"\n\\ No newline at end of file\n+        fields = [\"description\", \"map_location\", \"opening_hours\", \"closing_hours\"]\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763191684890,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.forms import ModelForm\n \n-from  . models import Spots , spot_info\n+from  . models import \n \n class SpotForm(ModelForm):\n     class Meta:\n         model = Spots\n"
+                },
+                {
+                    "date": 1763193218750,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,11 @@\n from django.forms import ModelForm\n \n-from  . models import \n-\n-class SpotForm(ModelForm):\n+from  . models import FoodItem , FoodInfo\n+class FoodItemForm(ModelForm):\n     class Meta:\n-        model = Spots\n+        model = FoodItem\n         fields = \"__all__\"\n-class spot_infoForm(ModelForm):\n\\ No newline at end of file\n+class FoodInfoForm(ModelForm):\n     class Meta:\n-        model = spot_info\n-        fields = [\"description\", \"map_location\", \"opening_hours\", \"closing_hours\"]\n+        model = FoodInfo\n+        fields = \"__all__\"\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763193677610,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,9 @@\n from django.forms import ModelForm\n \n from  . models import FoodItem , FoodInfo\n+\n+\n class FoodItemForm(ModelForm):\n     class Meta:\n         model = FoodItem\n         fields = \"__all__\"\n"
+                },
+                {
+                    "date": 1763201413502,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,12 @@\n from django.forms import ModelForm\n \n-from  . models import FoodItem , FoodInfo\n+from  . models import FoodItem \n \n \n class FoodItemForm(ModelForm):\n     class Meta:\n         model = FoodItem\n         fields = \"__all__\"\n-class FoodInfoForm(ModelForm):\n     class Meta:\n         model = FoodInfo\n         fields = \"__all__\"\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763201423260,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,10 @@\n from django.forms import ModelForm\n \n-from  . models import FoodItem \n+from  . models import FoodItem , FoodInfo\n \n \n class FoodItemForm(ModelForm):\n     class Meta:\n         model = FoodItem\n         fields = \"__all__\"\n-    class Meta:\n-        model = FoodInfo\n\\ No newline at end of file\n-        fields = \"__all__\"\n+   \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763201446734,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.forms import ModelForm\n \n-from  . models import FoodItem , FoodInfo\n+from  . models import FoodItem \n \n \n class FoodItemForm(ModelForm):\n     class Meta:\n"
                 }
             ],
             "date": 1763135757322,

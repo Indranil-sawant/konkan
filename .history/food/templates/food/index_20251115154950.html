@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Spots</h1>
+
+    <div class="row g-4">
+        {% for item in context %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                {% if item.photo %}
+                    <img src="{{ item.photo.url }}" class="card-img-top" alt="{{ item.name }}">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text text-muted">
+                        {{ item.food_info.description}}
+                    </p>
+
+                    <a href="{% url 'details' item.id %}" class="btn btn-primary btn-sm">
+                        View Details
+                    </a>
+                      <a href="{% url 'update_food' item.id %}" class="btn btn-secondary btn-sm">
+                        Edit
+                    </a>
+                    <a href="{% url 'delete_food' item.id %}" class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock content %}
