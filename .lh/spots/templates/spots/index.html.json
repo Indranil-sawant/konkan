@@ -1,0 +1,38 @@
+{
+    "sourceFile": "spots/templates/spots/index.html",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1763221384626,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763221392206,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Best Foods in Konkan</h1>\n \n     <div class=\"row g-4\">\n-        {% for item in  %}\n+        {% for item in spots %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n                     <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\" style=\"height:200px; object-fit:cover;\">\n"
+                },
+                {
+                    "date": 1763222936482,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,18 +24,18 @@\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n \n-                    <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n+                    <a href=\"{% url 'detail' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n-                      <a href=\"{% url 'update_food' item.id %}\" class=\"btn btn-secondary btn-sm\">\n+                      <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-secondary btn-sm\">\n                         Edit\n                     </a>\n-                    <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n+                    <a href=\"{% url 'delete_spot' item.id %}\" class=\"btn btn-danger btn-sm\">\n                         Delete\n                     </a>\n-                     <a href=\"{{ item.recipe_link }}\" class=\"btn btn-info btn-sm\" target=\"_blank\">\n+                     <a href=\"{{ item.map_location }}\" class=\"btn btn-info btn-sm\" target=\"_blank\">\n                         Recipe\n                     </a>\n                 </div>\n             </div>\n"
+                },
+                {
+                    "date": 1763222960255,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n \n-                    <a href=\"{% url 'detail' item.id %}\" class=\"btn btn-primary btn-sm\">\n+                    <a href=\"{% url 'Details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n                       <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-secondary btn-sm\">\n                         Edit\n"
+                },
+                {
+                    "date": 1763222965816,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n \n-                    <a href=\"{% url 'Details' item.id %}\" class=\"btn btn-primary btn-sm\">\n+                    <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n                       <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-secondary btn-sm\">\n                         Edit\n"
+                },
+                {
+                    "date": 1763222980921,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n \n-                    <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n+                    <a href=\"{% url 'details_spots' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n                       <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-secondary btn-sm\">\n                         Edit\n"
+                }
+            ],
+            "date": 1763221384626,
+            "name": "Commit-0",
+            "content": "{% extends \"base.html\" %}\n{% load static %}\n\n{% block content %}\n<div class=\"container py-4\">\n    <h1 class=\"mb-4\">Best Foods in Konkan</h1>\n\n    <div class=\"row g-4\">\n        {% for item in  %}\n        <div class=\"col-12 col-md-6 col-lg-4\">\n            <div class=\"card shadow-sm h-100\">\n                {% if item.photo %}\n                    <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\" style=\"height:200px; object-fit:cover;\">\n                {% endif %}\n\n                <div class=\"card-body\">\n                    <h3 class=\"card-title\">{{ item.name }}</h3>\n                    <p class=\"card-text text-muted\">\n                        {{ item.description}}\n                    </p>\n                      <p class=\"card-text text-muted\">\n                        {{ item.rating}} ⭐\n                    </p>\n                    <p class=\"card-text text-muted\">\n                    Price - {{ item.price}}\n                   </p>\n\n                    <a href=\"{% url 'details' item.id %}\" class=\"btn btn-primary btn-sm\">\n                        View Details\n                    </a>\n                      <a href=\"{% url 'update_food' item.id %}\" class=\"btn btn-secondary btn-sm\">\n                        Edit\n                    </a>\n                    <a href=\"{% url 'delete_food' item.id %}\" class=\"btn btn-danger btn-sm\">\n                        Delete\n                    </a>\n                     <a href=\"{{ item.recipe_link }}\" class=\"btn btn-info btn-sm\" target=\"_blank\">\n                        Recipe\n                    </a>\n                </div>\n            </div>\n        </div>\n        {% endfor %}\n    </div>\n\n</div>\n{% endblock content %}\n"
+        }
+    ]
+}

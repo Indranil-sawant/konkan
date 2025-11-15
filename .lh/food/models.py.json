@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 62,
+            "activePatchIndex": 63,
             "patches": [
                 {
                     "date": 1763036604540,
@@ -256,6 +256,10 @@
                 {
                     "date": 1763206261637,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n from django.db import models\n \n # Create your models here.\n class Category(models.Model):\n-    name = models.OneToOneField('FoodItem',max_length=100)\n+    name = models.CharField(max_length=100)\n \n     def __str__(self):\n         return self.name\n \n"
+                },
+                {
+                    "date": 1763216539570,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n \n     # Display Info\n     price = models.FloatField()\n     rating = models.FloatField(default=0.0)\n-    photo = models.ImageField(upload_to='food_photos/', null=True, blank=True)\n+    photo = models.ImageField(null=True, blank=True , default='default_food.jpg')\n \n     # FoodInfo (now merged)\n     description = models.TextField(blank=True, null=True)\n     ingredients = models.TextField(blank=True, null=True)\n"
                 }
             ],
             "date": 1763036604540,

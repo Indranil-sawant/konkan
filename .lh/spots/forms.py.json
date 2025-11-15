@@ -1,0 +1,18 @@
+{
+    "sourceFile": "spots/forms.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1763220843966,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1763220843966,
+            "name": "Commit-0",
+            "content": "from django.forms import ModelForm\n\nfrom  . models import Spots\n\n\nclass SpotsForm(ModelForm):\n    class Meta:\n        model = Spots\n        fields = \"__all__\"\n   "
+        }
+    ]
+}

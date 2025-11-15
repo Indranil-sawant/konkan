@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 32,
+            "activePatchIndex": 33,
             "patches": [
                 {
                     "date": 1763033135445,
@@ -136,6 +136,10 @@
                 {
                     "date": 1763213335154,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,16 +77,4 @@\n     </body>\n </html>\n \n \n-\n-<style>\n-    :root {\n-        --yellow-dark: #FF9B00;\n-        --yellow-main: #FFC900;\n-        --yellow-light: #FFE100;\n-        --bg-light: #EBE389;\n-    }\n-    body {\n-        background: var(--bg-light);\n-    }\n-</style>\n"
+                },
+                {
+                    "date": 1763217185141,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     <div class=\"row g-4 mb-4\">\n         <div class=\"col-12 col-lg-6\">\n             <div class=\"rounded shadow-sm overflow-hidden\">\n                 {% if spot3.image %}\n-                    <img src=\"{{ spot3.image.url }}\" class=\"img-fluid w-100\" style=\"height:350px; object-fit:cover;\">\n+                    <img src=\"{{ food_items.image.url }}\" class=\"img-fluid w-100\" style=\"height:350px; object-fit:cover;\">\n                 {% else %}\n                     <img src=\"https://via.placeholder.com/600x350\" class=\"img-fluid w-100\">\n                 {% endif %}\n             </div>\n"
                 }
             ],
             "date": 1763033135445,

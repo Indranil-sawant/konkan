@@ -1,0 +1,26 @@
+{
+    "sourceFile": "spots/admin.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1763221845656,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763221932732,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,7 @@\n from django.contrib import admin\n from .models import Spots\n # Register your models here.\n \n-admin.site.register(Spots)\n\\ No newline at end of file\n+admin.site.register(Spots)\n+\n+admin.site.register(Category)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763221950303,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.contrib import admin\n-from .models import Spots\n+from .models import Spots , Category\n # Register your models here.\n \n admin.site.register(Spots)\n \n"
+                }
+            ],
+            "date": 1763221845656,
+            "name": "Commit-0",
+            "content": "from django.contrib import admin\nfrom .models import Spots\n# Register your models here.\n\nadmin.site.register(Spots)"
+        }
+    ]
+}

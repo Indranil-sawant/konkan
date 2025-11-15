@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 11,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1762923096841,
@@ -52,6 +52,38 @@
                 {
                     "date": 1763213812930,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,6 +19,5 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n-    path('good_foods/', include('good_foods.urls')),\n ]\n"
+                },
+                {
+                    "date": 1763217035122,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))\n \"\"\"\n from django.contrib import admin\n from django.urls import path , include\n+from django.conf import settings\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n"
+                },
+                {
+                    "date": 1763217046103,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,9 @@\n \"\"\"\n from django.contrib import admin\n from django.urls import path , include\n from django.conf import settings\n+from django.conf.urls.static import static\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n"
+                },
+                {
+                    "date": 1763217070997,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,5 +21,5 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n-]\n+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n"
+                },
+                {
+                    "date": 1763220538388,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,5 +21,6 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n+    path('spots/', include('spots.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n"
+                },
+                {
+                    "date": 1763220551560,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,6 +21,6 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n-    path('spots/', include('spots.urls')),\n+    path('', include('spots.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n"
+                },
+                {
+                    "date": 1763220638293,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,4 +23,7 @@\n     path('admin/', admin.site.urls),\n     path('', include('food.urls')),\n     path('', include('spots.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n+\n+\n+\n"
+                },
+                {
+                    "date": 1763222285127,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,10 +20,10 @@\n from django.conf.urls.static import static\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n-    path('', include('food.urls')),\n-    path('', include('spots.urls')),\n+    path('food/', include('food.urls')),\n+    path('spots/', include('spots.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n \n \n"
+                },
+                {
+                    "date": 1763222669009,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,8 +22,9 @@\n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('food/', include('food.urls')),\n     path('spots/', include('spots.urls')),\n+    path('', include('food.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n \n \n"
                 }
             ],
             "date": 1762923096841,

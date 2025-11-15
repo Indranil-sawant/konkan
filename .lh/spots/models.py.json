@@ -1,0 +1,26 @@
+{
+    "sourceFile": "spots/models.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1763220451685,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763220458868,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n     def __str__(self):\n         return self.name\n \n \n-class FoodItem(models.Model):\n+class Spots(models.Model):\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n \n     # Main Info\n     name = models.CharField(max_length=100)\n"
+                },
+                {
+                    "date": 1763220511780,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,18 +24,16 @@\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n \n     # Display Info\n-    price = models.FloatField()\n+    distance = models.FloatField()\n     rating = models.FloatField(default=0.0)\n     photo = models.ImageField(null=True, blank=True , default='default_food.jpg')\n \n     # FoodInfo (now merged)\n     description = models.TextField(blank=True, null=True)\n     ingredients = models.TextField(blank=True, null=True)\n-    recipe_link = models.URLField(blank=True, null=True)\n-    calories = models.IntegerField(blank=True, null=True)\n-    best_time_to_eat = models.CharField(max_length=100, blank=True, null=True)\n+    map_link = models.URLField(blank=True, null=True)\n \n     # System fields\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n"
+                }
+            ],
+            "date": 1763220451685,
+            "name": "Commit-0",
+            "content": "import uuid\nfrom django.db import models\n\n# Create your models here.\nclass Category(models.Model):\n    name = models.CharField(max_length=100)\n\n    def __str__(self):\n        return self.name\n\n\nclass Tag(models.Model):  # ex: spicy, sweet, veg, non-veg\n    name = models.CharField(max_length=50)\n\n    def __str__(self):\n        return self.name\n\n\nclass FoodItem(models.Model):\n    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n\n    # Main Info\n    name = models.CharField(max_length=100)\n    category = models.ForeignKey(Category, on_delete=models.CASCADE)\n    tags = models.ManyToManyField(Tag, blank=True)\n\n    # Display Info\n    price = models.FloatField()\n    rating = models.FloatField(default=0.0)\n    photo = models.ImageField(null=True, blank=True , default='default_food.jpg')\n\n    # FoodInfo (now merged)\n    description = models.TextField(blank=True, null=True)\n    ingredients = models.TextField(blank=True, null=True)\n    recipe_link = models.URLField(blank=True, null=True)\n    calories = models.IntegerField(blank=True, null=True)\n    best_time_to_eat = models.CharField(max_length=100, blank=True, null=True)\n\n    # System fields\n    created_at = models.DateTimeField(auto_now_add=True)\n    updated_at = models.DateTimeField(auto_now=True)\n\n    def __str__(self):\n        return self.name\n\n\n"
+        }
+    ]
+}

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 91,
+            "activePatchIndex": 92,
             "patches": [
                 {
                     "date": 1763018149724,
@@ -372,6 +372,10 @@
                 {
                     "date": 1763213760672,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n {% extends \"base.html\" %}\n+{% load static %}\n \n-\n {% block content %}\n <div class=\"container py-4\">\n     <h1 class=\"mb-4\">Best Foods in Konkan</h1>\n \n"
+                },
+                {
+                    "date": 1763217416359,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n         {% for item in food_items %}\n         <div class=\"col-12 col-md-6 col-lg-4\">\n             <div class=\"card shadow-sm h-100\">\n                 {% if item.photo %}\n-                    <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\">\n+                    <img src=\"{{ item.photo.url }}\" class=\"card-img-top\" alt=\"{{ item.name }}\" style=\"height:200px; object-fit:cover;\">\n                 {% endif %}\n \n                 <div class=\"card-body\">\n                     <h3 class=\"card-title\">{{ item.name }}</h3>\n"
                 }
             ],
             "date": 1763018149724,
