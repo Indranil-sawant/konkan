@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1763213213743,
@@ -16,6 +16,14 @@
                 {
                     "date": 1763213324925,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,13 +14,13 @@\n .nav-link.active {\n   color: #000000ff;\n }\n \n-    :root {\n+:root {\n         --yellow-dark: #FF9B00;\n         --yellow-main: #FFC900;\n         --yellow-light: #FFE100;\n         --bg-light: #EBE389;\n-    }\n-    body {\n+}\n\\ No newline at end of file\n+body {\n         background: var(--bg-light);\n-    }\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763270620417,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n :root {\n         --yellow-dark: #FF9B00;\n         --yellow-main: #FFC900;\n         --yellow-light: #FFE100;\n-        --bg-light: #EBE389;\n+        --bg-light: #f1f0dbff;\n }\n body {\n         background: var(--bg-light);\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763274239917,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,5 +22,22 @@\n         --bg-light: #f1f0dbff;\n }\n body {\n         background: var(--bg-light);\n+}\n+\n+    form input, \n+form select, \n+form textarea {\n+    width: 100%;\n+    padding: 10px;\n+    border: 1px solid #ddd;\n+    border-radius: 8px;\n+    background: #fff;\n+}\n+\n+form input:focus,\n+form select:focus,\n+form textarea:focus {\n+    border-color: #FFC900;\n+    box-shadow: 0 0 5px rgba(255, 201, 0, 0.5);\n }\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763213213743,

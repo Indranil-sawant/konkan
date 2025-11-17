@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Best Spots in Ratnagiri</h1>
+
+    <div class="row g-4">
+        {% for item in spots %}
+       <div class="carousel" mask>
+	<article>
+		<img src="{{ item.photo.url }}" alt="">
+		<h2>{{ item.name }}</h2>
+		<div>
+			<p>{{ item.description }}</p>
+
+			<a href="{% url 'details_spots' item.id %}">Read more</a>
+		</div>
+	</article>
+
+	
+</div>
+
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+<div class="carousel" mask>
+	<article>
+		<img src="{{ item.photo.url }}" alt="">
+		<h2>{{ item.name }}</h2>
+		<div>
+			<p>{{ item.description }}</p>
+
+			<a href="{% url 'details_spots' item.id %}">Read more</a>
+		</div>
+	</article>
+
+	
+</div>
+
+
+<style>
+
+
+</style>

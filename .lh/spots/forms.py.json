@@ -3,11 +3,31 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1763220843966,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763276338921,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,5 +6,8 @@\n class SpotsForm(ModelForm):\n     class Meta:\n         model = Spots\n         fields = \"__all__\"\n-   \n\\ No newline at end of file\n+    def __init__(self, *args, **kwargs):\n+        super().__init__(*args, **kwargs)\n+        for name, field in self.fields.items():\n+            field.widget.attrs.update({'class': 'form-control'})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763276463238,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,5 +9,5 @@\n         fields = \"__all__\"\n     def __init__(self, *args, **kwargs):\n         super().__init__(*args, **kwargs)\n         for name, field in self.fields.items():\n-            field.widget.attrs.update({'class': 'form-control'})\n\\ No newline at end of file\n+            field.widget.attrs.update({'class': 'input'})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763276500719,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,8 +6,9 @@\n class SpotsForm(ModelForm):\n     class Meta:\n         model = Spots\n         fields = \"__all__\"\n+        \n     def __init__(self, *args, **kwargs):\n         super().__init__(*args, **kwargs)\n         for name, field in self.fields.items():\n\\ No newline at end of file\n-            field.widget.attrs.update({'class': 'input'})\n+            field.widget.attrs.update({'class': 'form-control'})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763276523834,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,7 +8,6 @@\n         model = Spots\n         fields = \"__all__\"\n         \n     def __init__(self, *args, **kwargs):\n-        super().__init__(*args, **kwargs)\n         for name, field in self.fields.items():\n             field.widget.attrs.update({'class': 'form-control'})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763276535962,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,6 +8,7 @@\n         model = Spots\n         fields = \"__all__\"\n         \n     def __init__(self, *args, **kwargs):\n+        super().__init__(*args, **kwargs)\n         for name, field in self.fields.items():\n\\ No newline at end of file\n-            field.widget.attrs.update({'class': 'form-control'})\n+            field.widget.attrs.update({'class': 'form'})\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763220843966,

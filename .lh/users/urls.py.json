@@ -1,0 +1,26 @@
+{
+    "sourceFile": "users/urls.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1763397790400,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763397808181,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,5 @@\n+from django.urls import path\n+from . import views\n+urlpatterns = [\n+    path('', views.spots_home, name='home_spots'),\n+]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763397977845,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.spots_home, name='home_spots'),\n+    path('', views.spots_home, name='home_users'),\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1763397790400,
+            "name": "Commit-0",
+            "content": ""
+        }
+    ]
+}

@@ -3,11 +3,27 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1763221521556,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763276839319,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,9 +44,9 @@\n </div>\n \n {% endblock content %}\n \n-\n+ \n <style>\n     form input, \n form select, \n form textarea {\n"
+                },
+                {
+                    "date": 1763276848638,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,21 +46,6 @@\n {% endblock content %}\n \n  \n <style>\n-    form input, \n-form select, \n-form textarea {\n-    width: 100%;\n-    padding: 10px;\n-    border: 1px solid #ddd;\n-    border-radius: 8px;\n-    background: #fff;\n-}\n \n-form input:focus,\n-form select:focus,\n-form textarea:focus {\n-    border-color: #FFC900;\n-    box-shadow: 0 0 5px rgba(255, 201, 0, 0.5);\n-}\n </style>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763285443274,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,51 @@\n+{% extends \"base.html\" %}\n+\n+{% block content %}\n+\n+<h2 class=\"text-center my-4 fw-bold\">Add / Edit Food Item</h2>\n+\n+<div class=\"container\">\n+    <div class=\"row justify-content-center\">\n+        <div class=\"col-12 col-md-8 col-lg-6\">\n+\n+            <div class=\"card shadow-sm border-0\">\n+                <div class=\"card-body p-4\">\n+\n+                    <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\n+                        {% csrf_token %}\n+\n+                        {% for field in spots_form %}\n+                            <div class=\"mb-3\">\n+                                <label class=\"form-label fw-semibold\">{{ field.label }}</label>\n+\n+                                {{ field }}\n+\n+                                {% if field.errors %}\n+                                    <div class=\"text-danger small\">\n+                                        {{ field.errors }}\n+                                    </div>\n+                                {% endif %}\n+                            </div>\n+                        {% endfor %}\n+\n+                        <div class=\"d-grid\">\n+                            <button type=\"submit\" class=\"btn btn-warning fw-bold py-2\">\n+                                Save Food Item\n+                            </button>\n+                        </div>\n+\n+                    </form>\n+\n+                </div>\n+            </div>\n+\n+        </div>\n+    </div>\n+</div>\n+\n+{% endblock content %}\n+\n+ \n+<style>\n+\n+</style>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763285501966,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,56 +47,5 @@\n \n  \n <style>\n \n-</style>\n-{% extends \"base.html\" %}\n-\n-{% block content %}\n-\n-<h2 class=\"text-center my-4 fw-bold\">Add / Edit Food Item</h2>\n-\n-<div class=\"container\">\n-    <div class=\"row justify-content-center\">\n-        <div class=\"col-12 col-md-8 col-lg-6\">\n-\n-            <div class=\"card shadow-sm border-0\">\n-                <div class=\"card-body p-4\">\n-\n-                    <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\n-                        {% csrf_token %}\n-\n-                        {% for field in spots_form %}\n-                            <div class=\"mb-3\">\n-                                <label class=\"form-label fw-semibold\">{{ field.label }}</label>\n-\n-                                {{ field }}\n-\n-                                {% if field.errors %}\n-                                    <div class=\"text-danger small\">\n-                                        {{ field.errors }}\n-                                    </div>\n-                                {% endif %}\n-                            </div>\n-                        {% endfor %}\n-\n-                        <div class=\"d-grid\">\n-                            <button type=\"submit\" class=\"btn btn-warning fw-bold py-2\">\n-                                Save Food Item\n-                            </button>\n-                        </div>\n-\n-                    </form>\n-\n-                </div>\n-            </div>\n-\n-        </div>\n-    </div>\n-</div>\n-\n-{% endblock content %}\n-\n- \n-<style>\n-\n </style>\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763221521556,

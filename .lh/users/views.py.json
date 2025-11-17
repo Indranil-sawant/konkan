@@ -1,0 +1,18 @@
+{
+    "sourceFile": "users/views.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1763397838214,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1763397838214,
+            "name": "Commit-0",
+            "content": "from django.shortcuts import render\n\n# Create your views here.\n\ndef users(request):\n    return render(request, 'users/users.html')"
+        }
+    ]
+}

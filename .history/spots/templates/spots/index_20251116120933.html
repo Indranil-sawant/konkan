@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Best Spots in Ratnagiri</h1>
+
+    <div class="row g-4">
+        {% for item in spots %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                {% if item.photo %}
+                    <img src="{{ item.photo.url }}" class="card-img-top" alt="{{ item.name }}" style="height:200px; object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body">
+                    <h3 class="card-title">{{ item.name }}</h3>
+                    <p class="card-text text-muted">
+                        {{ item.description}}
+                    </p>
+                      <p class="card-text text-muted">
+                        {{ item.rating}} ⭐
+                    </p>
+                    <p class="card-text text-muted">
+                    Price - {{ item.price}}
+                   </p>
+
+                    <a href="{% url 'details_spots' item.id %}" class="btn btn-primary btn-sm">
+                        View Details
+                    </a>
+                      <a href="{% url 'update_spot' item.id %}" class="btn btn-secondary btn-sm">
+                        Edit
+                    </a>
+                    <a href="{% url 'delete_spot' item.id %}" class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+                     <a href="{{ item.map_link }}" class="btn btn-info btn-sm" target="_blank">
+                        Map link
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+<div class="carousel" mask>
+	<article>
+		<img src="{{ item.photo.url }}" alt="">
+		<h2>The Cross</h2>
+		<div>
+			<p>The Cross is a central symbol of Easter, representing the crucifixion of Jesus Christ and his sacrifice for humanity. It serves as a reminder of suffering, love, and redemption, and is often displayed during Holy Week and Easter Sunday to honor the foundation of Christian faith.</p>
+
+			<a href="#">Read more</a>
+		</div>
+	</article>
+
+	
+</div>

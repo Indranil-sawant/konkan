@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 21,
+            "activePatchIndex": 23,
             "patches": [
                 {
                     "date": 1762925594093,
@@ -92,6 +92,14 @@
                 {
                     "date": 1763221658627,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,8 +25,11 @@\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n+          <a class=\"nav-link active\" href=\"{% url 'home_spots' %}\">Spots</a>\n+        </li>\n+        <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'create_food' %}\">Create Food</a>\n         </li>\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'create_spot' %}\">Create Spot</a>\n"
+                },
+                {
+                    "date": 1763397931638,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,11 @@\n \n     <!-- Nav links -->\n     <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarNav\">\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n-        <li class=\"nav-item\">\n+           <li class=\"nav-item\">\n+          <a class=\"nav-link active\" href=\"{% url 'home_spots' %}\">Users</a>\n+        </li>\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n           <a class=\"nav-link active\" href=\"{% url 'home_spots' %}\">Spots</a>\n"
+                },
+                {
+                    "date": 1763398057481,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n     <!-- Nav links -->\n     <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarNav\">\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n            <li class=\"nav-item\">\n-          <a class=\"nav-link active\" href=\"{% url 'home_spots' %}\">Users</a>\n+          <a class=\"nav-link active\" href=\"{% url 'home_users' %}\">Users</a>\n         </li>\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n"
                 }
             ],
             "date": 1762925594093,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 63,
+            "activePatchIndex": 71,
             "patches": [
                 {
                     "date": 1763036604540,
@@ -260,6 +260,38 @@
                 {
                     "date": 1763216539570,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n \n     # Display Info\n     price = models.FloatField()\n     rating = models.FloatField(default=0.0)\n-    photo = models.ImageField(upload_to='food_photos/', null=True, blank=True)\n+    photo = models.ImageField(null=True, blank=True , default='default_food.jpg')\n \n     # FoodInfo (now merged)\n     description = models.TextField(blank=True, null=True)\n     ingredients = models.TextField(blank=True, null=True)\n"
+                },
+                {
+                    "date": 1763399411014,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,8 @@\n     # Main Info\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n-\n     # Display Info\n     price = models.FloatField()\n     rating = models.FloatField(default=0.0)\n     photo = models.ImageField(null=True, blank=True , default='default_food.jpg')\n"
+                },
+                {
+                    "date": 1763399712562,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,7 +39,7 @@\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n \n     def __str__(self):\n-        return self.name\n+        return self.name , self.created_at \n \n \n"
+                },
+                {
+                    "date": 1763399827027,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,7 +39,8 @@\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n \n     def __str__(self):\n-        return self.name , self.created_at \n+        return self.name \n+    def __str__(self):\n+        return self.created_at\n \n-\n"
+                },
+                {
+                    "date": 1763399854129,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,6 +41,6 @@\n \n     def __str__(self):\n         return self.name \n     def __str__(self):\n-        return self.created_at\n+        return str(self.created_at)\n \n"
+                },
+                {
+                    "date": 1763399869988,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,8 +39,6 @@\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n \n     def __str__(self):\n-        return self.name \n-    def __str__(self):\n-        return str(self.created_at)\n+        return self.name , self.created_at\n \n"
+                },
+                {
+                    "date": 1763399911880,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,6 +39,8 @@\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n \n     def __str__(self):\n-        return self.name , self.created_at\n+        return str(self.name, self.created_at \n+    \n+    \n \n"
+                },
+                {
+                    "date": 1763399926418,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,8 +39,8 @@\n     created_at = models.DateTimeField(auto_now_add=True)\n     updated_at = models.DateTimeField(auto_now=True)\n \n     def __str__(self):\n-        return str(self.name, self.created_at \n+        return self.name\n     \n     \n \n"
+                },
+                {
+                    "date": 1763400073220,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,7 +40,8 @@\n     updated_at = models.DateTimeField(auto_now=True)\n \n     def __str__(self):\n         return self.name\n+\n     \n     \n \n"
                 }
             ],
             "date": 1763036604540,
