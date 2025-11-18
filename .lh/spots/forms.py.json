@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 6,
             "patches": [
                 {
                     "date": 1763220843966,
@@ -28,6 +28,10 @@
                 {
                     "date": 1763276535962,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,6 +8,7 @@\n         model = Spots\n         fields = \"__all__\"\n         \n     def __init__(self, *args, **kwargs):\n+        super().__init__(*args, **kwargs)\n         for name, field in self.fields.items():\n\\ No newline at end of file\n-            field.widget.attrs.update({'class': 'form-control'})\n+            field.widget.attrs.update({'class': 'form'})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763475870999,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,5 +10,5 @@\n         \n     def __init__(self, *args, **kwargs):\n         super().__init__(*args, **kwargs)\n         for name, field in self.fields.items():\n-            field.widget.attrs.update({'class': 'form'})\n\\ No newline at end of file\n+            field.widget.attrs.update({'class': 'form-control'})\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763220843966,

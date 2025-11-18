@@ -3,11 +3,71 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 15,
             "patches": [
                 {
                     "date": 1763397838214,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763462736904,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,8 @@\n from django.shortcuts import render\n \n+from . models import Profile\n # Create your views here.\n \n def users(request):\n\\ No newline at end of file\n-    return render(request, 'users/users.html')\n+    return render(request, 'users/users.html')\n+\n"
+                },
+                {
+                    "date": 1763462768652,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,6 @@\n from . models import Profile\n # Create your views here.\n \n def users(request):\n-    return render(request, 'users/users.html')\n+    profile = Profile.objects.all() \n+    return render(request, 'users/users.html',{'profiles':profile})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763462994543,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,5 @@\n # Create your views here.\n \n def users(request):\n     profile = Profile.objects.all() \n-    return render(request, 'users/users.html',{'profiles':profile})\n\\ No newline at end of file\n+    return render(request, 'users/users.html',{'profile':profile})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763463180975,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,6 +3,6 @@\n from . models import Profile\n # Create your views here.\n \n def users(request):\n-    profile = Profile.objects.all() \n-    return render(request, 'users/users.html',{'profile':profile})\n\\ No newline at end of file\n+    profiles = Profile.objects.all() \n+    return render(request, 'users/users.html',{'profiles':profiles})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763472901606,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,5 +4,9 @@\n # Create your views here.\n \n def users(request):\n     profiles = Profile.objects.all() \n-    return render(request, 'users/users.html',{'profiles':profiles})\n\\ No newline at end of file\n+    return render(request, 'users/users.html',{'profiles':profiles})\n+\n+\n+def create_user(request , pk):\n+    pro = Profile.object.get(id=pk)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763472927155,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,5 +8,6 @@\n     return render(request, 'users/users.html',{'profiles':profiles})\n \n \n def create_user(request , pk):\n-    pro = Profile.object.get(id=pk)\n\\ No newline at end of file\n+    pro = Profile.object.get(id=pk)\n+    \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763473078778,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,7 +7,12 @@\n     profiles = Profile.objects.all() \n     return render(request, 'users/users.html',{'profiles':profiles})\n \n \n-def create_user(request , pk):\n-    pro = Profile.object.get(id=pk)\n-    \n\\ No newline at end of file\n+def create_users(request):\n+    spots_form = SpotsForm()\n+    if request.method == 'POST':\n+        spots_form = SpotsForm(request.POST , request.FILES)\n+        if spots_form.is_valid():\n+            spots_form.save()\n+            return redirect('home_spots')\n+    return render(request, 'spots/spot_form.html', {\"spots_form\":spots_form})\n"
+                },
+                {
+                    "date": 1763473261821,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,18 +1,20 @@\n-from django.shortcuts import render\n+from django.shortcuts import render, redirect\n \n-from . models import Profile\n+from . models import Profile \n+\n+from . forms import Profileform\n # Create your views here.\n \n def users(request):\n     profiles = Profile.objects.all() \n     return render(request, 'users/users.html',{'profiles':profiles})\n \n \n def create_users(request):\n-    spots_form = SpotsForm()\n+    spots_form = Profileform()\n     if request.method == 'POST':\n-        spots_form = SpotsForm(request.POST , request.FILES)\n+        spots_form = Profileform(request.POST , request.FILES)\n         if spots_form.is_valid():\n             spots_form.save()\n-            return redirect('home_spots')\n-    return render(request, 'spots/spot_form.html', {\"spots_form\":spots_form})\n+            return redirect('home/')\n+    return render(request, 'users/users.html', {\"spots_form\":spots_form})\n"
+                },
+                {
+                    "date": 1763473363453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,5 +16,5 @@\n         spots_form = Profileform(request.POST , request.FILES)\n         if spots_form.is_valid():\n             spots_form.save()\n             return redirect('home/')\n-    return render(request, 'users/users.html', {\"spots_form\":spots_form})\n+    return render(request, 'users/users.html', {\"spot_form\":spots_form})\n"
+                },
+                {
+                    "date": 1763473414458,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,11 +10,11 @@\n     return render(request, 'users/users.html',{'profiles':profiles})\n \n \n def create_users(request):\n-    spots_form = Profileform()\n+    users_form = Profileform()\n     if request.method == 'POST':\n-        spots_form = Profileform(request.POST , request.FILES)\n-        if spots_form.is_valid():\n-            spots_form.save()\n+        users_form= Profileform(request.POST , request.FILES)\n+        if users_form.is_valid():\n+            users_form.save()\n             return redirect('home/')\n-    return render(request, 'users/users.html', {\"spot_form\":spots_form})\n+    return render(request, 'users/users.html', {\"users_form\":users_form})\n"
+                },
+                {
+                    "date": 1763475762248,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,6 +15,6 @@\n     if request.method == 'POST':\n         users_form= Profileform(request.POST , request.FILES)\n         if users_form.is_valid():\n             users_form.save()\n-            return redirect('home/')\n+            return redirect('home')\n     return render(request, 'users/users.html', {\"users_form\":users_form})\n"
+                },
+                {
+                    "date": 1763475928801,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,9 @@\n     return render(request, 'users/users.html',{'profiles':profiles})\n \n \n def create_users(request):\n-    users_form = Profileform()\n+    users_form = Profileform()  \n     if request.method == 'POST':\n         users_form= Profileform(request.POST , request.FILES)\n         if users_form.is_valid():\n             users_form.save()\n"
+                },
+                {
+                    "date": 1763476034517,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,5 +16,5 @@\n         users_form= Profileform(request.POST , request.FILES)\n         if users_form.is_valid():\n             users_form.save()\n             return redirect('home')\n-    return render(request, 'users/users.html', {\"users_form\":users_form})\n+    return render(request, 'users/users_form.html', {\"users_form\":users_form})\n"
+                },
+                {
+                    "date": 1763478017351,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,4 +17,7 @@\n         if users_form.is_valid():\n             users_form.save()\n             return redirect('home')\n     return render(request, 'users/users_form.html', {\"users_form\":users_form})\n+\n+def user_page(request , pk):\n+    return render(request, 'users/user_profile.html')\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763478200680,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,5 +19,6 @@\n             return redirect('home')\n     return render(request, 'users/users_form.html', {\"users_form\":users_form})\n \n def user_page(request , pk):\n-    return render(request, 'users/user_profile.html')\n\\ No newline at end of file\n+    profile = Profile.objects.get(id=pk)\n+    return render(request, 'users/user_profile.html',{'profile':profile})\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763397838214,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 8,
             "patches": [
                 {
                     "date": 1763220451685,
@@ -24,6 +24,22 @@
                 {
                     "date": 1763274175223,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n class Spots(models.Model):\n     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)\n \n     # Main Info\n-    name = models.CharField(max_length=100).capitalize()\n+    name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n \n     # Display Info\n"
+                },
+                {
+                    "date": 1763464270042,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import uuid\n from django.db import models\n-\n+from users.models import Profiles\n # Create your models here.\n class Category(models.Model):\n     name = models.CharField(max_length=100)\n \n@@ -22,8 +22,9 @@\n     # Main Info\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n+    uploaded_by = models.ForeignKey()\n \n     # Display Info\n     distance = models.FloatField()\n     rating = models.FloatField(default=0.0)\n"
+                },
+                {
+                    "date": 1763464313235,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import uuid\n from django.db import models\n-from users.models import Profiles\n+from users.models import Profile\n # Create your models here.\n class Category(models.Model):\n     name = models.CharField(max_length=100)\n \n@@ -22,9 +22,9 @@\n     # Main Info\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n-    uploaded_by = models.ForeignKey()\n+    uploaded_by = models.ForeignKey(Profile , null=True, blank=True)\n \n     # Display Info\n     distance = models.FloatField()\n     rating = models.FloatField(default=0.0)\n"
+                },
+                {
+                    "date": 1763464882167,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n     # Main Info\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n-    uploaded_by = models.ForeignKey(Profile , null=True, blank=True)\n+    uploaded_by = models.ForeignKey(Profile , null=True, blank=True , on_delete=)\n \n     # Display Info\n     distance = models.FloatField()\n     rating = models.FloatField(default=0.0)\n"
+                },
+                {
+                    "date": 1763464889875,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n     # Main Info\n     name = models.CharField(max_length=100)\n     category = models.ForeignKey(Category, on_delete=models.CASCADE)\n     tags = models.ManyToManyField(Tag, blank=True)\n-    uploaded_by = models.ForeignKey(Profile , null=True, blank=True , on_delete=)\n+    uploaded_by = models.ForeignKey(Profile , null=True, blank=True , on_delete=models.SET_NULL)\n \n     # Display Info\n     distance = models.FloatField()\n     rating = models.FloatField(default=0.0)\n"
                 }
             ],
             "date": 1763220451685,

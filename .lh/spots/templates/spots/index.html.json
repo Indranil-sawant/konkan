@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 17,
+            "activePatchIndex": 21,
             "patches": [
                 {
                     "date": 1763221384626,
@@ -76,6 +76,22 @@
                 {
                     "date": 1763275552027,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,17 +46,4 @@\n </div>\n {% endblock content %}\n \n \n-<div class=\"carousel\" mask>\n-\t<article>\n-\t\t<img src=\"{{ item.photo.url }}\" alt=\"\">\n-\t\t<h2>{{ item.name }}</h2>\n-\t\t<div>\n-\t\t\t<p>{{ item.description }}</p>\n-\n-\t\t\t<a href=\"{% url 'details_spots' item.id %}\">Read more</a>\n-\t\t</div>\n-\t</article>\n-\n-\t\n-</div>\n"
+                },
+                {
+                    "date": 1763465055454,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,13 @@\n                     </p>\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n+                     <p class=\"card-text text-muted\">\n+                    Price - {{ item.uploaded_by}}\n+                   </p>\n \n+\n                     <a href=\"{% url 'details_spots' item.id %}\" class=\"btn btn-primary btn-sm\">\n                         View Details\n                     </a>\n                       <a href=\"{% url 'update_spot' item.id %}\" class=\"btn btn-secondary btn-sm\">\n"
+                },
+                {
+                    "date": 1763465259573,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,10 +23,10 @@\n                     </p>\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n-                     <p class=\"card-text text-muted\">\n-                    Price - {{ item.uploaded_by}}\n+                     <p class=\"card-text text-muted btn btn-secondary\">\n+                    Uploaded by - {{ item.uploaded_by}}\n                    </p>\n \n \n                     <a href=\"{% url 'details_spots' item.id %}\" class=\"btn btn-primary btn-sm\">\n"
+                },
+                {
+                    "date": 1763465271497,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n                     </p>\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n-                     <p class=\"card-text text-muted btn btn-secondary\">\n+                     <p class=\"card-text text-mute btn-secondary\">\n                     Uploaded by - {{ item.uploaded_by}}\n                    </p>\n \n \n"
+                },
+                {
+                    "date": 1763465282883,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n                     </p>\n                     <p class=\"card-text text-muted\">\n                     Price - {{ item.price}}\n                    </p>\n-                     <p class=\"card-text text-mute btn-secondary\">\n+                     <p class=\"card-text text-mute \">\n                     Uploaded by - {{ item.uploaded_by}}\n                    </p>\n \n \n"
                 }
             ],
             "date": 1763221384626,

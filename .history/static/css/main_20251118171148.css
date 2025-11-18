@@ -1,0 +1,124 @@
+
+.navbar-brand {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #000000ff;
+}
+
+:root {
+        --yellow-dark: #FF9B00;
+        --yellow-main: #FFC900;
+        --yellow-light: #FFE100;
+        --bg-light: #f1f0dbff;
+}
+body {
+        background: var(--bg-light);
+}
+
+form input, 
+form select, 
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #FFC900;
+    box-shadow: 0 0 5px rgba(255, 201, 0, 0.5);
+}
+
+.users-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 25px;
+    }
+
+    .user-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: 0.3s;
+        text-align: center;
+        padding-bottom: 25px;
+    }
+
+    .user-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 14px rgba(0,0,0,0.15);
+    }
+
+    .user-header {
+        height: 80px;
+        background: linear-gradient(90deg, #007bff, #6f42c1);
+    }
+
+    .user-img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        margin-top: -45px;
+        margin-bottom: 10px;
+    }
+
+    .user-name {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 3px;
+    }
+
+    .user-intro {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .user-bio {
+        color: #555;
+        font-size: 14px;
+        padding: 0 15px;
+        margin-bottom: 10px;
+        height: 45px;
+        overflow: hidden;
+    }
+
+    .social-links a {
+        margin: 0 6px;
+        font-size: 18px;
+        color: #555;
+    }
+
+    .profile-btn {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 6px 14px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: 0.3s;
+    }
+
+    .profile-btn:hover {
+        background: #0056b3;
+    } 

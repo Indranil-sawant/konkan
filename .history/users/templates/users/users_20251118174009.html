@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom:20px;">Users</h2>
+
+<div class="users-container">
+
+    {% for profile in profiles %}
+    <div class="user-card">
+
+        <div class="user-header"></div>
+
+        <img src="{{ profile.profile_image.url }}" alt="" class="user-img">
+
+        <p class="user-name">{{ profile.name }}</p>
+
+        <p class="user-intro">{{ profile.short_intro }}</p>
+
+        <p class="user-bio">{{ profile.bio|truncatechars:100 }}</p>
+
+        <div class="social-links">
+            {% if profile.social_github %}
+            <a href="{{ profile.social_github }}" target="_blank"><i class="fa-brands fa-github"></i></a>
+            {% endif %}
+            {% if profile.social_linkedin %}
+            <a href="{{ profile.social_linkedin }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            {% endif %}
+            {% if profile.social_twitter %}
+            <a href="{{ profile.social_twitter }}" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+            {% endif %}
+            {% if profile.social_website %}
+            <a href="{{ profile.social_website }}" target="_blank"><i class="fa-solid fa-globe"></i></a>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

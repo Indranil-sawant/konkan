@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 17,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1762922608566,
@@ -76,6 +76,14 @@
                 {
                     "date": 1763397856754,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,8 +38,9 @@\n     'django.contrib.messages',\n     'django.contrib.staticfiles',\n     'food.apps.FoodConfig',\n     'spots.apps.SpotsConfig',\n+    'users.apps.UsersConfig',\n ]\n \n MIDDLEWARE = [\n     'django.middleware.security.SecurityMiddleware',\n"
+                },
+                {
+                    "date": 1763467183623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -121,9 +121,9 @@\n STATIC_URL = 'static/'\n \n MEDIA_URL = ''\n \n-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]\n+STATICFILES_DIRS = []\n \n MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')\n \n # Default primary key field type\n"
+                },
+                {
+                    "date": 1763467280557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -117,13 +117,16 @@\n \n # Static files (CSS, JavaScript, Images)\n # https://docs.djangoproject.com/en/5.2/howto/static-files/\n \n-STATIC_URL = 'static/'\n+STATIC_URL = '/static/'\n \n MEDIA_URL = ''\n \n-STATICFILES_DIRS = []\n+STATICFILES_DIRS = [\n+    os.path.join(BASE_DIR, 'static')\n+]\n+]\n \n MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')\n \n # Default primary key field type\n"
                 }
             ],
             "date": 1762922608565,

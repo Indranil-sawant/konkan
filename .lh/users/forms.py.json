@@ -1,0 +1,18 @@
+{
+    "sourceFile": "users/forms.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1763473175995,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1763473175995,
+            "name": "Commit-0",
+            "content": "from django.forms import ModelForm\n\nfrom  . models import Profile\n\n\nclass Profileform(ModelForm):\n    class Meta:\n        model = Profile\n        fields = \"__all__\"\n   "
+        }
+    ]
+}

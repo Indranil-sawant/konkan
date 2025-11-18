@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 33,
+            "activePatchIndex": 34,
             "patches": [
                 {
                     "date": 1762924712958,
@@ -140,6 +140,10 @@
                 {
                     "date": 1763222706569,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.home, name='home'),\n+    path('', views.main, name='main'),\n+    path('home/', views.home, name='home'),\n     path('details/<uuid:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n     path('update_food/<uuid:pk>/', views.update_food, name='update_food'),   \n     path('delete_food/<uuid:pk>/', views.delete_food, name='delete_food'),   \n"
+                },
+                {
+                    "date": 1763401249689,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.main, name='main'),\n     path('home/', views.home, name='home'),\n     path('details/<uuid:pk>/', views.home3, name='details'),\n     path('create_food/', views.create_food, name='create_food'),\n     path('update_food/<uuid:pk>/', views.update_food, name='update_food'),   \n"
                 }
             ],
             "date": 1762924712957,

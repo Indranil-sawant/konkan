@@ -1,0 +1,71 @@
+{% extends "base.html" %}{% load static %}
+<!DOCTYPE html>
+
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto p-6">
+
+    <!-- Profile Card -->
+    <div class="bg-white shadow-md rounded-xl p-6">
+
+        <!-- Profile Image + Name -->
+        <div class="flex items-center gap-6">
+            <img src="{{ profile.profile_image.url }}" 
+                 alt="{{ profile.name }}"
+                 class="w-28 h-28 object-cover rounded-full border">
+
+            <div>
+                <h1 class="text-3xl font-semibold">{{ profile.name }}</h1>
+                <p class="text-gray-600">{{ profile.short_intro }}</p>
+            </div>
+        </div>
+
+        <hr class="my-6">
+
+        <!-- Bio -->
+        <div>
+            <h2 class="text-xl font-semibold mb-2">About</h2>
+            <p class="text-gray-700 leading-relaxed">
+                {{ profile.bio|linebreaks }}
+            </p>
+        </div>
+
+        <hr class="my-6">
+
+        <!-- Details -->
+        <div class="space-y-2 text-gray-800">
+            <p><strong>Email:</strong> {{ profile.email }}</p>
+            <p><strong>Username:</strong> {{ profile.username }}</p>
+        </div>
+
+        <hr class="my-6">
+
+        <!-- Social Links -->
+        <div>
+            <h2 class="text-xl font-semibold mb-3">Social Links</h2>
+
+            <ul class="space-y-2">
+                {% if profile.social_github %}
+                    <li><a href="{{ profile.social_github }}" target="_blank" class="text-blue-600">GitHub</a></li>
+                {% endif %}
+                {% if profile.social_twitter %}
+                    <li><a href="{{ profile.social_twitter }}" target="_blank" class="text-blue-600">Twitter</a></li>
+                {% endif %}
+                {% if profile.social_linkedin %}
+                    <li><a href="{{ profile.social_linkedin }}" target="_blank" class="text-blue-600">LinkedIn</a></li>
+                {% endif %}
+                {% if profile.social_youtube %}
+                    <li><a href="{{ profile.social_youtube }}" target="_blank" class="text-blue-600">YouTube</a></li>
+                {% endif %}
+                {% if profile.social_website %}
+                    <li><a href="{{ profile.social_website }}" target="_blank" class="text-blue-600">Website</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content%}

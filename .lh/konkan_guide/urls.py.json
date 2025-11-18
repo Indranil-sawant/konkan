@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 20,
+            "activePatchIndex": 21,
             "patches": [
                 {
                     "date": 1762923096841,
@@ -88,6 +88,10 @@
                 {
                     "date": 1763397964046,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,9 @@\n     path('admin/', admin.site.urls),\n     path('food/', include('food.urls')),\n     path('spots/', include('spots.urls')),\n     path('', include('food.urls')),\n+    path('users/', include('users.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n \n \n"
+                },
+                {
+                    "date": 1763401294844,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('food/', include('food.urls')),\n     path('spots/', include('spots.urls')),\n-    path('', include('food.urls')),\n+    path('', include('users.urls')),\n     path('users/', include('users.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n \n"
                 }
             ],
             "date": 1762923096841,

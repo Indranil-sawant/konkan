@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 11,
+            "activePatchIndex": 27,
             "patches": [
                 {
                     "date": 1762926077140,
@@ -52,6 +52,70 @@
                 {
                     "date": 1763213777887,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n <!doctype html>\n+{% load static %}\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n"
+                },
+                {
+                    "date": 1763463245230,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n+    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\">\n \n </head>\n {% include \"navbar.html\" %}\n <body>\n"
+                },
+                {
+                    "date": 1763463846691,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,8 +9,9 @@\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\">\n+    <script src=\"https://cdn.tailwindcss.com\"></script>\n \n </head>\n {% include \"navbar.html\" %}\n <body>\n"
+                },
+                {
+                    "date": 1763463966637,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-<!doctype html>\n+d\n {% load static %}\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n"
+                },
+                {
+                    "date": 1763463989235,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-d\n+\n {% load static %}\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n"
+                },
+                {
+                    "date": 1763464116230,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,10 +8,8 @@\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\">\n-    <script src=\"https://cdn.tailwindcss.com\"></script>\n \n </head>\n {% include \"navbar.html\" %}\n <body>\n"
+                },
+                {
+                    "date": 1763465929577,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-\n+    <link href = {% static \"css/main.css\" %}%}\n </head>\n {% include \"navbar.html\" %}\n <body>\n \n"
+                },
+                {
+                    "date": 1763466149942,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-    <link href = {% static \"css/main.css\" %}%}\n+\n </head>\n {% include \"navbar.html\" %}\n <body>\n \n"
+                },
+                {
+                    "date": 1763466205055,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,10 +10,11 @@\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n \n </head>\n-{% include \"navbar.html\" %}\n+\n <body>\n+    {% include \"navbar.html\" %}\n \n     {% block content %}\n \n     {% endblock %}\n"
+                },
+                {
+                    "date": 1763466211257,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n+    \n \n </head>\n \n <body>\n"
+                },
+                {
+                    "date": 1763466218852,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,12 +4,12 @@\n <head>\n     <meta charset=\"utf-8\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n-    <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n+   \n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-    \n+     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n \n </head>\n \n <body>\n"
+                },
+                {
+                    "date": 1763466271048,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,9 @@\n     {% include \"navbar.html\" %}\n \n     {% block content %}\n \n-    {% endblock %}\n+    {% endblock content %}\n \n     <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"></script>\n </body>\n </html>\n"
+                },
+                {
+                    "date": 1763467060611,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,24 +1,24 @@\n-\n {% load static %}\n+<!DOCTYPE html>\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n-   \n+\n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n \n+    <!-- Your CSS AFTER Bootstrap -->\n+    <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n </head>\n \n <body>\n+\n     {% include \"navbar.html\" %}\n \n     {% block content %}\n+    {% endblock %}\n \n-    {% endblock content %}\n-\n-    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"></script>\n </body>\n </html>\n"
+                },
+                {
+                    "date": 1763467479868,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n \n     <!-- Bootstrap 5 -->\n     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n \n-    <!-- Your CSS AFTER Bootstrap -->\n+    <!-- Your CSS -->\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n </head>\n \n <body>\n"
+                },
+                {
+                    "date": 1763467488963,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n \n     {% include \"navbar.html\" %}\n \n     {% block content %}\n+    \n     {% endblock %}\n \n </body>\n </html>\n"
+                },
+                {
+                    "date": 1763467588149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,25 +1,20 @@\n {% load static %}\n-<!DOCTYPE html>\n+<!doctype html>\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n+    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n \n-    <!-- Bootstrap 5 -->\n-    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-\n-    <!-- Your CSS -->\n+    <!-- static CSS -->\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n+    <!-- optional bootstrap (if used) -->\n+    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n+    {% block extra_head %}{% endblock %}\n </head>\n-\n <body>\n-\n-    {% include \"navbar.html\" %}\n-\n-    {% block content %}\n-    \n-    {% endblock %}\n-\n+    {% block content %}{% endblock %}\n+    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\"></script>\n+    {% block extra_scripts %}{% endblock %}\n </body>\n-</html>\n+</html>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763467597935,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,20 +1,25 @@\n {% load static %}\n-<!doctype html>\n+<!DOCTYPE html>\n <html lang=\"en\">\n <head>\n     <meta charset=\"utf-8\">\n-    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n     <title>{% block title %}Konkan Guide{% endblock %}</title>\n+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n \n-    <!-- static CSS -->\n+    <!-- Bootstrap 5 -->\n+    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n+\n+    <!-- Your CSS -->\n     <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n-    <!-- optional bootstrap (if used) -->\n-    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n-    {% block extra_head %}{% endblock %}\n </head>\n\\ No newline at end of file\n+\n <body>\n-    {% block content %}{% endblock %}\n-    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\"></script>\n-    {% block extra_scripts %}{% endblock %}\n+\n+    {% include \"navbar.html\" %}\n+\n+    {% block content %}\n+    \n+    {% endblock %}\n+\n </body>\n-</html>\n+</html>\n"
                 }
             ],
             "date": 1762926077140,

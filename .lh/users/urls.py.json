@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 10,
             "patches": [
                 {
                     "date": 1763397790400,
@@ -16,6 +16,38 @@
                 {
                     "date": 1763397977845,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.spots_home, name='home_spots'),\n+    path('', views.spots_home, name='home_users'),\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763473671722,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.spots_home, name='home_users'),\n+    path('', views.users, name='home_users'),\n+    path('users/', views.create_users)\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763473692141,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n-    path('users/', views.create_users)\n+    path('users/', views.create_users, name='users')\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763473944911,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,5 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n-    path('users/', views.create_users, name='users')\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763474002623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n+    path('create_users/',views.create_users,name='create_users')\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763478235325,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,5 +2,6 @@\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n     path('create_users/',views.create_users,name='create_users')\n+    path('user_profile', views.user\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763478252255,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,6 @@\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n     path('create_users/',views.create_users,name='create_users')\n-    path('user_profile', views.user\n+    path('user_profile', views.user_page , \n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763478291403,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n-    path('create_users/',views.create_users,name='create_users')\n-    path('user_profile', views.user_page , \n+    path('create_users/',views.create_users,name='create_users'),\n+    path('user_profile', views.user_page , name='user_profile') ,\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1763478561710,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,6 @@\n from . import views\n urlpatterns = [\n     path('', views.users, name='home_users'),\n     path('create_users/',views.create_users,name='create_users'),\n-    path('user_profile', views.user_page , name='user_profile') ,\n+    path('user_profile/<str:pk>', views.user_page , name='user_profile') ,\n ]   # URL patterns for food a\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1763397790400,

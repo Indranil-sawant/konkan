@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 23,
+            "activePatchIndex": 34,
             "patches": [
                 {
                     "date": 1762925594093,
@@ -100,6 +100,50 @@
                 {
                     "date": 1763398057481,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n     <!-- Nav links -->\n     <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarNav\">\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n            <li class=\"nav-item\">\n-          <a class=\"nav-link active\" href=\"{% url 'home_spots' %}\">Users</a>\n+          <a class=\"nav-link active\" href=\"{% url 'home_users' %}\">Users</a>\n         </li>\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n"
+                },
+                {
+                    "date": 1763473759876,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,10 +8,10 @@\n <!-- Navbar Start -->\n <nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n   <div class=\"container\">\n     <!-- Brand -->\n-    <a class=\"navbar-brand fw-bold text-primary\" href=\"#\">\n-      Konkan Guide\n+    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% static \" %}\">\n+      Konkan Guide  \n     </a>\n \n     <!-- Mobile toggle -->\n     <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarNav\"\n"
+                },
+                {
+                    "date": 1763473783176,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n <!-- Navbar Start -->\n <nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n   <div class=\"container\">\n     <!-- Brand -->\n-    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% static \" %}\">\n+    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% url 'users'%}\">\n       Konkan Guide  \n     </a>\n \n     <!-- Mobile toggle -->\n"
+                },
+                {
+                    "date": 1763473871012,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n     <!-- Nav links -->\n     <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarNav\">\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n            <li class=\"nav-item\">\n-          <a class=\"nav-link active\" href=\"{% url 'home_users' %}\">Users</a>\n+          <a class=\"nav-link active\" href=\"{% url 'users' %}\">Users</a>\n         </li>\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n"
+                },
+                {
+                    "date": 1763473881708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n <!-- Navbar Start -->\n <nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n   <div class=\"container\">\n     <!-- Brand -->\n-    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% url 'users'%}\">\n+    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% url 'home_users'%}\">\n       Konkan Guide  \n     </a>\n \n     <!-- Mobile toggle -->\n"
+                },
+                {
+                    "date": 1763473906350,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n <!-- Navbar Start -->\n <nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n   <div class=\"container\">\n     <!-- Brand -->\n-    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% url 'home_users'%}\">\n+    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% url 'users'%}\">\n       Konkan Guide  \n     </a>\n \n     <!-- Mobile toggle -->\n@@ -22,9 +22,9 @@\n     <!-- Nav links -->\n     <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarNav\">\n       <ul class=\"navbar-nav mb-2 mb-lg-0\">\n            <li class=\"nav-item\">\n-          <a class=\"nav-link active\" href=\"{% url 'users' %}\">Users</a>\n+          <a class=\"nav-link active\" href=\"{% url 'home_users' %}\">Users</a>\n         </li>\n           <a class=\"nav-link active\" href=\"{% url 'home' %}\">Home</a>\n         </li>\n         <li class=\"nav-item\">\n"
+                },
+                {
+                    "date": 1763473934657,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n <!-- Navbar Start -->\n <nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n   <div class=\"container\">\n     <!-- Brand -->\n-    <a class=\"navbar-brand fw-bold text-primary\" href=\"{% url 'users'%}\">\n+    <a class=\"navbar-brand fw-bold text-primary\" href=\"#\">\n       Konkan Guide  \n     </a>\n \n     <!-- Mobile toggle -->\n"
+                },
+                {
+                    "date": 1763474074382,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -37,9 +37,9 @@\n           <a class=\"nav-link active\" href=\"{% url 'create_spot' %}\">Create Spot</a>\n         </li>\n \n         <li class=\"nav-item\">\n-          <a class=\"btn btn-primary btn-sm ms-2\" href=\"#\">🛒 Cart</a>\n+          <a class=\"btn btn-primary btn-sm ms-2\" href=\"{% url 'create_users' %}\">🛒 Cart</a>\n         </li>\n       </ul>\n     </div>\n   </div>\n"
+                },
+                {
+                    "date": 1763476091134,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,7 +46,6 @@\n </nav>\n <!-- Navbar End -->\n \n <!-- Navbar End -->\n-<hr>\n-<hr>\n \n+\n"
+                },
+                {
+                    "date": 1763476130602,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n \n <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n <!-- Navbar Start -->\n <!-- Navbar Start -->\n-<nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\">\n+<nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\" style=\"padding-top:40px\">\n   <div class=\"container\">\n     <!-- Brand -->\n     <a class=\"navbar-brand fw-bold text-primary\" href=\"#\">\n       Konkan Guide  \n"
+                },
+                {
+                    "date": 1763476155454,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n \n <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n <!-- Navbar Start -->\n <!-- Navbar Start -->\n-<nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\" style=\"padding-top:40px\">\n+<nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\" style=\"padding-top:40px , font-size:1.5rem\">\n   <div class=\"container\">\n     <!-- Brand -->\n     <a class=\"navbar-brand fw-bold text-primary\" href=\"#\">\n       Konkan Guide  \n"
+                },
+                {
+                    "date": 1763476161794,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n \n <link rel=\"stylesheet\" href=\"{% static 'css/main.css' %}\">\n <!-- Navbar Start -->\n <!-- Navbar Start -->\n-<nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\" style=\"padding-top:40px , font-size:1.5rem\">\n+<nav class=\"navbar navbar-expand-lg navbar-light bg-light shadow-sm\" style=\"padding-top:40px;  font-size:1.5rem;\">\n   <div class=\"container\">\n     <!-- Brand -->\n     <a class=\"navbar-brand fw-bold text-primary\" href=\"#\">\n       Konkan Guide  \n"
                 }
             ],
             "date": 1762925594093,

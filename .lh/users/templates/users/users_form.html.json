@@ -1,0 +1,30 @@
+{
+    "sourceFile": "users/templates/users/users_form.html",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1763473481798,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1763473642981,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n \n                     <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\n                         {% csrf_token %}\n \n-                        {% for field in spots_form %}\n+                        {% for field in users_form %}\n                             <div class=\"mb-3\">\n                                 <label class=\"form-label fw-semibold\">{{ field.label }}</label>\n \n                                 {{ field }}\n"
+                },
+                {
+                    "date": 1763473937223,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n \n                     <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\n                         {% csrf_token %}\n \n-                        {% for field in users_form %}\n+                        {% for field in users_form %}   \n                             <div class=\"mb-3\">\n                                 <label class=\"form-label fw-semibold\">{{ field.label }}</label>\n \n                                 {{ field }}\n"
+                },
+                {
+                    "date": 1763475741767,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n                         {% endfor %}\n \n                         <div class=\"d-grid\">\n                             <button type=\"submit\" class=\"btn btn-warning fw-bold py-2\">\n-                                Save Food Item\n+                                Save info\n                             </button>\n                         </div>\n \n                     </form>\n"
+                }
+            ],
+            "date": 1763473481798,
+            "name": "Commit-0",
+            "content": "{% extends \"base.html\" %}\n\n{% block content %}\n\n<h2 class=\"text-center my-4 fw-bold\">Add Users </h2>\n\n<div class=\"container\">\n    <div class=\"row justify-content-center\">\n        <div class=\"col-12 col-md-8 col-lg-6\">\n\n            <div class=\"card shadow-sm border-0\">\n                <div class=\"card-body p-4\">\n\n                    <form action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\n                        {% csrf_token %}\n\n                        {% for field in spots_form %}\n                            <div class=\"mb-3\">\n                                <label class=\"form-label fw-semibold\">{{ field.label }}</label>\n\n                                {{ field }}\n\n                                {% if field.errors %}\n                                    <div class=\"text-danger small\">\n                                        {{ field.errors }}\n                                    </div>\n                                {% endif %}\n                            </div>\n                        {% endfor %}\n\n                        <div class=\"d-grid\">\n                            <button type=\"submit\" class=\"btn btn-warning fw-bold py-2\">\n                                Save Food Item\n                            </button>\n                        </div>\n\n                    </form>\n\n                </div>\n            </div>\n\n        </div>\n    </div>\n</div>\n\n{% endblock content %}\n\n \n"
+        }
+    ]
+}
