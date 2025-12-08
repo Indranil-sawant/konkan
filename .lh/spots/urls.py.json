@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1763220350953,
@@ -24,6 +24,10 @@
                 {
                     "date": 1763222173812,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.home, name='home_spots'),\n-    path('details/<uuid:pk>/', views.home3, name='details'),\n+    path('', views.spots_home, name='home_spots'),\n+    path('details/<uuid:pk>/', views.home3, name='details_spots'),\n     path('create_spot/', views.create_spot, name='create_spot'),\n     path('update_spot/<uuid:pk>/', views.update_spot, name='update_spot'),   \n     path('delete_spot/<uuid:pk>/', views.delete_spot, name='delete_spot'),   \n ]   # URL patterns for food app\n"
+                },
+                {
+                    "date": 1765202402589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n from django.urls import path\n from . import views\n urlpatterns = [\n-    path('', views.spots_home, name='home_spots'),\n+    path('home', views.spots_home, name='home_spots'),\n     path('details/<uuid:pk>/', views.home3, name='details_spots'),\n     path('create_spot/', views.create_spot, name='create_spot'),\n     path('update_spot/<uuid:pk>/', views.update_spot, name='update_spot'),   \n     path('delete_spot/<uuid:pk>/', views.delete_spot, name='delete_spot'),   \n"
                 }
             ],
             "date": 1763220350953,

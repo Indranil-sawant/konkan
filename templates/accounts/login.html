@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Login</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Simple rendering of form fields with bootstrap classes -->
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add bootstrap classes to form inputs via JS or just rely on default rendering if acceptable, 
+    // but better to add class in python form or here.
+    // Quick hack to add form-control class to all inputs
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.add('form-control');
+    });
+</script>
+{% endblock %}

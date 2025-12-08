@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-4">{{ destination.title }}</h1>
+            <p class="lead text-muted"><i class="fas fa-map-marker-alt"></i> {{ destination.location_name }} | <span
+                    class="badge bg-secondary">{{ destination.category }}</span></p>
+        </div>
+        <div class="col-md-4 text-end">
+            <!-- Optional: Share or Save buttons -->
+        </div>
+    </div>
+
+    <!-- Main Image & Gallery -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            {% if destination.main_image %}
+            <img src="{{ destination.main_image.url }}" class="img-fluid rounded shadow w-100"
+                alt="{{ destination.title }}" style="max-height: 500px; object-fit: cover;">
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <h4 class="mb-3">Gallery</h4>
+            <div class="row g-2">
+                {% for img in destination.gallery.all|slice:":4" %}
+                <div class="col-6">
+                    <img src="{{ img.image.url }}" class="img-fluid rounded"
+                        style="height: 120px; width: 100%; object-fit: cover;">
+                </div>
+                {% empty %}
+                <p class="text-muted">No gallery images yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Details & Map -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h3>About</h3>
+            <p>{{ destination.description|linebreaks }}</p>
+
+            {% if destination.travel_tips %}
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-lightbulb"></i> Travel Tips</h5>
+                {{ destination.travel_tips|linebreaks }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Info</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Best Time:</strong> {{
+                        destination.best_time_to_visit|default:"Anytime" }}</li>
+                    <li class="list-group-item"><strong>Entry Fee:</strong> {{ destination.entry_fees }}</li>
+                    <li class="list-group-item"><strong>Timings:</strong> {{ destination.timings|default:"Open 24 Hours"
+                        }}</li>
+                </ul>
+            </div>
+
+            <!-- Map Placeholder (If lat/long exists) -->
+            {% if destination.latitude and destination.longitude %}
+            <div class="card">
+                <div class="card-body p-0">
+                    <iframe width="100%" height="250" frameborder="0" style="border:0"
+                        src="https://maps.google.com/maps?q={{ destination.latitude }},{{ destination.longitude }}&hl=es;z=14&output=embed"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Reviews & Ratings</h3>
+
+            <!-- Add Review Form -->
+            <div class="card mb-4 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Leave a Review</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Name</label>
+                                {{ review_form.author_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Rating</label>
+                                {{ review_form.rating }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Comment</label>
+                            {{ review_form.comment }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            {% for review in reviews %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ review.author_name|default:review.user.username|default:"Anonymous" }}
+                        </h5>
+                        <span class="text-warning">
+                            {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= review.rating %} <i class="fas fa-star"></i>
+                                {% else %}
+                                <i class="far fa-star"></i>
+                                {% endif %}
+                                {% endfor %}
+                        </span>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ review.created_at|date:"M d, Y" }}</h6>
+                    <p class="card-text">{{ review.comment }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No reviews yet. Be the first to review!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

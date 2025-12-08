@@ -28,7 +28,7 @@ class Spots(models.Model):
     # Display Info
     distance = models.FloatField()
     rating = models.FloatField(default=0.0)
-    photo = models.ImageField(null=True, blank=True , default='default_food.jpg')
+    photo = models.ImageField(upload_to='spots/', null=True, blank=True)
 
     # FoodInfo (now merged)
     description = models.TextField(blank=True, null=True)

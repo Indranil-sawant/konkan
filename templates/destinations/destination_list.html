@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>{% if category %}{{ category }}s{% elif query %}Search Results for "{{ query }}"{% else %}All
+                Destinations{% endif %}</h2>
+        </div>
+        <div class="col-md-4">
+            <form action="{% url 'destination_list' %}" method="get">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search..."
+                        value="{{ query|default:'' }}">
+                    <button class="btn btn-outline-secondary" type="submit">Go</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for dest in destinations %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                {% if dest.main_image %}
+                <img class="card-img-top" src="{{ dest.main_image.url }}" alt="{{ dest.title }}"
+                    style="height: 200px; object-fit: cover;">
+                {% else %}
+                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder"
+                    style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-info text-dark">{{ dest.category }}</span>
+                        <small class="text-muted"><i class="fas fa-star text-warning"></i> 4.5</small>
+                        <!-- Placeholder rating -->
+                    </div>
+                    <h4 class="card-title">{{ dest.title }}</h4>
+                    <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> {{ dest.location_name }}</p>
+                    <p class="card-text">{{ dest.description|truncatewords:20 }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="{% url 'destination_detail' dest.slug %}" class="btn btn-outline-primary w-100">View
+                        Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3>No destinations found.</h3>
+            <a href="{% url 'home' %}" class="btn btn-primary mt-3">Go Home</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

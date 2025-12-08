@@ -1,0 +1,38 @@
+{
+    "sourceFile": "config/urls.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1765201726516,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1765201743002,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('core.urls')),\n-    path('home/'include('spots'))\n+    path('home/',include('spots.urls'))\n     path('destinations/', include('destinations.urls')),\n     path('accounts/', include('accounts.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n"
+                },
+                {
+                    "date": 1765201748836,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('core.urls')),\n-    path('home/',include('spots.urls'))\n+    path('home/',include('spots.urls')),\n     path('destinations/', include('destinations.urls')),\n     path('accounts/', include('accounts.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n"
+                },
+                {
+                    "date": 1765201874596,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,8 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('core.urls')),\n-    path('home/',include('spots.urls')),\n     path('destinations/', include('destinations.urls')),\n     path('accounts/', include('accounts.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n"
+                },
+                {
+                    "date": 1765202162784,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,8 +21,9 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('core.urls')),\n+     path('home', include('spots.urls')),\n     path('destinations/', include('destinations.urls')),\n     path('accounts/', include('accounts.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n"
+                },
+                {
+                    "date": 1765202340005,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n \n urlpatterns = [\n     path('admin/', admin.site.urls),\n     path('', include('core.urls')),\n-     path('home', include('spots.urls')),\n+    path('home', include('spots.urls')),\n     path('destinations/', include('destinations.urls')),\n     path('accounts/', include('accounts.urls')),\n ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n \n"
+                }
+            ],
+            "date": 1765201726516,
+            "name": "Commit-0",
+            "content": "\"\"\"\nURL configuration for konkan_guide project.\n\nThe `urlpatterns` list routes URLs to views. For more information please see:\n    https://docs.djangoproject.com/en/5.2/topics/http/urls/\nExamples:\nFunction views\n    1. Add an import:  from my_app import views\n    2. Add a URL to urlpatterns:  path('', views.home, name='home')\nClass-based views\n    1. Add an import:  from other_app.views import Home\n    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')\nIncluding another URLconf\n    1. Import the include() function: from django.urls import include, path\n    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))\n\"\"\"\nfrom django.contrib import admin\nfrom django.urls import path , include\nfrom django.conf import settings\nfrom django.conf.urls.static import static\n\nurlpatterns = [\n    path('admin/', admin.site.urls),\n    path('', include('core.urls')),\n    path('home/'include('spots'))\n    path('destinations/', include('destinations.urls')),\n    path('accounts/', include('accounts.urls')),\n] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\n\n\n\n"
+        }
+    ]
+}

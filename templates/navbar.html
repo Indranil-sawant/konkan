@@ -10,7 +10,7 @@
   <div class="container">
     <!-- Brand -->
     <a class="navbar-brand fw-bold text-primary" href="#">
-      Konkan Guide  
+      Konkan Guide
     </a>
 
     <!-- Mobile toggle -->
@@ -22,24 +22,39 @@
     <!-- Nav links -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav mb-2 mb-lg-0">
-           <li class="nav-item">
-          <a class="nav-link active" href="{% url 'home_users' %}">Users</a>
-        </li>
+        <li class="nav-item">
           <a class="nav-link active" href="{% url 'home' %}">Home</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'home_spots' %}">Spots</a>
+          <a class="nav-link" href="{% url 'home_users' %}">Users</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'create_food' %}">Create Food</a>
+          <a class="nav-link" href="{% url 'home_spots' %}">Spots</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'create_spot' %}">Create Spot</a>
+          <a class="nav-link" href="{% url 'create_destination' %}">Add Destination</a>
         </li>
-
         <li class="nav-item">
-          <a class="btn btn-primary btn-sm ms-2" href="{% url 'create_users' %}">🛒 Cart</a>
+          <a class="nav-link" href="{% url 'food_home' %}">Food</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'temples' %}">Temples</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'my_profile' %}">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -47,5 +62,3 @@
 <!-- Navbar End -->
 
 <!-- Navbar End -->
-
-
