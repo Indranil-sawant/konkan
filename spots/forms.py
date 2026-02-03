@@ -6,7 +6,7 @@ from  . models import Spots
 class SpotsForm(ModelForm):
     class Meta:
         model = Spots
-        fields = "__all__"
+        exclude = ['uploaded_by']
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

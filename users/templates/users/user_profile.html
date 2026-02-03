@@ -2,100 +2,105 @@
 {% load static %}
 
 {% block content %}
-
-<div class="container mt-5">
-
-    <!-- Profile Card -->
-    <div class="card shadow-sm p-4" style="max-width: 700px; margin: auto; border-radius: 15px;">
-
-        <!-- Header background -->
-        <div class="profile-header" 
-             style="height: 120px; 
-                    background: linear-gradient(90deg, #007bff, #6f42c1); 
-                    border-radius: 12px;">
-        </div>
-
-        <!-- Profile image -->
-        <div class="text-center" style="margin-top: -60px;">
-            <img src="{{ profile.profile_image.url }}" 
-                 class="rounded-circle shadow"
-                 style="width: 120px; height: 120px; object-fit: cover; border: 4px solid white;"
-                 alt="{{ profile.name }}">
-        </div>
-
-        <!-- Name + intro -->
-        <div class="text-center mt-3">
-            <h2 class="fw-bold">{{ profile.name }}</h2>
-            <p class="text-muted">{{ profile.short_intro }}</p>
-        </div>
-
-        <hr>
-
-        <!-- Bio -->
-        <div class="mt-3">
-            <h5 class="fw-bold mb-2">About</h5>
-            <p class="text-secondary" style="line-height: 1.6;">
-                {{ profile.bio|linebreaks }}
-            </p>
-        </div>
-
-        <hr>
-
-        <!-- Profile details -->
-        <div class="mt-3">
-            <h5 class="fw-bold mb-2">Details</h5>
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-            <p><strong>Username:</strong> {{ profile.username }}</p>
-        </div>
-
-        <hr>
-
-        <!-- Social Links -->
-        <div class="mt-3">
-            <h5 class="fw-bold mb-3">Social Links</h5>
-
-            <div class="d-flex gap-3">
-
-                {% if profile.social_github %}
-                <a href="{{ profile.social_github }}" class="fs-4" target="_blank">
-                    <i class="fa-brands fa-github"></i>
-                </a>
-                {% endif %}
-
-                {% if profile.social_linkedin %}
-                <a href="{{ profile.social_linkedin }}" class="fs-4 text-primary" target="_blank">
-                    <i class="fa-brands fa-linkedin"></i>
-                </a>
-                {% endif %}
-
-                {% if profile.social_twitter %}
-                <a href="{{ profile.social_twitter }}" class="fs-4 text-info" target="_blank">
-                    <i class="fa-brands fa-twitter"></i>
-                </a>
-                {% endif %}
-
-                {% if profile.social_youtube %}
-                <a href="{{ profile.social_youtube }}" class="fs-4 text-danger" target="_blank">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-                {% endif %}
-
-                {% if profile.social_website %}
-                <a href="{{ profile.social_website }}" class="fs-4 text-success" target="_blank">
-                    <i class="fa-solid fa-globe"></i>
-                </a>
-                {% endif %}
-
-                
-          <a href="{% url 'home_users'%}" class="btn btn-primary btn-sm">
-                    Go back
-            </a>
-
-            </div>
-        </div>
-
+<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light)); height: 30vh; min-height: 200px;">
+    <div class="container h-100 d-flex align-items-end pb-5">
+        <h1 class="display-6 fw-bold mb-0">Explorer Profile</h1>
     </div>
-
 </div>
 
+<div class="container position-relative" style="margin-top: -100px; z-index: 5;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg p-4 rounded-4 overflow-hidden mb-5">
+                <div class="row g-4 align-items-center mb-4">
+                    <div class="col-md-auto text-center">
+                        <div class="profile-img-wrapper m-0" style="width: 160px; height: 160px;">
+                            {% if profile.profile_image %}
+                            <img src="{{ profile.profile_image.url }}" alt="{{ profile.username }}" class="profile-img border-5">
+                            {% else %}
+                            <img src="{% static 'images/user-default.png' %}" alt="Default" class="profile-img border-5">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                            <div>
+                                <h1 class="display-5 fw-bold text-dark mb-1">{{ profile.name|default:profile.username|title }}</h1>
+                                <p class="lead text-primary mb-0">@{{ profile.username|lower }}</p>
+                            </div>
+                            {% if user.is_authenticated and user == profile.user %}
+                            <a href="{% url 'create_users' %}" class="btn btn-outline-primary rounded-pill px-4">
+                                <i class="fas fa-edit me-1"></i> Edit Profile
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-5">
+                    <div class="col-md-8">
+                        <div class="mb-5">
+                            <h4 class="fw-bold mb-3 d-flex align-items-center">
+                                <i class="fas fa-quote-left text-aqua me-2"></i> About Me
+                            </h4>
+                            <div class="text-muted lead-sm" style="line-height: 1.8;">
+                                {{ profile.bio|linebreaks|default:"This explorer hasn't shared their story yet. Stay tuned!" }}
+                            </div>
+                        </div>
+
+                        <div class="social-links justify-content-start">
+                            {% if profile.social_github %}
+                            <a href="{{ profile.social_github }}" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                            {% endif %}
+                            {% if profile.social_linkedin %}
+                            <a href="{{ profile.social_linkedin }}" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            {% endif %}
+                            {% if profile.social_twitter %}
+                            <a href="{{ profile.social_twitter }}" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if profile.social_youtube %}
+                            <a href="{{ profile.social_youtube }}" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                            {% endif %}
+                            {% if profile.social_website %}
+                            <a href="{{ profile.social_website }}" target="_blank" title="Website"><i class="fas fa-globe"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="bg-light p-4 rounded-4">
+                            <h5 class="fw-bold mb-3">Quick Info</h5>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-3 d-flex align-items-center">
+                                    <span class="bg-aqua p-2 rounded-circle me-3" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-envelope text-primary small"></i>
+                                    </span>
+                                    <div>
+                                        <div class="small text-muted">Email</div>
+                                        <div class="fw-bold">{{ profile.email|default:profile.user.email }}</div>
+                                    </div>
+                                </li>
+                                <li class="mb-0 d-flex align-items-center">
+                                    <span class="bg-aqua p-2 rounded-circle me-3" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-calendar-alt text-primary small"></i>
+                                    </span>
+                                    <div>
+                                        <div class="small text-muted">Member Since</div>
+                                        <div class="fw-bold">{{ profile.user.date_joined|date:"M Y" }}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <a href="{% url 'home_users' %}" class="btn btn-link text-muted text-decoration-none small">
+                                <i class="fas fa-arrow-left me-1"></i> All Explorers
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

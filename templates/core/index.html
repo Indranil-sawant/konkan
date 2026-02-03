@@ -1,121 +1,168 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<!-- Hero Section -->
-<header class="py-5 bg-light border-bottom mb-4"
-    style="background: url('https://source.unsplash.com/1600x900/?beach,ocean') no-repeat center center; background-size: cover; position: relative;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);"></div>
-    <div class="container position-relative">
-        <div class="text-center my-5 text-white">
-            <h1 class="fw-bolder display-3">Discover the Jewel of Konkan</h1>
-            <p class="lead mb-4">Forts, Beaches, Temples & More in Ratnagiri</p>
-            <form action="{% url 'destination_list' %}" method="get" class="d-flex justify-content-center">
-                <div class="input-group mb-3 w-50">
-                    <input type="text" name="q" class="form-control form-control-lg"
-                        placeholder="Search destinations..." aria-label="Search">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
-            </form>
-        </div>
+<!-- Modern Hero Section -->
+<header class="hero-wrapper">
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80" 
+         alt="Beautiful Konkan Beach" class="hero-bg" loading="eager">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <h1 class="hero-title">Discover the Jewel of <span class="text-secondary">Konkan</span></h1>
+        <p class="hero-subtitle">Immerse yourself in pristine white-sand beaches, historic sea forts, and the authentic flavors of Ratnagiri.</p>
+        
+        <form action="{% url 'destination_list' %}" method="get" class="search-form">
+            <div class="input-group mb-3 bg-white p-2 rounded-pill shadow-lg mx-auto" style="max-width: 600px;">
+                <span class="input-group-text bg-transparent border-0"><i class="fas fa-search text-muted ms-2"></i></span>
+                <input type="text" name="q" class="form-control border-0 bg-transparent px-3" 
+                       placeholder="Where would you like to go?" aria-label="Search destinations">
+                <button class="btn btn-primary rounded-pill px-4" type="submit">Explore</button>
+            </div>
+        </form>
     </div>
 </header>
 
-<div class="container">
-    <!-- Categories -->
-    <div class="row mb-5 text-center">
-        <h2 class="mb-4">Explore by Category</h2>
+<div class="container section-padding">
+    <!-- Quick Categories -->
+    <div class="row mb-5 text-center g-4">
+        <div class="col-12 mb-3">
+            <h2 class="display-6 fw-bold">Explore by Category</h2>
+            <div class="opacity-50" style="width: 60px; height: 3px; background: var(--primary); margin: 0 auto;"></div>
+        </div>
         {% for category in categories %}
-        <div class="col-md-2 col-6 mb-3">
-            <a href="{% url 'destination_list' %}?category={{ category }}" class="text-decoration-none text-dark">
-                <div class="card h-100 py-3">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ category }}</h5>
+        <div class="col-lg-2 col-md-4 col-6">
+            <a href="{% url 'destination_list' %}?category={{ category }}" class="text-decoration-none icon-card">
+                <div class="card h-100 border-0 shadow-sm p-3">
+                    <div class="icon-circle">
+                        {% if category == 'Fort' %}<i class="fas fa-chess-rook"></i>
+                        {% elif category == 'Beach' %}<i class="fas fa-umbrella-beach"></i>
+                        {% elif category == 'Waterfall' %}<i class="fas fa-water"></i>
+                        {% elif category == 'Temple' %}<i class="fas fa-om"></i>
+                        {% elif category == 'Food' %}<i class="fas fa-utensils"></i>
+                        {% else %}<i class="fas fa-map-marker-alt"></i>{% endif %}
                     </div>
+                    <h6 class="mb-0 text-dark fw-bold">{{ category }}</h6>
                 </div>
             </a>
         </div>
         {% endfor %}
     </div>
 
-    <!-- Featured Destinations -->
-    <div class="row mb-5">
-        <h2 class="mb-4">Featured Destinations</h2>
+    <!-- Featured Section Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4 mt-5">
+        <div>
+            <h2 class="fw-bold mb-1">Featured Destinations</h2>
+            <p class="text-muted">Handpicked pearls of the Ratnagiri coastline.</p>
+        </div>
+        <a href="{% url 'destination_list' %}" class="btn btn-link text-primary fw-bold text-decoration-none">
+            View All <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+
+    <!-- Destinations Grid -->
+    <div class="row g-4 mb-5">
         {% for dest in featured_destinations %}
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-4 col-md-6">
             <div class="card h-100">
-                {% if dest.main_image %}
-                <img class="card-img-top" src="{{ dest.main_image.url }}" alt="{{ dest.title }}"
-                    style="height: 200px; object-fit: cover;">
-                {% else %}
-                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder"
-                    style="height: 200px; object-fit: cover;">
-                {% endif %}
-                <div class="card-body">
-                    <h4 class="card-title">{{ dest.title }}</h4>
-                    <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> {{ dest.location_name }}</p>
-                    <p class="card-text">{{ dest.description|truncatewords:20 }}</p>
+                <div class="position-relative overflow-hidden">
+                    {% if dest.main_image %}
+                    <img class="card-img-top" src="{{ dest.main_image.url }}" alt="{{ dest.title }}" 
+                         style="height: 260px; object-fit: cover;">
+                    {% else %}
+                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder" 
+                         style="height: 260px; object-fit: cover;">
+                    {% endif %}
+                    <span class="badge position-absolute top-0 end-0 m-3 badge-coastal shadow-sm">
+                        {{ dest.category }}
+                    </span>
                 </div>
-                <div class="card-footer bg-white border-top-0">
-                    <a href="{% url 'destination_detail' dest.slug %}" class="btn btn-outline-primary w-100">View
-                        Details</a>
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold">{{ dest.title }}</h4>
+                    <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt me-1 text-primary"></i> {{ dest.location_name }}</p>
+                    <p class="card-text text-muted">{{ dest.description|truncatewords:18 }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0 p-4 pt-0">
+                    <a href="{% url 'destination_detail' dest.slug %}" class="btn btn-outline-primary w-100">
+                        View Escape
+                    </a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 
-    <!-- Trending Forts -->
+    <!-- Trending Forts (Cards Carousel-like) -->
     {% if trending_forts %}
-    <div class="row mb-5">
-        <h2 class="mb-4">Trending Forts</h2>
-        {% for fort in trending_forts %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                {% if fort.main_image %}
-                <img class="card-img-top" src="{{ fort.main_image.url }}" alt="{{ fort.title }}"
-                    style="height: 150px; object-fit: cover;">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ fort.title }}</h5>
-                    <a href="{% url 'destination_detail' fort.slug %}"
-                        class="btn btn-sm btn-link stretched-link">Explore</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <!-- Popular Spots -->
-    {% if featured_spots %}
-    <div class="row mb-5">
-        <h2 class="mb-4">Popular Spots</h2>
-        {% for spot in featured_spots %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                {% if spot.photo %}
-                <img class="card-img-top" src="{{ spot.photo.url }}" alt="{{ spot.name }}"
-                    style="height: 200px; object-fit: cover;">
-                {% else %}
-                <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder"
-                    style="height: 200px; object-fit: cover;">
-                {% endif %}
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="card-title mb-0">{{ spot.name }}</h5>
-                        <span class="badge bg-success">{{ spot.rating }} <i class="fas fa-star"></i></span>
+    <div class="bg-sand p-lg-5 p-4 rounded-4 my-5 shadow-sm" style="background-color: var(--sand-beige);">
+        <h2 class="fw-bold mb-4"><i class="fas fa-chess-rook me-2 text-primary"></i>Historic Sea Forts</h2>
+        <div class="row g-3">
+            {% for fort in trending_forts %}
+            <div class="col-md-3">
+                <a href="{% url 'destination_detail' fort.slug %}" class="text-decoration-none">
+                    <div class="card border-0 overflow-hidden">
+                        {% if fort.main_image %}
+                        <img src="{{ fort.main_image.url }}" alt="{{ fort.title }}" style="height: 180px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-img-overlay d-flex align-items-end p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                            <h6 class="text-white mb-0 fw-bold">{{ fort.title }}</h6>
+                        </div>
                     </div>
-                    <p class="card-text text-muted mb-1"><i class="fas fa-tag"></i> {{ spot.category.name }}</p>
-                    <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> {{ spot.distance }} km away
-                    </p>
-                    <a href="{% url 'details_spots' spot.id %}" class="btn btn-outline-primary btn-sm w-100">View
-                        Details</a>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Popular Spots Grid -->
+    {% if featured_spots %}
+    <div class="row g-4 mt-5">
+        <div class="col-12 mb-3">
+            <h2 class="fw-bold">Hidden Gems</h2>
+            <p class="text-muted">Contributions from our community of explorers.</p>
+        </div>
+        {% for spot in featured_spots %}
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="position-relative">
+                    {% if spot.photo %}
+                    <img class="card-img-top" src="{{ spot.photo.url }}" alt="{{ spot.name }}" 
+                         style="height: 220px; object-fit: cover; border-radius: var(--radius-md) var(--radius-md) 0 0;">
+                    {% else %}
+                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder" 
+                         style="height: 220px; object-fit: cover;">
+                    {% endif %}
+                    <div class="position-absolute bottom-0 end-0 m-3 px-2 py-1 bg-white rounded-pill shadow-sm small fw-bold">
+                        <i class="fas fa-star text-warning"></i> {{ spot.rating }}
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title mb-0 fw-bold">{{ spot.name }}</h5>
+                    </div>
+                    <p class="text-muted small mb-1"><i class="fas fa-tag me-1"></i> {{ spot.category.name }}</p>
+                    <p class="text-muted small mb-3"><i class="fas fa-map-marked-alt me-1"></i> {{ spot.distance }} km from center</p>
+                    <a href="{% url 'details_spots' spot.id %}" class="btn btn-link p-0 text-primary fw-bold text-decoration-none small">
+                        Explore Hidden Spot <i class="fas fa-chevron-right ms-1" style="font-size: 0.8rem;"></i>
+                    </a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     {% endif %}
-
 </div>
+
+<!-- Community Teaser -->
+<section class="section-padding bg-dark text-white text-center mt-5" style="background-image: linear-gradient(rgba(2, 48, 71, 0.9), rgba(2, 48, 71, 0.9)), url('{% if featured_destinations.0.main_image %}{{ featured_destinations.0.main_image.url }}{% endif %}'); background-size: cover; background-attachment: fixed;">
+    <div class="container">
+        <h2 class="display-5 fw-bold mb-4">Be a Part of the Journey</h2>
+        <p class="lead mb-5 opacity-75">Share your favorite hidden spots and help others discover the magic of Konkan.</p>
+        {% if user.is_authenticated %}
+            <a href="{% url 'create_destination' %}" class="btn btn-primary btn-lg">Add New Destination</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Join the Community</a>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

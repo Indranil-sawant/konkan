@@ -16,11 +16,14 @@ class Tag(models.Model):  # ex: spicy, sweet, veg, non-veg
         return self.name
 
 
+from users.models import Profile
+
 class FoodItem(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     # Main Info
     name = models.CharField(max_length=100)
+    uploaded_by = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
     # Display Info

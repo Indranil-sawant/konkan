@@ -1,108 +1,229 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore the beautiful Konkan region - Forts, Beaches, Temples, and authentic Food."
+    />
+    <title>
+      {% block title %}Konkan Guide | Discover the Jewel of Ratnagiri{% endblock %}
+    </title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Explore Ratnagiri{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-        }
+    <!-- Preload fonts to reduce CLS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-        .navbar {
-            background-color: #003366;
-            /* Deep Ocean Blue */
-        }
+    <!-- CSS Dependencies -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
-        .navbar-brand,
-        .nav-link {
-            color: #ffffff !important;
-        }
+    <!-- Custom Modular CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
 
-        .btn-primary {
-            background-color: #ffcc00;
-            /* Sunny Yellow */
-            border-color: #ffcc00;
-            color: #000;
-        }
-
-        .btn-primary:hover {
-            background-color: #e6b800;
-            border-color: #e6b800;
-        }
-
-        .footer {
-            background-color: #003366;
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-
-        .card {
-            transition: transform 0.2s;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-    </style>
     {% block extra_css %}{% endblock %}
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="visually-hidden-focusable"
+      >Skip to content</a
+    >
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}"><i class="fas fa-compass me-2"></i>Explore Ratnagiri</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'destination_list' %}">Destinations</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'temples' %}">Temples</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'create_destination' %}">Add Destination</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'food_home' %}">Food</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home_spots' %}">Spots</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home_users' %}">Users</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'my_profile' %}">Profile</a></li>
-                    <li class="nav-item">
-                        <form action="{% url 'logout' %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn nav-link"
-                                style="background:none;border:none;">Logout</button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'destination_list' %}">Destinations</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+      <div class="container text-body">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <i class="fas fa-umbrella-beach me-2"></i>
+          Konkan<span class="text-secondary">Guide</span>
+        </a>
+
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarMain"
+          aria-controls="navbarMain"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                href="{% url 'home' %}"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if 'destination' in request.path %}active{% endif %}"
+                href="{% url 'destination_list' %}"
+                >Destinations</a
+              >
+            </li>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'temples' %}">Temples</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Community
+              </a>
+              <ul class="dropdown-menu border-0 shadow-sm">
+                <li>
+                  <a class="dropdown-item" href="{% url 'home_spots' %}"
+                    >Hidden Spots</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'food_home' %}"
+                    >Local Food</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'home_users' %}"
+                    >Explore Users</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'create_destination' %}"
+                    ><i class="fas fa-plus-circle me-1"></i> Add Place</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'create_food' %}"
+                    ><i class="fas fa-utensils me-1"></i> Add Food Dish</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'create_spot' %}"
+                    ><i class="fas fa-map-marker-alt me-1"></i> Add Hidden Spot</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item ms-lg-3">
+              <a
+                class="btn btn-outline-primary btn-sm"
+                href="{% url 'my_profile' %}"
+              >
+                <i class="fas fa-user-circle me-1"></i> My Profile
+              </a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <form action="{% url 'logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="btn btn-link nav-link p-0 border-0"
+                  title="Logout"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                </button>
+              </form>
+            </li>
+            {% else %}
+            <li class="nav-item ms-lg-3">
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}"
+                >Login</a
+              >
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a class="btn btn-primary btn-sm" href="{% url 'register' %}"
+                >Sign Up</a
+              >
+            </li>
+            {% endif %}
+          </ul>
         </div>
+      </div>
     </nav>
 
-    {% block content %}{% endblock %}
+    <main id="main-content">{% block content %}{% endblock %}</main>
 
-    <footer class="footer text-center">
-        <div class="container">
-            <p>&copy; 2025 Explore Ratnagiri. All rights reserved.</p>
-            <p>Made with <i class="fas fa-heart text-danger"></i> for Konkan.</p>
+    <footer class="footer mt-5">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <h5 class="text-white mb-4">Konkan Guide</h5>
+            <p class="text-muted">
+              A dedicated platform to explore and contribute to the beauty of
+              the Konkan region. Join our community of travelers.
+            </p>
+            <div class="d-flex gap-3 mt-3">
+              <a href="#" class="footer-link"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" class="footer-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-2 ms-auto">
+            <h6 class="text-white mb-4">Explore</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% url 'destination_list' %}" class="footer-link"
+                  >All Destinations</a
+                >
+              </li>
+              <li>
+                <a href="{% url 'temples' %}" class="footer-link">Temples</a>
+              </li>
+              <li>
+                <a href="{% url 'food_home' %}" class="footer-link"
+                  >Local Food</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-2">
+            <h6 class="text-white mb-4">Support</h6>
+            <ul class="list-unstyled">
+              <li><a href="#" class="footer-link">About Us</a></li>
+              <li><a href="#" class="footer-link">Contact</a></li>
+              <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            </ul>
+          </div>
         </div>
+        <div class="border-top border-secondary mt-5 pt-4 text-center position-relative">
+          <p class="text-muted mb-0 small">
+            &copy; 2026 Konkan Guide. Crafted with
+            <i class="fas fa-heart text-danger"></i> for explorers.
+          </p>
+          <a href="/admin/" title="Admin Portal" style="position: absolute; bottom: 0; right: 20px; opacity: 0.15; transition: opacity 0.3s ease; color: var(--ocean-deep); font-size: 14px; text-decoration: none; z-index: 1000;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='0.15'">
+            <i class="fas fa-fingerprint"></i>
+          </a>
+        </div>
+      </div>
     </footer>
 
+    <!-- JS Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
-</body>
-
+  </body>
 </html>

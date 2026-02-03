@@ -17,7 +17,9 @@ def create_spot(request):
     if request.method == 'POST':
         spots_form = SpotsForm(request.POST , request.FILES)
         if spots_form.is_valid():
-            spots_form.save()
+            spot = spots_form.save(commit=False)
+            spot.uploaded_by = request.user.profile
+            spot.save()
             return redirect('home_spots')
     return render(request, 'spots/spot_form.html', {"spots_form":spots_form})
 

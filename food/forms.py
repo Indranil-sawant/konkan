@@ -6,5 +6,5 @@ from  . models import FoodItem
 class FoodItemForm(ModelForm):
     class Meta:
         model = FoodItem
-        fields = "__all__"
+        exclude = ['uploaded_by']
    

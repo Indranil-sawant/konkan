@@ -2,52 +2,83 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-4">
-    <h1 class="mb-4">Best Spots in Ratnagiri</h1>
+<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold mb-2">Hidden Gems of Ratnagiri</h1>
+        <p class="lead opacity-75 mb-0">Lesser-known locations shared by locals and travelers.</p>
+    </div>
+</div>
+
+<div class="container section-padding pt-0">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <p class="text-muted mb-0">Discovering the authentic Konkan experience.</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'create_spot' %}" class="btn btn-primary rounded-pill px-4">
+            <i class="fas fa-plus me-1"></i> Add a Spot
+        </a>
+        {% endif %}
+    </div>
 
     <div class="row g-4">
         {% for item in spots %}
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100">
-                {% if item.photo %}
-                    <img src="{{ item.photo.url }}" class="card-img-top" alt="{{ item.name }}" style="height:200px; object-fit:cover;">
-                {% endif %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                <div class="position-relative">
+                    {% if item.photo %}
+                        <img src="{{ item.photo.url }}" class="card-img-top" alt="{{ item.name }}" 
+                             style="height:240px; object-fit:cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/700x400" class="card-img-top" alt="Placeholder" 
+                             style="height:240px; object-fit:cover;">
+                    {% endif %}
+                    <div class="position-absolute bottom-0 end-0 m-3 px-2 py-1 bg-white rounded-pill shadow-sm small fw-bold">
+                        <i class="fas fa-star text-warning"></i> {{ item.rating }}
+                    </div>
+                </div>
 
-                <div class="card-body">
-                    <h3 class="card-title">{{ item.name }}</h3>
-                    <p class="card-text text-muted">
-                        {{ item.description}}
+                <div class="card-body p-4 text-start">
+                    <h4 class="card-title fw-bold text-dark">{{ item.name }}</h4>
+                    <p class="text-muted small mb-3">
+                        <i class="fas fa-history text-secondary me-1"></i> Uploaded by {{ item.uploaded_by.username|default:"Community" }}
                     </p>
-                      <p class="card-text text-muted">
-                        {{ item.rating}} ⭐
+                    <p class="card-text text-muted small mb-4">
+                        {{ item.description|truncatewords:20 }}
                     </p>
-                    <p class="card-text text-muted">
-                    Price - {{ item.price}}
-                   </p>
-                     <p class="card-text text-mute ">
-                    Uploaded by - {{ item.uploaded_by}}
-                   </p>
+                    
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge bg-light text-primary border border-primary-subtle rounded-pill">
+                            <i class="fas fa-map-marker-alt me-1"></i> {{ item.distance }} km away
+                        </span>
+                    </div>
 
-
-                    <a href="{% url 'details_spots' item.id %}" class="btn btn-primary btn-sm">
-                        View Details
-                    </a>
-                      <a href="{% url 'update_spot' item.id %}" class="btn btn-secondary btn-sm">
-                        Edit
-                    </a>
-                    <a href="{% url 'delete_spot' item.id %}" class="btn btn-danger btn-sm">
-                        Delete
-                    </a>
-                     <a href="{{ item.map_link }}" class="btn btn-info btn-sm" target="_blank">
-                        Map link
-                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'details_spots' item.id %}" class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1">
+                            Details
+                        </a>
+                        {% if user.is_authenticated and item.uploaded_by == user.profile %}
+                        <a href="{% url 'update_spot' item.id %}" class="btn btn-light btn-sm rounded-circle" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'delete_spot' item.id %}" class="btn btn-light btn-sm rounded-circle text-danger" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                        {% if item.map_link %}
+                        <a href="{{ item.map_link }}" class="btn btn-light btn-sm rounded-circle text-info" target="_blank" title="View on Map">
+                            <i class="fas fa-location-arrow"></i>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3 class="text-muted">No hidden spots reported yet.</h3>
+        </div>
         {% endfor %}
     </div>
-
 </div>
-{% endblock content %}
+{% endblock %}
 
 

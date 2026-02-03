@@ -2,45 +2,59 @@
 {% load static %}
 
 {% block content %}
-<h2 style="text-align:center; margin-bottom:20px;">Users</h2>
-
-<div class="users-container">
-
-    {% for profile in profiles %}
-    <div class="user-card">
-
-        <div class="user-header"></div>
-
-        <img src="{{ profile.profile_image.url }}" alt="" class="user-img">
-
-        <p class="user-name">{{ profile.name.capitalize }}</p>
-
-        <p class="user-intro">{{ profile.short_intro }}</p>
-
-        <p class="user-bio">{{ profile.bio|truncatechars:100 }}</p>
-
-          <a href="{% url 'user_profile' profile.id %}" class="btn btn-primary btn-sm">
-                        View Details
-        </a>
-
-        <div class="social-links">
-            {% if profile.social_github %}
-            <a href="{{ profile.social_github }}" target="_blank"><i class="fa-brands fa-github"></i></a>
-            {% endif %}
-            {% if profile.social_linkedin %}
-            <a href="{{ profile.social_linkedin }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-            {% endif %}
-            {% if profile.social_twitter %}
-            <a href="{{ profile.social_twitter }}" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-            {% endif %}
-            {% if profile.social_website %}
-            <a href="{{ profile.social_website }}" target="_blank"><i class="fa-solid fa-globe"></i></a>
-            {% endif %}
-        </div>
-
+<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold mb-2 text-center text-lg-start">Our Community</h1>
+        <p class="lead opacity-75 mb-0 text-center text-lg-start">Meet the explorers who contribute to our Konkan guide.</p>
     </div>
-    {% endfor %}
-
 </div>
 
+<div class="container mb-5">
+    <div class="row g-4">
+        {% for profile in profiles %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm profile-card">
+                <div class="profile-img-wrapper">
+                    {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="{{ profile.username }}" class="profile-img">
+                    {% else %}
+                    <img src="{% static 'images/user-default.png' %}" alt="Default" class="profile-img">
+                    {% endif %}
+                </div>
+                
+                <h4 class="fw-bold mb-1">{{ profile.name|default:profile.username|title }}</h4>
+                <p class="text-primary small mb-2">@{{ profile.username|lower }}</p>
+                <p class="text-muted small mb-3 px-3">
+                    {{ profile.short_intro|default:"Avid traveler exploring the Konkan coast." }}
+                </p>
+
+                <div class="social-links mb-4">
+                    {% if profile.social_github %}
+                    <a href="{{ profile.social_github }}" title="GitHub"><i class="fab fa-github"></i></a>
+                    {% endif %}
+                    {% if profile.social_linkedin %}
+                    <a href="{{ profile.social_linkedin }}" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    {% endif %}
+                    {% if profile.social_twitter %}
+                    <a href="{{ profile.social_twitter }}" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                    {% if profile.social_website %}
+                    <a href="{{ profile.social_website }}" title="Website"><i class="fas fa-globe"></i></a>
+                    {% endif %}
+                </div>
+
+                <div class="mt-auto">
+                    <a href="{% url 'user_profile' profile.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                        View Journey
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3 class="text-muted">No explorers joined yet.</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

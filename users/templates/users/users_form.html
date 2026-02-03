@@ -1,48 +1,61 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold mb-2">Refine Your Identity</h1>
+        <p class="lead opacity-75 mb-0">Help fellow explorers know you better.</p>
+    </div>
+</div>
 
-<h2 class="text-center my-4 fw-bold">Add Users </h2>
-
-<div class="container">
+<div class="container section-padding pt-0 mb-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4">
-
-                    <form action="" method="POST" enctype="multipart/form-data">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-5">
+                    <form action="" method="POST" enctype="multipart/form-data" class="profile-form">
                         {% csrf_token %}
-
-                        {% for field in users_form %}   
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">{{ field.label }}</label>
-
+                        <div class="row g-4">
+                            {% for field in users_form %}   
+                            <div class="col-12">
+                                <label class="small fw-bold text-dark mb-2">{{ field.label }}</label>
                                 {{ field }}
-
-                                {% if field.errors %}
-                                    <div class="text-danger small">
-                                        {{ field.errors }}
-                                    </div>
+                                {% if field.help_text %}
+                                <div class="form-text small opacity-75">{{ field.help_text }}</div>
                                 {% endif %}
+                                {% for error in field.errors %}
+                                <div class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i> {{ error }}</div>
+                                {% endfor %}
                             </div>
-                        {% endfor %}
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-warning fw-bold py-2">
-                                Save info
-                            </button>
+                            {% endfor %}
                         </div>
 
+                        <div class="d-flex gap-3 mt-5">
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 flex-grow-1 py-3 fw-bold">
+                                Save Profile Changes
+                            </button>
+                            <a href="{% url 'my_profile' %}" class="btn btn-light rounded-pill px-4 py-3 text-muted">
+                                Cancel
+                            </a>
+                        </div>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-{% endblock content %}
+<script>
+    document.querySelectorAll('input:not([type="checkbox"]):not([type="file"]), textarea, select').forEach(el => {
+        el.classList.add('form-control', 'px-3');
+        if (el.tagName !== 'TEXTAREA') {
+            el.classList.add('rounded-pill');
+        } else {
+            el.classList.add('rounded-4');
+        }
+    });
+</script>
+{% endblock %}
 
  

@@ -1,66 +1,103 @@
-{% extends "base.html" %}
+{% extends 'base.html' %} 
+{% load static %} 
 
 {% block content %}
+<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
+    <div class="container py-3 text-center">
+        <h1 class="display-5 fw-bold mb-2">Culinary Contributions</h1>
+        <p class="lead opacity-75 mb-0">Help others discover the authentic tastes of Konkan.</p>
+    </div>
+</div>
 
-<h2 class="text-center my-4 fw-bold">Add / Edit Food Item</h2>
-
-<div class="container">
+<div class="container mb-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-5 border-start border-primary border-4 ps-4">
+                        <h4 class="fw-bold mb-2">Add / Edit Food Item</h4>
+                        <p class="text-muted small mb-0">
+                            Share a local dish, traditional recipe, or a must-visit eatery in the region.
+                        </p>
+                    </div>
 
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4">
-
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" class="modern-form">
                         {% csrf_token %}
-
-                        {% for field in food_items %}
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">{{ field.label }}</label>
-
-                                {{ field }}
-
-                                {% if field.errors %}
-                                    <div class="text-danger small">
-                                        {{ field.errors }}
+                        
+                        <div class="row g-4">
+                            {% for field in food_items %}
+                            <div class="col-12">
+                                <div class="form-group mb-0">
+                                    <label for="{{ field.id_for_label }}" class="small fw-bold text-dark mb-2 d-flex align-items-center">
+                                        {% if field.name == 'name' %}<i class="fas fa-utensils text-primary me-2"></i>
+                                        {% elif field.name == 'description' %}<i class="fas fa-quote-left text-primary me-2"></i>
+                                        {% elif field.name == 'price' %}<i class="fas fa-tag text-primary me-2"></i>
+                                        {% elif field.name == 'photo' %}<i class="fas fa-camera text-primary me-2"></i>
+                                        {% elif field.name == 'rating' %}<i class="fas fa-star text-primary me-2"></i>
+                                        {% elif field.name == 'recipe_link' %}<i class="fas fa-link text-primary me-2"></i>
+                                        {% endif %}
+                                        {{ field.label }}
+                                    </label>
+                                    
+                                    {{ field }}
+                                    
+                                    {% if field.help_text %}
+                                    <div class="form-text small opacity-75 mt-1">{{ field.help_text }}</div>
+                                    {% endif %}
+                                    
+                                    {% for error in field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
                                     </div>
-                                {% endif %}
+                                    {% endfor %}
+                                </div>
                             </div>
-                        {% endfor %}
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-warning fw-bold py-2">
-                                Save Food Item
-                            </button>
+                            {% endfor %}
                         </div>
 
+                        <div class="d-flex flex-column flex-md-row gap-3 mt-5 pt-4 border-top border-light">
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold flex-grow-1 shadow-sm">
+                                Save Food Item
+                            </button>
+                            <a href="{% url 'food_home' %}" class="btn btn-light rounded-pill px-5 py-3 text-muted">
+                                Cancel
+                            </a>
+                        </div>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-{% endblock content %}
+<script>
+    document.querySelectorAll('input:not([type="checkbox"]):not([type="file"]), textarea, select').forEach(el => {
+        el.classList.add('form-control', 'px-3');
+        if (el.tagName !== 'TEXTAREA') {
+            el.classList.add('rounded-pill');
+        } else {
+            el.classList.add('rounded-4');
+            el.setAttribute('rows', '4');
+        }
+    });
+    
+    document.querySelectorAll('input[type="file"]').forEach(el => {
+        el.classList.add('form-control', 'rounded-pill');
+    });
 
-
-<style>
-    form input, 
-form select, 
-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #fff;
-}
-
-form input:focus,
-form select:focus,
-form textarea:focus {
-    border-color: #FFC900;
-    box-shadow: 0 0 5px rgba(255, 201, 0, 0.5);
-}
-</style>
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(0, 119, 182, 0.15);
+        }
+        .modern-form label {
+            transition: color 0.3s ease;
+        }
+        .form-group:focus-within label {
+            color: var(--ocean-deep) !important;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

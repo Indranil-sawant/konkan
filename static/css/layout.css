@@ -1,0 +1,105 @@
+
+/* layout.css - Hero sections and page structures */
+
+/* Hero Section */
+.hero-wrapper {
+    position: relative;
+    height: 90vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    background-color: var(--dark-navy);
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(2, 48, 71, 0.4) 0%, rgba(2, 48, 71, 0.8) 100%);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    opacity: 0.9;
+    margin-bottom: 40px;
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Grid Adjustments */
+.grid-listing {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+@media (max-width: 576px) {
+    .grid-listing {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Feature Icon Circles */
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--sand-beige);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary);
+    margin: 0 auto 15px;
+    transition: var(--transition);
+}
+
+.icon-card:hover .icon-circle {
+    background: var(--primary);
+    color: white;
+    transform: rotate(360deg);
+}

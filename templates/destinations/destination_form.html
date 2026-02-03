@@ -1,37 +1,72 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
-<div class="container mt-5">
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block content %}
+<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
+    <div class="container py-3 text-center">
+        <h1 class="display-5 fw-bold mb-2">Share Your Discovery</h1>
+        <p class="lead opacity-75 mb-0">Found a hidden gem? Help other explorers discover it.</p>
+    </div>
+</div>
+
+<div class="container mb-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Submit a New Destination</h4>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted">
-                        Submit a destination you've visited! Your entry will be reviewed by an admin before appearing on
-                        the site.
-                    </p>
-                    <form method="post" enctype="multipart/form-data">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-5 border-start border-primary border-4 ps-4">
+                        <h4 class="fw-bold mb-2">Submit a New Destination</h4>
+                        <p class="text-muted small mb-0">
+                            Your submission will be carefully reviewed by our community admins to ensure quality and authenticity before being featured on the site.
+                        </p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data" class="modern-form">
                         {% csrf_token %}
-                        {% for field in form %}
-                        <div class="mb-3">
-                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.help_text %}
-                            <div class="form-text">{{ field.help_text }}</div>
-                            {% endif %}
-                            {% if field.errors %}
-                            <div class="text-danger">
-                                {{ field.errors }}
+                        
+                        <div class="row g-4">
+                            {% for field in form %}
+                            <div class="{% if field.name == 'latitude' or field.name == 'longitude' or field.name == 'category' %}col-md-6{% else %}col-12{% endif %}">
+                                <div class="form-group mb-0">
+                                    <label for="{{ field.id_for_label }}" class="small fw-bold text-dark mb-2 d-flex align-items-center">
+                                        {% if field.name == 'title' %}<i class="fas fa-heading text-primary me-2"></i>
+                                        {% elif field.name == 'description' %}<i class="fas fa-align-left text-primary me-2"></i>
+                                        {% elif field.name == 'category' %}<i class="fas fa-tags text-primary me-2"></i>
+                                        {% elif field.name == 'location_name' %}<i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                        {% elif field.name == 'main_image' %}<i class="fas fa-image text-primary me-2"></i>
+                                        {% elif field.name == 'latitude' %}<i class="fas fa-location-dot text-primary me-2"></i>
+                                        {% elif field.name == 'longitude' %}<i class="fas fa-map-pin text-primary me-2"></i>
+                                        {% elif field.name == 'best_time_to_visit' %}<i class="fas fa-calendar-check text-primary me-2"></i>
+                                        {% elif field.name == 'travel_tips' %}<i class="fas fa-lightbulb text-primary me-2"></i>
+                                        {% elif field.name == 'entry_fees' %}<i class="fas fa-ticket-alt text-primary me-2"></i>
+                                        {% elif field.name == 'timings' %}<i class="fas fa-clock text-primary me-2"></i>
+                                        {% endif %}
+                                        {{ field.label }}
+                                    </label>
+                                    
+                                    {{ field }}
+                                    
+                                    {% if field.help_text %}
+                                    <div class="form-text small opacity-75 mt-1">{{ field.help_text }}</div>
+                                    {% endif %}
+                                    
+                                    {% for error in field.errors %}
+                                    <div class="text-danger small mt-1 animate-fadeIn">
+                                        <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
                             </div>
-                            {% endif %}
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                Submit for Review
+
+                        <div class="d-flex flex-column flex-md-row gap-3 mt-5 pt-4 border-top border-light">
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold flex-grow-1 shadow-sm">
+                                <i class="fas fa-paper-plane me-2"></i> Submit for Review
                             </button>
-                            <a href="{% url 'destination_list' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'destination_list' %}" class="btn btn-light rounded-pill px-5 py-3 text-muted">
+                                Cancel
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -39,4 +74,45 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Style inputs dynamically
+    document.querySelectorAll('input:not([type="checkbox"]):not([type="file"]), textarea, select').forEach(el => {
+        el.classList.add('form-control', 'px-3');
+        if (el.tagName !== 'TEXTAREA') {
+            el.classList.add('rounded-pill');
+        } else {
+            el.classList.add('rounded-4');
+            el.setAttribute('rows', '4');
+        }
+    });
+    
+    // Style file inputs
+    document.querySelectorAll('input[type="file"]').forEach(el => {
+        el.classList.add('form-control', 'rounded-pill');
+    });
+
+    // Style specifically for focus states
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(0, 119, 182, 0.15);
+        }
+        .modern-form label {
+            transition: color 0.3s ease;
+        }
+        .form-group:focus-within label {
+            color: var(--ocean-deep) !important;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease forwards;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 {% endblock %}

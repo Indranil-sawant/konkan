@@ -24,10 +24,12 @@ def home(request):
 def create_food(request):
     food_items = FoodItemForm()
     if request.method == 'POST':
-        food_item = FoodItemForm(request.POST , request.FILES)
-        if food_item.is_valid():
+        food_item_form = FoodItemForm(request.POST, request.FILES)
+        if food_item_form.is_valid():
+            food_item = food_item_form.save(commit=False)
+            food_item.uploaded_by = request.user.profile
             food_item.save()
-            return redirect('home')
+            return redirect('food_home')
     return render(request, 'food/food_form.html', {"food_items":food_items})
 
 
