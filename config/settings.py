@@ -25,10 +25,15 @@ SECRET_KEY = 'django-insecure-hxd+@ga@#vts3^x14me#_5$4$^u((d0e_7g2gn!wut**pgnz*#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['konkan.onrender.com']
+ALLOWED_HOSTS = ['konkan.onrender.com', '.onrender.com', 'localhost', '127.0.0.1']
+
+if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
+    ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
 
 
 # Application definition
+
+CSRF_TRUSTED_ORIGINS = ['https://konkan.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
