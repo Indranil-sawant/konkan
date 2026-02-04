@@ -1,0 +1,125 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #061E29 0%, #1D546D 100%) !important;
+    }
+    #content {
+        padding: 0 !important;
+    }
+    #container {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .login #content-main {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 2.5rem !important;
+        border-radius: 16px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .login .form-row {
+        border: none !important;
+        padding: 0.75rem 0 !important;
+    }
+    .login label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+    .login input[type="text"], .login input[type="password"] {
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 0.75rem !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        font-size: 1rem;
+    }
+    .login input:focus {
+        border-color: #5F9598 !important;
+        box-shadow: 0 0 0 4px rgba(95, 149, 152, 0.1) !important;
+        outline: none;
+    }
+    .submit-row {
+        background: none !important;
+        border: none !important;
+        padding: 1.5rem 0 0 0 !important;
+        margin: 0 !important;
+        text-align: center;
+    }
+    .submit-row input {
+        width: 100% !important;
+        padding: 0.75rem !important;
+        font-size: 1rem !important;
+        text-transform: none !important;
+    }
+    #header, .breadcrumbs {
+        display: none !important;
+    }
+    .login-logo {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .login-logo i {
+        font-size: 3rem;
+        color: #5F9598;
+    }
+    .login-title {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+    }
+    .login-subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 2rem;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="login-logo">
+        <i class="fas fa-shield-halved"></i>
+    </div>
+    <h2 class="login-title">Konkan Admin</h2>
+    <p class="login-subtitle">Secure access for authorized personnel only.</p>
+    
+    <form action="{{ app_path }}" method="post" id="login-form">
+        {% csrf_token %}
+        <div class="form-row">
+            {{ form.username.errors }}
+            {{ form.username.label_tag }} {{ form.username }}
+        </div>
+        <div class="form-row">
+            {{ form.password.errors }}
+            {{ form.password.label_tag }} {{ form.password }}
+            <input type="hidden" name="next" value="{{ next }}">
+        </div>
+        {% url 'admin_password_reset' as password_reset_url %}
+        {% if password_reset_url %}
+        <div class="password-reset-link" style="text-align: right; margin-top: 0.5rem;">
+            <a href="{{ password_reset_url }}" style="font-size: 0.75rem; color: #3b82f6;">{% translate 'Forgotten your password or username?' %}</a>
+        </div>
+        {% endif %}
+        <div class="submit-row">
+            <input type="submit" value="{% translate 'Log in' %}">
+        </div>
+    </form>
+</div>
+{% endblock %}

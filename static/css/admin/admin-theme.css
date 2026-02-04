@@ -1,0 +1,270 @@
+:root {
+    /* User Provided Professional Palette */
+    --primary: #061E29;           /* Deep Midnight Teal */
+    --primary-light: #1D546D;     /* Deep Teal */
+    --accent: #5F9598;            /* Muted Summer Aqua */
+    --bg-light: #F3F4F4;          /* Soft Off-White */
+    --card-bg: #ffffff;
+    --text-main: #061E29;         /* High contrast matching primary */
+    --text-muted: #1D546D;        /* Secondary color for muted text */
+    --border-color: #d1d5db;      /* Modern neutral border */
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --sidebar-bg: #061E29;        /* Darker sidebar for premium feel */
+}
+
+/* Global resets for a cleaner feel */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    background-color: var(--bg-light) !important;
+    color: var(--text-main);
+    line-height: 1.5 !important;
+}
+
+h1, h2, h3, h4 {
+    color: var(--text-main) !important;
+    font-weight: 700 !important;
+}
+
+#content h1 {
+    font-size: 1.75rem !important;
+    margin-bottom: 1.5rem !important;
+    letter-spacing: -0.025em !important;
+    color: var(--primary) !important;
+}
+
+/* Header Overhaul */
+#header {
+    background: var(--primary) !important;
+    padding: 0.75rem 2.5rem !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+
+#branding h1 {
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    letter-spacing: -0.025em !important;
+}
+
+#branding h1 a {
+    color: #f8fafc !important;
+}
+
+#user-tools {
+    font-size: 0.8125rem !important;
+    color: #94a3b8 !important;
+}
+
+#user-tools a {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    margin: 0 0.5rem !important;
+}
+
+/* Dashboard Modules */
+.dashboard .module {
+    margin-bottom: 2rem !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+}
+
+.module caption, .module h2 {
+    background: #ffffff !important;
+    color: var(--primary) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding: 1.25rem !important;
+    font-size: 0.9rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 800 !important;
+}
+
+.module caption a, .module h2 a {
+    color: var(--primary) !important;
+    font-weight: 800 !important;
+}
+
+.module table {
+    margin-bottom: 0 !important;
+}
+
+.module td, .module th {
+    padding: 0.875rem 1.25rem !important;
+    font-size: 0.875rem !important;
+}
+
+/* Buttons */
+.button, input[type=submit], .submit-row input {
+    background: var(--accent) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.button:hover, input[type=submit]:hover {
+    background: #2563eb !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+    transform: translateY(-1px) !important;
+}
+
+.button.default, input[type=submit].default {
+    background: var(--primary) !important;
+}
+
+.button.default:hover {
+    background: var(--primary-light) !important;
+}
+
+/* List View (Changelist) */
+#changelist {
+    border-radius: 12px !important;
+    border: 1px solid var(--border-color) !important;
+    background: white !important;
+    padding: 0 !important;
+}
+
+#changelist-filter {
+    background: #f8fafc !important;
+    border-left: 1px solid var(--border-color) !important;
+}
+
+#result_list thead th {
+    background: #f8fafc !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.025em !important;
+}
+
+#result_list tbody td {
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.row1 { background: #ffffff !important; }
+.row2 { background: #fdfdfe !important; }
+
+/* Forms Overhaul */
+fieldset {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    background: white !important;
+    margin-bottom: 2rem !important;
+}
+
+fieldset h2 {
+    background: transparent !important;
+    color: var(--text-main) !important;
+    font-weight: 700 !important;
+    border: none !important;
+    padding: 0 0 1rem 0 !important;
+}
+
+.form-row {
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding: 1.25rem 0 !important;
+}
+
+label {
+    font-size: 0.875rem !important;
+    color: var(--text-main) !important;
+    font-weight: 600 !important;
+}
+
+input[type=text], input[type=password], textarea, select {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Dashboard Index (Grid Layout) */
+.dashboard .module {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+}
+
+@media (min-width: 768px) {
+    .dashboard #content-main {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 2rem;
+    }
+}
+
+.dashboard .module table th {
+    width: 100%;
+}
+
+.dashboard .module table td {
+    white-space: nowrap;
+}
+
+/* Sidebar Overhaul (Django 3.1+) */
+#nav-sidebar {
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid rgba(255,255,255,0.05) !important;
+}
+
+#nav-sidebar .module caption {
+    background: transparent !important;
+    color: #94a3b8 !important;
+    font-weight: 700 !important;
+    padding: 1.5rem 1rem 0.5rem !important;
+    border: none !important;
+}
+
+#nav-sidebar a {
+    color: #cbd5e1 !important;
+    font-size: 0.8125rem !important;
+    padding: 0.5rem 1rem !important;
+    display: block !important;
+    transition: all 0.2s !important;
+}
+
+#nav-sidebar a:hover {
+    background: rgba(255,255,255,0.05) !important;
+    color: #ffffff !important;
+}
+
+#nav-sidebar .current-model a {
+    background: var(--accent) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    margin: 0 0.5rem !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

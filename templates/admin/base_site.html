@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Konkan Guide Admin{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="{% static 'css/admin/admin-theme.css' %}">
+<style>
+    /* Inline fixes for branding */
+    #branding h1 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    #branding h1::before {
+        content: '\f5b0'; /* FontAwesome Umbrella Beach icon */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 1.2rem;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<div id="branding">
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            Konkan<span style="opacity: 0.8; font-weight: 400;">Dashboard</span>
+        </a>
+    </h1>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
