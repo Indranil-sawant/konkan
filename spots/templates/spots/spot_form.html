@@ -1,6 +1,8 @@
 {% extends 'base.html' %} 
 {% load static %} 
 
+{% block title %}Hidden Spot - Konkan Guide{% endblock %}
+
 {% block content %}
 <div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
     <div class="container py-3 text-center">
@@ -36,6 +38,10 @@
                                         {% elif field.name == 'rating' %}<i class="fas fa-star text-primary me-2"></i>
                                         {% elif field.name == 'map_link' %}<i class="fas fa-map-location-dot text-primary me-2"></i>
                                         {% elif field.name == 'distance' %}<i class="fas fa-route text-primary me-2"></i>
+                                        {% elif field.name == 'opening_hours' %}<i class="fas fa-sun text-primary me-2"></i>
+                                        {% elif field.name == 'closing_hours' %}<i class="fas fa-moon text-primary me-2"></i>
+                                        {% elif field.name == 'category' %}<i class="fas fa-th-large text-primary me-2"></i>
+                                        {% elif field.name == 'tags' %}<i class="fas fa-tags text-primary me-2"></i>
                                         {% endif %}
                                         {{ field.label }}
                                     </label>
@@ -97,6 +103,12 @@
         }
         .form-group:focus-within label {
             color: var(--ocean-deep) !important;
+        }
+        /* Style for multiple select / tags */
+        select[multiple] {
+            border-radius: 1rem !important;
+            padding: 1rem !important;
+            min-height: 120px;
         }
     `;
     document.head.appendChild(style);

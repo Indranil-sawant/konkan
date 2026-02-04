@@ -23,17 +23,19 @@ class Spots(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
-    uploaded_by = models.ForeignKey(Profile , null=True, blank=True , on_delete=models.SET_NULL)
+    uploaded_by = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
 
     # Display Info
-    distance = models.FloatField()
+    distance = models.FloatField(null=True, blank=True)
     rating = models.FloatField(default=0.0)
+    price = models.FloatField(default=0.0, help_text="Estimated cost or entry fee")
     photo = models.ImageField(upload_to='spots/', null=True, blank=True)
 
-    # FoodInfo (now merged)
+    # Travel Info
     description = models.TextField(blank=True, null=True)
-    ingredients = models.TextField(blank=True, null=True)
-    map_link = models.URLField(blank=True, null=True)
+    opening_hours = models.CharField(max_length=100, blank=True, null=True, default="Sunrise - Sunset")
+    closing_hours = models.CharField(max_length=100, blank=True, null=True, default="Sunset")
+    map_link = models.URLField(blank=True, null=True, help_text="Google Maps URL")
 
     # System fields
     created_at = models.DateTimeField(auto_now_add=True)
