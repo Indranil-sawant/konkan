@@ -24,18 +24,15 @@ class FoodItem(models.Model):
     # Main Info
     name = models.CharField(max_length=100)
     uploaded_by = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, blank=True)
+  
     # Display Info
-    price = models.FloatField()
+    price = models.FloatField(default=0.0)
     rating = models.FloatField(default=0.0)
     photo = models.ImageField(null=True, blank=True , default='default_food.jpg')
 
     # FoodInfo (now merged)
     description = models.TextField(blank=True, null=True)
-    ingredients = models.TextField(blank=True, null=True)
-    recipe_link = models.URLField(blank=True, null=True)
-    calories = models.IntegerField(blank=True, null=True)
+ 
     best_time_to_eat = models.CharField(max_length=100, blank=True, null=True)
 
     # System fields
