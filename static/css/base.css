@@ -1,104 +1,146 @@
-/* base.css - Foundation of the Konkan Guide Design System */
+/* Konkan Guide - Coastal Premium Design System */
 
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@300;400;500;600&display=swap");
 
 :root {
-  /* Color Palette */
-  --ocean-deep: #0077b6;
-  --ocean-light: #00b4d8;
-  --aqua: #90e0ef;
-  --sand-beige: #fefae0;
-  --white-sand: #f8f9fa;
-  --dark-navy: #023047;
-  --coral: #fb8500;
+  /* 🌊 Coastal Palette */
+  --ocean-deep: #0a3d62;
+  --ocean-mid: #0077b6;
+  --ocean-light: #48cae4;
+  --aqua-mist: #caf0f8;
+  --sand-warm: #fdf0d5;
+  --sunset-coral: #ff7b54;
+  --sunset-gold: #ffb703;
+  --white-foam: #f8fafc;
+  --navy-dark: #1b263b;
 
   /* Functional Colors */
-  --primary: var(--ocean-deep);
+  --primary: var(--ocean-mid);
   --primary-hover: #023e8a;
-  --secondary: var(--ocean-light);
-  --accent: var(--sand-beige);
-  --text-main: var(--dark-navy);
-  --text-muted: #6c757d;
-  --bg-body: var(--white-sand);
-  --bg-card: #ffffff;
+  --accent: var(--sunset-coral);
+  --highlight: var(--sunset-gold);
+  --text-main: var(--navy-dark);
+  --text-muted: #5c677d;
+  --bg-body: linear-gradient(to bottom, #f8fafc, #edf6f9);
+  --bg-card: rgba(255, 255, 255, 0.8);
 
-  /* Spacing & Borders */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --shadow-sm: 0 2px 8px rgba(2, 48, 71, 0.05);
-  --shadow-md: 0 8px 24px rgba(2, 48, 71, 0.1);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* UI */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --shadow-sm: 0 4px 12px rgba(0, 119, 182, 0.08);
+  --shadow-md: 0 12px 30px rgba(0, 119, 182, 0.15);
+  --transition: all 0.35s ease;
 }
 
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Body */
 body {
-  font-family: "Outfit", sans-serif;
-  background-color: var(--bg-body);
+  font-family: "Manrope", sans-serif;
+  background: var(--bg-body);
   color: var(--text-main);
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Playfair Display", serif;
   font-weight: 600;
-  color: var(--text-main);
+  letter-spacing: 0.5px;
+  color: var(--ocean-deep);
   margin-bottom: 1rem;
 }
 
+/* Links */
 a {
   color: var(--primary);
   text-decoration: none;
+  position: relative;
+  transition: var(--transition);
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
   transition: var(--transition);
 }
 
 a:hover {
-  color: var(--primary-hover);
+  color: var(--accent);
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
+a:hover::after {
+  width: 100%;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-body);
+/* Buttons (Beach Style) */
+.btn-primary {
+  background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-light));
+  color: white;
+  padding: 12px 28px;
+  border-radius: var(--radius-md);
+  border: none;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--aqua);
-  border-radius: 10px;
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary);
+/* Card Style */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  transition: var(--transition);
 }
 
-/* Utility Classes */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Gradient Heading Text */
 .text-gradient {
-  background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));
+  background: linear-gradient(135deg, var(--ocean-mid), var(--sunset-coral));
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+/* Section Spacing */
 .section-padding {
-  padding: 80px 0;
+  padding: 100px 0;
 }
 
 @media (max-width: 768px) {
   .section-padding {
-    padding: 50px 0;
+    padding: 60px 0;
   }
+}
+
+/* Scrollbar (Soft Aqua) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--ocean-light), var(--aqua-mist));
+  border-radius: 20px;
 }

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="container section-padding">
+
+    <!-- 🔎 Search Heading -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-gradient">
+            Search Results
+        </h2>
+
+        {% if query %}
+            <p class="text-muted">
+                Showing results for: 
+                <strong>"{{ query }}"</strong>
+            </p>
+        {% else %}
+            <p class="text-muted">Start typing to explore Konkan 🌊</p>
+        {% endif %}
+    </div>
+
+
+    <!-- ================= DESTINATIONS ================= -->
+    {% if destination_results %}
+    <div class="mb-5">
+        <h4 class="mb-4 fw-bold">🌴 Destinations</h4>
+
+        <div class="row g-4">
+            {% for dest in destination_results %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if dest.photo %}
+                        <img src="{{ dest.photo.url }}" class="card-img-top"
+                             style="height:200px; object-fit:cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="fw-bold">{{ dest.name }}</h5>
+                        <p class="text-muted small">
+                            {{ dest.description|truncatewords:15 }}
+                        </p>
+
+                        <a href="{% url 'destination_detail' dest.id %}"
+                           class="fw-bold text-decoration-none"
+                           style="color: var(--accent);">
+                            Explore →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ================= SPOTS ================= -->
+    {% if spot_results %}
+    <div class="mb-5">
+        <h4 class="mb-4 fw-bold">✨ Hidden Spots</h4>
+
+        <div class="row g-4">
+            {% for spot in spot_results %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if spot.photo %}
+                        <img src="{{ spot.photo.url }}" class="card-img-top"
+                             style="height:200px; object-fit:cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="fw-bold">{{ spot.name }}</h5>
+                        <p class="text-muted small">
+                            {{ spot.category.name }}
+                        </p>
+
+                        <a href="{% url 'details_spots' spot.id %}"
+                           class="fw-bold text-decoration-none"
+                           style="color: var(--accent);">
+                            Discover →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ================= FOOD ================= -->
+    {% if food_results %}
+    <div class="mb-5">
+        <h4 class="mb-4 fw-bold">🍤 Coastal Food</h4>
+
+        <div class="row g-4">
+            {% for food in food_results %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if food.photo %}
+                        <img src="{{ food.photo.url }}" class="card-img-top"
+                             style="height:200px; object-fit:cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="fw-bold">{{ food.name }}</h5>
+                        <p class="text-muted small">
+                            {{ food.category.name }}
+                        </p>
+
+                        <a href="{% url 'food_detail' food.id %}"
+                           class="fw-bold text-decoration-none"
+                           style="color: var(--accent);">
+                            Taste →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ================= NO RESULTS ================= -->
+    {% if not destination_results and not spot_results and not food_results %}
+        {% if query %}
+            <div class="text-center mt-5">
+                <h4>No results found 😔</h4>
+                <p class="text-muted">Try searching something else.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+</section>
+
+{% endblock %}

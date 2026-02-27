@@ -16,10 +16,6 @@ class SpotsAdmin(admin.ModelAdmin):
         ('Location & Media', {
             'fields': ('distance', 'map_link', 'photo')
         }),
-        ('Additional Info', {
-            'fields': ('ingredients',),
-            'classes': ('collapse',),
-        }),
         ('Attribution', {
             'fields': ('uploaded_by',),
             'classes': ('collapse',),

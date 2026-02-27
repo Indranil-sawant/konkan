@@ -115,43 +115,66 @@
     {% endif %}
 
     <!-- Popular Spots Grid -->
-    {% if featured_spots %}
-    <div class="row g-4 mt-5">
-        <div class="col-12 mb-3">
-            <h2 class="fw-bold">Hidden Gems</h2>
-            <p class="text-muted">Contributions from our community of explorers.</p>
-        </div>
-        {% for spot in featured_spots %}
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="position-relative">
-                    {% if spot.photo %}
-                    <img class="card-img-top" src="{{ spot.photo.url }}" alt="{{ spot.name }}" 
-                         style="height: 220px; object-fit: cover; border-radius: var(--radius-md) var(--radius-md) 0 0;">
-                    {% else %}
-                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder" 
-                         style="height: 220px; object-fit: cover;">
-                    {% endif %}
-                    <div class="position-absolute bottom-0 end-0 m-3 px-2 py-1 bg-white rounded-pill shadow-sm small fw-bold">
-                        <i class="fas fa-star text-warning"></i> {{ spot.rating }}
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="card-title mb-0 fw-bold">{{ spot.name }}</h5>
-                    </div>
-                    <p class="text-muted small mb-1"><i class="fas fa-tag me-1"></i> {{ spot.category.name }}</p>
-                    <p class="text-muted small mb-3"><i class="fas fa-map-marked-alt me-1"></i> {{ spot.distance }} km from center</p>
-                    <a href="{% url 'details_spots' spot.id %}" class="btn btn-link p-0 text-primary fw-bold text-decoration-none small">
-                        Explore Hidden Spot <i class="fas fa-chevron-right ms-1" style="font-size: 0.8rem;"></i>
-                    </a>
+   
+
+{% if featured_food %}
+<div class="row g-4 mt-5">
+    <div class="col-12 mb-3">
+        <h2 class="fw-bold text-gradient">Featured Food</h2>
+        <p class="text-muted">Taste the authentic flavors of Konkan cuisine.</p>
+    </div>
+
+    {% for food in featured_food %}
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+
+            <div class="position-relative">
+                {% if food.photo %}
+                <img class="card-img-top"
+                     src="{{ food.photo.url }}"
+                     alt="{{ food.name }}"
+                     style="height: 220px; object-fit: cover; border-radius: var(--radius-md) var(--radius-md) 0 0;">
+                {% else %}
+                <img class="card-img-top"
+                     src="https://via.placeholder.com/700x400"
+                     alt="Food Placeholder"
+                     style="height: 220px; object-fit: cover;">
+                {% endif %}
+
+                <!-- Rating Badge -->
+                <div class="position-absolute bottom-0 end-0 m-3 px-3 py-1 bg-white rounded-pill shadow-sm small fw-bold">
+                    <i class="fas fa-star text-warning"></i> {{ food.rating }}
                 </div>
             </div>
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title mb-0 fw-bold">{{ food.name }}</h5>
+                </div>
+
+                <p class="text-muted small mb-1">
+                    <i class="fas fa-utensils me-1"></i> {{ food.category.name }}
+                </p>
+
+                <p class="text-muted small mb-3">
+                    <i class="fas fa-map-marker-alt me-1"></i> {{ food.location }}
+                </p>
+
+                <a href="{% url 'details' food.id %}"
+                   class="btn btn-link p-0 fw-bold text-decoration-none small"
+                   style="color: var(--accent);">
+                    Discover the Taste
+                    <i class="fas fa-chevron-right ms-1" style="font-size: 0.8rem;"></i>
+                </a>
+
+            </div>
         </div>
-        {% endfor %}
     </div>
-    {% endif %}
+    {% endfor %}
 </div>
+{% endif %}
+
 
 <!-- Community Teaser -->
 <section class="section-padding bg-dark text-white text-center mt-5" style="background-image: linear-gradient(rgba(2, 48, 71, 0.9), rgba(2, 48, 71, 0.9)), url('{% if featured_destinations.0.main_image %}{{ featured_destinations.0.main_image.url }}{% endif %}'); background-size: cover; background-attachment: fixed;">
@@ -165,4 +188,127 @@
         {% endif %}
     </div>
 </section>
+
+<!-- 🌊 Konkan Guide Search Bar -->
+<section class="search-section">
+  <div class="search-container">
+    
+    <h2 class="search-title">Find Your Next Coastal Escape</h2>
+    <p class="search-subtitle">Search destinations, food, or hidden gems</p>
+
+    <form method="GET" action="" class="search-form" , action="{% url 'search'%}">
+      
+      <div class="search-input-group">
+        <input type="text" name="q" placeholder="Search beaches, seafood, waterfalls..." class="search-input">
+        
+        <select name="category" class="search-select">
+          <option value="">All Categories</option>
+          <option value="beach">Beaches</option>
+          <option value="food">Food</option>
+          <option value="waterfall">Waterfalls</option>
+          <option value="temple">Temples</option>
+        </select>
+
+        <button type="submit" class="search-btn">
+          🔍 Search
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<style>
+/* 🌊 Coastal Search Section */
+.search-section {
+  padding: 100px 20px;
+  background: linear-gradient(to bottom, #edf6f9, #ffffff);
+  text-align: center;
+}
+
+.search-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0a3d62;
+  margin-bottom: 10px;
+}
+
+.search-subtitle {
+  color: #5c677d;
+  margin-bottom: 40px;
+}
+
+/* Container */
+.search-container {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Search Box */
+.search-input-group {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 12px;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(0, 119, 182, 0.15);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Input */
+.search-input {
+  flex: 2;
+  border: none;
+  outline: none;
+  padding: 14px 20px;
+  font-size: 1rem;
+  border-radius: 50px;
+}
+
+/* Dropdown */
+.search-select {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 14px;
+  border-radius: 50px;
+  background: #f1f9fc;
+  font-size: 0.95rem;
+}
+
+/* Button */
+.search-btn {
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.search-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 119, 182, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .search-input-group {
+    flex-direction: column;
+    border-radius: 20px;
+  }
+
+  .search-input,
+  .search-select,
+  .search-btn {
+    width: 100%;
+    border-radius: 12px;
+  }
+}
+</style>
+
 {% endblock %}
+
