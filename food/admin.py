@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from .models import FoodItem, Tag, Category
 
 
@@ -71,14 +71,14 @@ class FoodItemAdmin(admin.ModelAdmin):
     @admin.display(description='Food API')
     def api_list_link(self, obj):
         url = '/api/v1/food/'
-        return format_html(_api_button(url, 'View API List', color='#0077b6'))
+        return mark_safe(_api_button(url, 'View API List', color='#0077b6'))
 
     # ── Column: API detail button (unique per food item) ──────────────────
 
     @admin.display(description='Detail API')
     def api_detail_link(self, obj):
         url = f'/api/v1/food/{obj.pk}/'
-        return format_html(_api_button(url, 'View in API', color='#10b981'))
+        return mark_safe(_api_button(url, 'View in API', color='#10b981'))
 
     # ── Readonly field inside the change form ──────────────────────────────
 
@@ -95,8 +95,8 @@ class FoodItemAdmin(admin.ModelAdmin):
             '{}'
             '{}'
             '</div>',
-            format_html(_api_button(list_url,   '⚡ All Food API',      '#0077b6')),
-            format_html(_api_button(detail_url, '⚡ This Item in API',  '#10b981')),
+            mark_safe(_api_button(list_url,   '⚡ All Food API',      '#0077b6')),
+            mark_safe(_api_button(detail_url, '⚡ This Item in API',  '#10b981')),
         )
 
 

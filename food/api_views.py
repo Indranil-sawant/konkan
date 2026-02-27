@@ -1,26 +1,19 @@
-from rest_framework import generics, permissions, filters
+from rest_framework import generics, permissions, filters, status
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import FoodItem
 from .serializers import FoodItemSerializer
 from config.permissions import IsOwnerOrReadOnly
 
-
 class FoodItemListCreateView(generics.ListCreateAPIView):
-    """
-    GET  /api/v1/food/   → List all food items (paginated, searchable)
-    POST /api/v1/food/   → Create a new food item (must be logged in)
 
-    Query parameters:
-        ?search=seafood    → search name & description
-        ?ordering=-rating  → sort by rating descending
-        ?page=2            → page number
-    """
     queryset = (
         FoodItem.objects
         .select_related('uploaded_by')
         .order_by('-rating')
     )
+
     serializer_class = FoodItemSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'description']
@@ -32,9 +25,23 @@ class FoodItemListCreateView(generics.ListCreateAPIView):
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
 
-    def perform_create(self, serializer):
-        serializer.save(uploaded_by=self.request.user.profile)
+    # 🔥 THIS IS THE FIX
+    def create(self, request, *args, **kwargs):
 
+        # Check if incoming data is list
+        is_many = isinstance(request.data, list)
+
+        serializer = self.get_serializer(
+            data=request.data,
+            many=is_many
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        # Save with uploaded_by
+        serializer.save(uploaded_by=request.user.profile)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED )
 
 class FoodItemDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
