@@ -21,7 +21,12 @@ class Spots(models.Model):
 
     # Main Info
     name = models.CharField(max_length=100)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     tags = models.ManyToManyField(Tag, blank=True)
     uploaded_by = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
 

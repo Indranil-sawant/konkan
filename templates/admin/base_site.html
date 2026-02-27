@@ -20,6 +20,52 @@
         font-weight: 900;
         font-size: 1.2rem;
     }
+
+    /* ── API Dashboard Bar ──────────────────────────────── */
+    .api-dashboard-bar {
+        background: linear-gradient(135deg, #023047, #0077b6);
+        padding: 8px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        border-bottom: 2px solid #00b4d8;
+    }
+    .api-dashboard-bar .api-bar-label {
+        color: #90e0ef;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-right: 6px;
+        white-space: nowrap;
+    }
+    .api-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255,255,255,0.12);
+        color: #fff !important;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        text-decoration: none !important;
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: background 0.2s, border-color 0.2s;
+        white-space: nowrap;
+    }
+    .api-btn:hover {
+        background: rgba(255,255,255,0.25);
+        border-color: rgba(255,255,255,0.5);
+        color: #fff !important;
+    }
+    .api-btn.green  { background: rgba(16,185,129,0.25); border-color: #10b981; }
+    .api-btn.blue   { background: rgba(0,119,182,0.35);  border-color: #00b4d8; }
+    .api-btn.orange { background: rgba(249,115,22,0.25); border-color: #f97316; }
+    .api-btn.green:hover  { background: rgba(16,185,129,0.5); }
+    .api-btn.blue:hover   { background: rgba(0,180,216,0.5);  }
+    .api-btn.orange:hover { background: rgba(249,115,22,0.4); }
 </style>
 {% endblock %}
 
@@ -33,4 +79,29 @@
 </div>
 {% endblock %}
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
+<!-- ⚡ API Quick-Access Bar — visible on every admin page -->
+<div class="api-dashboard-bar">
+    <span class="api-bar-label">⚡ API v1</span>
+
+    <!-- Spots -->
+    <a href="/api/v1/spots/" target="_blank" rel="noopener" class="api-btn green">
+        🗺️ Spots List
+    </a>
+
+    <!-- Food -->
+    <a href="/api/v1/food/" target="_blank" rel="noopener" class="api-btn green">
+        🍽️ Food List
+    </a>
+
+    <!-- DRF Browsable Root -->
+    <a href="/api/v1/" target="_blank" rel="noopener" class="api-btn blue">
+        🌐 API Root
+    </a>
+
+    <!-- Public site -->
+    <a href="/" target="_blank" rel="noopener" class="api-btn orange">
+        🌊 View Site
+    </a>
+</div>
+{% endblock %}

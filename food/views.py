@@ -9,14 +9,13 @@ from . forms import FoodItemForm
 
 # Create your views here.
 
-@login_required
 def main(request):
     return render(request, 'food/index.html')
 
-@login_required
+
 def home(request):
     food_items = FoodItem.objects.all()
-    context = { 'food_items': food_items }
+    context = {'food_items': food_items}
     return render(request, 'food/index.html', context)
 
 @login_required

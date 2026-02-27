@@ -6,7 +6,6 @@ from .forms import DestinationForm
 from reviews.models import Review
 from reviews.forms import ReviewForm 
 
-@login_required
 def destination_list(request):
     query = request.GET.get('q')
     category = request.GET.get('category')
@@ -27,7 +26,6 @@ def destination_list(request):
     }
     return render(request, 'destinations/destination_list.html', context)
 
-@login_required
 def temples(request):
     destinations = Destination.objects.filter(category='Temple', is_verified=True)
     context = {

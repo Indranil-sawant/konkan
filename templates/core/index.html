@@ -114,8 +114,58 @@
     </div>
     {% endif %}
 
-    <!-- Popular Spots Grid -->
-   
+
+    <!-- Hidden Spots Section -->
+    {% if featured_spots %}
+    <div class="row g-4 mt-5">
+        <div class="col-12 mb-3 d-flex align-items-center justify-content-between">
+            <div>
+                <h2 class="fw-bold mb-1">Hidden Gems</h2>
+                <p class="text-muted">Secret spots shared by the local community.</p>
+            </div>
+            <a href="{% url 'home_spots' %}" class="btn btn-link text-primary fw-bold text-decoration-none">
+                View All <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        {% for spot in featured_spots %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                <div class="position-relative">
+                    {% if spot.photo %}
+                        <img src="{{ spot.photo.url }}" class="card-img-top" alt="{{ spot.name }}"
+                             style="height:220px; object-fit:cover;">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=60"
+                             class="card-img-top" alt="{{ spot.name }}" style="height:220px; object-fit:cover;">
+                    {% endif %}
+                    <!-- Rating Badge -->
+                    <div class="position-absolute bottom-0 end-0 m-3 px-2 py-1 bg-white rounded-pill shadow-sm small fw-bold">
+                        <i class="fas fa-star text-warning"></i> {{ spot.rating }}
+                    </div>
+                    {% if spot.category %}
+                    <span class="badge position-absolute top-0 start-0 m-3 badge-coastal shadow-sm">
+                        {{ spot.category.name }}
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">{{ spot.name }}</h5>
+                    {% if spot.distance %}
+                    <p class="text-muted small mb-2">
+                        <i class="fas fa-route me-1 text-primary"></i> {{ spot.distance }} km away
+                    </p>
+                    {% endif %}
+                    <p class="text-muted small mb-3">{{ spot.description|truncatewords:15 }}</p>
+                    <a href="{% url 'home_spots' %}" class="btn btn-outline-primary btn-sm rounded-pill">
+                        Explore Spot
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
 {% if featured_food %}
 <div class="row g-4 mt-5">
