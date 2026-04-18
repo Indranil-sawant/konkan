@@ -8,9 +8,16 @@ from reviews.models import Review
 
 def _get_profile_context(profile):
     spots_qs = Spots.objects.filter(uploaded_by=profile).select_related('category').order_by('-created_at')
+
+    # Guard against legacy Profile rows with no linked User
+    try:
+        user = profile.user
+    except Exception:
+        user = None
+
     reviews_qs = (
-        Review.objects.filter(user=profile.user).select_related('destination').order_by('-created_at')
-        if profile.user else Review.objects.none()
+        Review.objects.filter(user=user).select_related('destination').order_by('-created_at')
+        if user else Review.objects.none()
     )
     return {
         'profile':      profile,
