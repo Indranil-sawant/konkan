@@ -126,9 +126,16 @@
             </div>
 
             <!-- Community Info -->
+            {% if spots.uploaded_by %}
             <div class="card border-0 shadow-sm rounded-4 bg-primary text-white p-4">
                 <div class="d-flex align-items-center">
+                    {% if spots.uploaded_by.profile_image %}
                     <img src="{{ spots.uploaded_by.profile_image.url }}" class="rounded-circle border border-3 border-white-50 shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+                    {% else %}
+                    <div class="rounded-circle border border-3 border-white-50 shadow-sm bg-white bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fas fa-user text-white fs-4"></i>
+                    </div>
+                    {% endif %}
                     <div class="ms-3">
                         <h6 class="fw-bold mb-0">Contributor</h6>
                         <p class="small mb-0 opacity-75">{{ spots.uploaded_by.name|default:spots.uploaded_by.username }}</p>
@@ -137,8 +144,9 @@
                 <hr class="my-3 opacity-25">
                 <p class="small mb-0 italic">"This spot represents the essence of Konkan's untouched beauty. Please respect the local environment."</p>
             </div>
+            {% endif %}
             
-            {% if user.is_authenticated and spots.uploaded_by == user.profile %}
+            {% if spots.uploaded_by and user.is_authenticated and spots.uploaded_by == user.profile %}
             <div class="mt-4">
                 <div class="d-flex gap-2">
                     <a href="{% url 'update_spot' spots.id %}" class="btn btn-outline-secondary flex-grow-1 rounded-pill py-2">
