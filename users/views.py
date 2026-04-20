@@ -1,9 +1,131 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from . models import Profile 
+from django.db.models import Avg
+from django.urls import reverse
+from .models import Profile
+from .forms import Profileform
+from destinations.models import Destination
+from spots.models import Spots
+from food.models import FoodItem
+from reviews.models import Review
 
-from . forms import Profileform
 # Create your views here.
+
+def build_profile_context(profile):
+    user = profile.user
+    destination_qs = Destination.objects.filter(submitted_by=user) if user else Destination.objects.none()
+    spot_qs = Spots.objects.filter(uploaded_by=profile)
+    food_qs = FoodItem.objects.filter(uploaded_by=profile)
+    review_qs = Review.objects.filter(user=user) if user else Review.objects.none()
+
+    destination_count = destination_qs.count()
+    spot_count = spot_qs.count()
+    food_count = food_qs.count()
+    review_count = review_qs.count()
+    total_contributions = destination_count + spot_count + food_count
+    verified_destination_count = destination_qs.filter(is_verified=True).count()
+
+    average_review_rating = review_qs.aggregate(avg=Avg('rating'))['avg']
+    if average_review_rating is not None:
+        average_review_rating = round(average_review_rating, 1)
+
+    recent_destinations = destination_qs.order_by('-created_at')[:3]
+    recent_spots = spot_qs.order_by('-created_at')[:3]
+    recent_food_items = food_qs.order_by('-created_at')[:3]
+    recent_reviews = review_qs.order_by('-created_at')[:3]
+
+    latest_items = []
+    for destination in recent_destinations:
+        latest_items.append({
+            'timestamp': destination.created_at,
+            'url': destination.get_absolute_url(),
+            'title': destination.title,
+            'subtitle': destination.location_name,
+            'label': 'Destination',
+            'icon': 'fa-map-marker-alt',
+        })
+    for spot in recent_spots:
+        latest_items.append({
+            'timestamp': spot.created_at,
+            'url': reverse('details_spots', args=[spot.id]),
+            'title': spot.name,
+            'subtitle': spot.description or 'A hidden spot shared with the community.',
+            'label': 'Hidden Spot',
+            'icon': 'fa-map-pin',
+        })
+    for food in recent_food_items:
+        latest_items.append({
+            'timestamp': food.created_at,
+            'url': reverse('details', args=[food.id]),
+            'title': food.name,
+            'subtitle': food.description or 'A food story shared with the community.',
+            'label': 'Food Story',
+            'icon': 'fa-utensils',
+        })
+
+    latest_contribution = None
+    if latest_items:
+        latest_contribution = sorted(latest_items, key=lambda item: item['timestamp'], reverse=True)[0]
+
+    recent_activity = []
+    for destination in recent_destinations:
+        recent_activity.append({
+            'timestamp': destination.created_at,
+            'url': destination.get_absolute_url(),
+            'title': destination.title,
+            'subtitle': destination.location_name,
+            'label': 'Destination Added',
+            'icon': 'fa-map-marker-alt',
+            'photo_url': destination.main_image.url if destination.main_image else None,
+        })
+    for spot in recent_spots:
+        recent_activity.append({
+            'timestamp': spot.created_at,
+            'url': reverse('details_spots', args=[spot.id]),
+            'title': spot.name,
+            'subtitle': spot.description or 'A hidden spot from this explorer.',
+            'label': 'Spot Shared',
+            'icon': 'fa-map-pin',
+            'photo_url': spot.photo.url if spot.photo else None,
+        })
+    for food in recent_food_items:
+        recent_activity.append({
+            'timestamp': food.created_at,
+            'url': reverse('details', args=[food.id]),
+            'title': food.name,
+            'subtitle': food.description or 'A food story from this explorer.',
+            'label': 'Food Shared',
+            'icon': 'fa-utensils',
+            'photo_url': food.photo.url if food.photo else None,
+        })
+    for review in recent_reviews:
+        recent_activity.append({
+            'timestamp': review.created_at,
+            'url': review.destination.get_absolute_url(),
+            'title': review.destination.title,
+            'subtitle': review.comment[:100],
+            'label': 'Review Written',
+            'icon': 'fa-star',
+            'photo_url': review.destination.main_image.url if review.destination.main_image else None,
+        })
+    recent_activity = sorted(recent_activity, key=lambda item: item['timestamp'], reverse=True)[:5]
+
+    return {
+        'profile': profile,
+        'total_contributions': total_contributions,
+        'destination_count': destination_count,
+        'spot_count': spot_count,
+        'food_count': food_count,
+        'review_count': review_count,
+        'verified_destination_count': verified_destination_count,
+        'average_review_rating': average_review_rating,
+        'recent_destinations': recent_destinations,
+        'recent_spots': recent_spots,
+        'recent_food_items': recent_food_items,
+        'recent_reviews': recent_reviews,
+        'recent_activity': recent_activity,
+        'latest_contribution': latest_contribution,
+    }
 
 @login_required
 def users(request):
@@ -22,9 +144,10 @@ def create_users(request):
     return render(request, 'users/users_form.html', {"users_form":users_form})
 
 @login_required
-def user_page(request , pk):
+def user_page(request, pk):
     profile = Profile.objects.get(id=pk)
-    return render(request, 'users/user_profile.html',{'profile':profile})
+    context = build_profile_context(profile)
+    return render(request, 'users/user_profile.html', context)
 
 @login_required
 def my_profile(request):
@@ -32,9 +155,15 @@ def my_profile(request):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile.objects.create(
-            user=request.user, 
+            user=request.user,
             username=request.user.username,
             name=request.user.first_name,
             email=request.user.email
         )
-    return render(request, 'users/user_profile.html', {'profile': profile})
+    context = build_profile_context(profile)
+    return render(request, 'users/user_profile.html', context)
+
+@login_required(login_url='login')
+def inbox(request):
+    
+    return render(request, 'users/inbox.html')
