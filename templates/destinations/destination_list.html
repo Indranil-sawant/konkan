@@ -2,76 +2,128 @@
 {% load static %}
 
 {% block content %}
-<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
-    <div class="container py-3">
-        <h1 class="display-5 fw-bold mb-2">
-            {% if category %}{{ category }}s{% elif query %}Results for "{{ query }}"{% else %}Explore Destinations{% endif %}
+
+<!-- HERO -->
+<div class="bg-gradient-to-r from-blue-900 via-blue-700 to-cyan-500 text-white py-14 mb-12 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4">
+        <h1 class="text-3xl md:text-5xl font-bold mb-3 leading-tight">
+            {% if category %}
+            {{ category }}s
+            {% elif query %}
+            Results for "<span class="text-yellow-300">{{ query }}</span>"
+            {% else %}
+            Explore Destinations
+            {% endif %}
         </h1>
-        <p class="lead opacity-75 mb-0">Discover the hidden beauty of the Konkan coastline.</p>
+        <p class="text-white/80 text-lg md:text-xl">
+            Discover the hidden beauty of the Konkan coastline.
+        </p>
     </div>
 </div>
 
-<div class="container mb-5">
-    <div class="row mb-5 align-items-center">
-        <div class="col-md-4">
-            <p class="text-muted mb-md-0">{{ destinations.count }} places found in our guide.</p>
-        </div>
-        <div class="col-md-8">
-            <form action="{% url 'destination_list' %}" method="get" class="search-form">
-                <div class="input-group bg-white p-1 rounded-pill shadow-sm">
-                    <input type="text" name="q" class="form-control border-0 px-4 rounded-pill" 
-                           placeholder="Search by name or location..." value="{{ query|default:'' }}">
-                    <button class="btn btn-primary rounded-pill px-4" type="submit">
-                        <i class="fas fa-search me-1"></i> Search
-                    </button>
-                </div>
-            </form>
-        </div>
+<!-- MAIN -->
+<div class="max-w-7xl mx-auto px-4 mb-12">
+
+    <!-- TOP BAR -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+
+        <!-- COUNT -->
+        <p class="text-gray-500 text-sm md:text-base">
+            <span class="font-semibold text-gray-700">{{ destinations.count }}</span> places found
+        </p>
+
+        <!-- SEARCH -->
+        <form action="{% url 'destination_list' %}" method="get" class="w-full md:w-auto">
+            <div
+                class="flex items-center bg-white rounded-full shadow-md px-2 py-1 focus-within:ring-2 ring-blue-400 transition">
+
+                <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search by name or location..."
+                    class="flex-1 px-4 py-2 outline-none rounded-full text-sm">
+
+                <button
+                    class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 active:scale-95 transition">
+                    <i class="fas fa-search mr-1"></i> Search
+                </button>
+            </div>
+        </form>
     </div>
 
-    <div class="row g-4">
+    <!-- GRID -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
         {% for dest in destinations %}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm overflow-hidden">
-                <div class="position-relative">
-                    {% if dest.main_image %}
-                    <img class="card-img-top" src="{{ dest.main_image.url }}" alt="{{ dest.title }}" 
-                         style="height: 240px; object-fit: cover;">
-                    {% else %}
-                    <img class="card-img-top" src="https://via.placeholder.com/700x400" alt="Placeholder" 
-                         style="height: 240px; object-fit: cover;">
-                    {% endif %}
-                    <span class="badge position-absolute top-0 end-0 m-3 badge-coastal shadow-sm">
-                        {{ dest.category }}
+        <div
+            class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group flex flex-col">
+
+            <!-- IMAGE -->
+            <div class="relative overflow-hidden">
+                {% if dest.main_image %}
+                <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}"
+                    class="w-full h-60 object-cover group-hover:scale-105 transition duration-300">
+                {% else %}
+                <img src="https://via.placeholder.com/700x400" alt="Placeholder"
+                    class="w-full h-60 object-cover group-hover:scale-105 transition duration-300">
+                {% endif %}
+
+                <!-- BADGE -->
+                <span
+                    class="absolute top-3 right-3 bg-cyan-600/90 backdrop-blur text-white text-xs px-3 py-1 rounded-full shadow">
+                    {{ dest.category }}
+                </span>
+            </div>
+
+            <!-- BODY -->
+            <div class="p-5 flex flex-col flex-1">
+
+                <!-- TITLE -->
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="text-lg font-semibold text-gray-800 leading-tight">
+                        {{ dest.title }}
+                    </h4>
+                    <span class="text-sm text-yellow-500 font-medium">
+                        ★ 4.8
                     </span>
                 </div>
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="card-title fw-bold mb-0 text-dark">{{ dest.title }}</h4>
-                        <small class="text-muted"><i class="fas fa-star text-warning"></i> 4.8</small>
-                    </div>
-                    <p class="card-text text-muted small mb-3">
-                        <i class="fas fa-map-marker-alt text-primary me-1"></i> {{ dest.location_name }}
-                    </p>
-                    <p class="card-text text-muted small">{{ dest.description|truncatewords:15 }}</p>
-                </div>
-                <div class="card-footer bg-white border-top-0 p-4 pt-0">
-                    <a href="{% url 'destination_detail' dest.slug %}" class="btn btn-outline-primary w-100">
-                        View Details
-                    </a>
-                </div>
+
+                <!-- LOCATION -->
+                <p class="text-sm text-gray-500 mb-2">
+                    <i class="fas fa-map-marker-alt text-blue-500 mr-1"></i>
+                    {{ dest.location_name }}
+                </p>
+
+                <!-- DESCRIPTION -->
+                <p class="text-sm text-gray-600 mb-4 flex-1">
+                    {{ dest.description|truncatewords:15 }}
+                </p>
+
+                <!-- BUTTON -->
+                <a href="{% url 'destination_detail' dest.slug %}"
+                    class="mt-auto text-center border border-blue-600 text-blue-600 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition">
+                    View Details →
+                </a>
             </div>
         </div>
         {% empty %}
-        <div class="col-12 text-center py-5">
-            <div class="mb-4">
-                <i class="fas fa-search-minus fa-4x opacity-25"></i>
+
+        <!-- EMPTY -->
+        <div class="col-span-full text-center py-20">
+            <div class="mb-6 text-gray-300 text-7xl">
+                <i class="fas fa-search-minus"></i>
             </div>
-            <h3>No destinations matched your criteria.</h3>
-            <p class="text-muted mb-4">Try searching for something else or explore all categories.</p>
-            <a href="{% url 'destination_list' %}" class="btn btn-primary">Reset All Filters</a>
+            <h3 class="text-2xl font-semibold mb-2">
+                No destinations found
+            </h3>
+            <p class="text-gray-500 mb-6">
+                Try a different search or explore all destinations.
+            </p>
+            <a href="{% url 'destination_list' %}"
+                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                Reset Filters
+            </a>
         </div>
+
         {% endfor %}
     </div>
 </div>
+
 {% endblock %}

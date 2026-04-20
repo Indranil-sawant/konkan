@@ -2,60 +2,107 @@
 {% load static %}
 
 {% block content %}
-<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
-    <div class="container py-3">
-        <h1 class="display-5 fw-bold mb-2">Refine Your Identity</h1>
-        <p class="lead opacity-75 mb-0">Help fellow explorers know you better.</p>
+
+<!-- ===== HEADER ===== -->
+
+<div class="bg-gradient-to-r from-blue-900 to-cyan-500 text-white py-12 mb-10 shadow">
+    <div class="max-w-6xl mx-auto px-6">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">
+            Refine Your Identity
+        </h1>
+        <p class="text-white/80">
+            Help fellow explorers know you better.
+        </p>
     </div>
 </div>
 
-<div class="container section-padding pt-0 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <div class="card-body p-5">
-                    <form action="" method="POST" enctype="multipart/form-data" class="profile-form">
-                        {% csrf_token %}
-                        <div class="row g-4">
-                            {% for field in users_form %}   
-                            <div class="col-12">
-                                <label class="small fw-bold text-dark mb-2">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                <div class="form-text small opacity-75">{{ field.help_text }}</div>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                <div class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i> {{ error }}</div>
-                                {% endfor %}
-                            </div>
-                            {% endfor %}
-                        </div>
+<!-- ===== FORM CARD ===== -->
 
-                        <div class="d-flex gap-3 mt-5">
-                            <button type="submit" class="btn btn-primary rounded-pill px-5 flex-grow-1 py-3 fw-bold">
-                                Save Profile Changes
-                            </button>
-                            <a href="{% url 'my_profile' %}" class="btn btn-light rounded-pill px-4 py-3 text-muted">
-                                Cancel
-                            </a>
-                        </div>
-                    </form>
+<div class="max-w-4xl mx-auto px-6 mb-16">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+
+        ```
+        <div class="p-8 md:p-10">
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+
+                {% for field in users_form %}
+                <div>
+                    <!-- Label -->
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        {{ field.label }}
+                    </label>
+
+                    <!-- Input -->
+                    {{ field }}
+
+                    <!-- Help text -->
+                    {% if field.help_text %}
+                    <p class="text-xs text-gray-500 mt-1">
+                        {{ field.help_text }}
+                    </p>
+                    {% endif %}
+
+                    <!-- Errors -->
+                    {% for error in field.errors %}
+                    <p class="text-red-500 text-sm mt-1">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
                 </div>
-            </div>
+                {% endfor %}
+
+                <!-- Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+
+                    <button type="submit"
+                        class="w-full sm:flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full font-semibold transition">
+                        Save Profile Changes
+                    </button>
+
+                    <a href="{% url 'my_profile' %}"
+                        class="w-full sm:w-auto text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-6 rounded-full transition">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
         </div>
+
     </div>
+    ```
+
 </div>
+
+<!-- ===== AUTO STYLE FORM FIELDS ===== -->
 
 <script>
-    document.querySelectorAll('input:not([type="checkbox"]):not([type="file"]), textarea, select').forEach(el => {
-        el.classList.add('form-control', 'px-3');
-        if (el.tagName !== 'TEXTAREA') {
-            el.classList.add('rounded-pill');
-        } else {
-            el.classList.add('rounded-4');
+    document.querySelectorAll('input, textarea, select').forEach(el => {
+        el.classList.add(
+            'w-full',
+            'px-4',
+            'py-3',
+            'border',
+            'border-gray-300',
+            'rounded-full',
+            'focus:outline-none',
+            'focus:ring-2',
+            'focus:ring-blue-500',
+            'focus:border-blue-500'
+        );
+
+        if (el.tagName === 'TEXTAREA') {
+            el.classList.remove('rounded-full');
+            el.classList.add('rounded-xl');
+        }
+
+        if (el.type === 'file') {
+            el.classList.add('py-2');
         }
     });
 </script>
-{% endblock %}
 
- 
+{% endblock %}
