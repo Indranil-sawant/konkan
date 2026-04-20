@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Explore Konkan – Coastal Paradise{% endblock %}
+
+{% block extra_css %}
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script>
+  /* MD3 colour palette overlay for this page */
+  if (typeof tailwind !== 'undefined') {
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary': '#005d90',
+            'primary-container': '#0077b6',
+            'on-primary': '#ffffff',
+            'on-primary-container': '#f3f7ff',
+            'secondary': '#006a62',
+            'secondary-container': '#70f8e8',
+            'on-secondary-container': '#007168',
+            'tertiary': '#924100',
+            'tertiary-container': '#b75508',
+            'on-tertiary-container': '#fff5f2',
+            'background': '#fff8f3',
+            'surface': '#fff8f3',
+            'surface-bright': '#fff8f3',
+            'surface-container-lowest': '#ffffff',
+            'surface-container-low': '#fcf2e7',
+            'surface-container': '#f6ece1',
+            'surface-container-high': '#f1e7dc',
+            'surface-container-highest': '#ebe1d6',
+            'on-surface': '#1f1b14',
+            'on-surface-variant': '#404850',
+            'outline': '#707881',
+            'outline-variant': '#bfc7d1',
+            'inverse-surface': '#353028',
+            'inverse-primary': '#94ccff',
+            'error': '#ba1a1a',
+            'error-container': '#ffdad6',
+          },
+          fontFamily: {
+            'headline': ['Plus Jakarta Sans', 'sans-serif'],
+            'body': ['Inter', 'sans-serif'],
+            'label': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 1.25rem;
+  }
+  .editorial-shadow { box-shadow: 0 20px 40px rgba(0,75,116,.08); }
+  .glass-nav { background: rgba(255,248,243,.85); backdrop-filter: blur(20px); }
+  .tonal-shift-bg { background: #fcf2e7; }
+  .primary-btn-gradient { background: linear-gradient(135deg, #005d90, #0077b6); }
+  .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="bg-background text-on-surface font-body min-h-screen">
+
+  <!-- ── Hero ── -->
+  <section class="relative min-h-[90vh] flex items-end overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#001d32] via-[#003454] to-[#005d90]"></div>
+    <div class="absolute inset-0">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-[100px]"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-tertiary/20 rounded-full blur-[100px]"></div>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-20 w-full">
+      <span class="text-secondary-fixed-dim font-bold tracking-[0.2em] text-sm uppercase mb-6 block" style="color:#4fdbcc;">Maharashtra's Hidden Coastline</span>
+      <h1 class="text-6xl md:text-8xl font-headline font-extrabold text-white leading-[0.95] mb-8">
+        The Konkan<br/>
+        <span style="color:#94ccff;">Experience</span>
+      </h1>
+      <p class="text-white/70 text-xl max-w-xl mb-10 leading-relaxed">
+        700 km of untouched coastline. Ancient forts, cascading waterfalls, and flavours that define a civilisation.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="{% url 'destination_list' %}" class="primary-btn-gradient text-on-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-primary/40 transition-all active:scale-95 flex items-center gap-3">
+          Explore Destinations <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <a href="{% url 'search' %}" class="bg-white/10 backdrop-blur text-white border border-white/20 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all active:scale-95 flex items-center gap-3">
+          <span class="material-symbols-outlined">search</span> Search
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Destinations ── -->
+  <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <span class="text-tertiary font-bold tracking-widest text-sm uppercase">Featured Destinations</span>
+        <h2 class="text-4xl md:text-5xl font-headline font-extrabold mt-2">Konkan's Finest</h2>
+      </div>
+      <a href="{% url 'destination_list' %}" class="text-primary font-bold flex items-center gap-1 group hover:underline">
+        View all <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+      </a>
+    </div>
+
+    {% if featured_destinations %}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for dest in featured_destinations %}
+      <a href="{{ dest.get_absolute_url }}" class="group block">
+        <div class="relative h-80 mb-5 overflow-hidden rounded-2xl editorial-shadow">
+          {% if dest.main_image %}
+            <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+          {% else %}
+            <div class="w-full h-full bg-surface-container-high flex items-center justify-center">
+              <span class="material-symbols-outlined text-5xl text-on-surface-variant/30">landscape</span>
+            </div>
+          {% endif %}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6">
+            <span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-xs font-bold mb-2 inline-block">{{ dest.category }}</span>
+            <h3 class="text-2xl font-headline text-white font-bold">{{ dest.title }}</h3>
+          </div>
+          <span class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="material-symbols-outlined text-sm align-middle">location_on</span> {{ dest.location_name }}
+          </span>
+        </div>
+        <p class="text-sm text-on-surface-variant line-clamp-2">{{ dest.description }}</p>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="flex flex-col items-center justify-center py-16 text-center border border-outline-variant/20 rounded-2xl bg-surface-container-low">
+      <span class="material-symbols-outlined text-5xl text-on-surface-variant/30 mb-4">landscape</span>
+      <p class="text-on-surface-variant">No destinations yet. Check back soon!</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- ── Heritage Spotlight ── -->
+  <section class="py-24 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row gap-16 items-center">
+        <div class="w-full md:w-1/2 relative h-[420px] rounded-2xl overflow-hidden editorial-shadow">
+          {% if trending_forts %}
+            {% with fort=trending_forts.0 %}
+            {% if fort.main_image %}
+              <img src="{{ fort.main_image.url }}" alt="{{ fort.title }}" class="w-full h-full object-cover"/>
+            {% else %}
+              <div class="w-full h-full bg-surface-container-highest flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-on-surface-variant/30">fort</span>
+              </div>
+            {% endif %}
+            {% endwith %}
+          {% else %}
+            <div class="w-full h-full bg-surface-container-highest flex items-center justify-center">
+              <span class="material-symbols-outlined text-6xl text-on-surface-variant/30">fort</span>
+            </div>
+          {% endif %}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        </div>
+        <div class="w-full md:w-1/2">
+          <span class="text-tertiary font-bold tracking-[0.2em] text-sm uppercase mb-4 block">Spotlight on Heritage</span>
+          {% if trending_forts %}
+            {% with fort=trending_forts.0 %}
+            <h2 class="text-5xl font-headline mb-8 leading-tight">{{ fort.title }}</h2>
+            <p class="text-lg text-on-surface-variant leading-relaxed mb-8">{{ fort.description|truncatechars:200 }}</p>
+            <a href="{{ fort.get_absolute_url }}"
+               class="bg-primary text-on-primary px-10 py-4 rounded-2xl font-bold tracking-wide hover:shadow-xl hover:shadow-primary/20 transition-all active:scale-95 inline-flex items-center gap-2">
+              Experience History <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+            {% endwith %}
+          {% else %}
+            <h2 class="text-5xl font-headline mb-8 leading-tight">Forts of the Konkan Coast</h2>
+            <p class="text-lg text-on-surface-variant leading-relaxed mb-8">Sea fortresses built by gallant rulers dot the Konkan coastline, rising majestically from the Arabian Sea.</p>
+            <a href="{% url 'destination_list' %}" class="bg-primary text-on-primary px-10 py-4 rounded-2xl font-bold hover:shadow-xl transition-all active:scale-95 inline-block">
+              Explore Forts
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Spots ── -->
+  {% if featured_spots %}
+  <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <span class="text-secondary font-bold tracking-widest text-sm uppercase">Hidden Gems</span>
+        <h2 class="text-4xl md:text-5xl font-headline font-extrabold mt-2">Top Rated Spots</h2>
+      </div>
+      <a href="{% url 'home_spots' %}" class="text-primary font-bold flex items-center gap-1 group hover:underline">
+        View all <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+      </a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for spot in featured_spots %}
+      <a href="{% url 'details_spots' spot.id %}" class="group block bg-surface-container-low rounded-2xl overflow-hidden hover:bg-surface-container transition-colors editorial-shadow">
+        <div class="h-56 relative overflow-hidden">
+          {% if spot.photo %}
+            <img src="{{ spot.photo.url }}" alt="{{ spot.name }}"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
+          {% else %}
+            <div class="w-full h-full bg-surface-container-high flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl text-on-surface-variant/30">explore</span>
+            </div>
+          {% endif %}
+          {% if spot.rating %}
+          <div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur px-2 py-1 rounded-full flex items-center gap-1">
+            <span class="material-symbols-outlined text-tertiary text-xs" style="font-variation-settings:'FILL' 1;">star</span>
+            <span class="text-xs font-bold">{{ spot.rating }}</span>
+          </div>
+          {% endif %}
+        </div>
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors font-headline">{{ spot.name }}</h3>
+          <p class="text-sm text-on-surface-variant line-clamp-2">{{ spot.description|default:"A beautiful spot on the Konkan coast." }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ── Taste of the Coast ── -->
+  <section class="py-24 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-headline font-extrabold mb-4">Taste of the Coast</h2>
+        <p class="text-on-surface-variant">The soul of Konkan lies in its vibrant, spicy, and coconut-rich flavors.</p>
+      </div>
+      {% if featured_food %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for food in featured_food %}
+        <a href="{% url 'food_detail' food.id %}" class="group relative h-[400px] rounded-[2rem] overflow-hidden editorial-shadow block">
+          {% if food.photo %}
+            <img src="{{ food.photo.url }}" alt="{{ food.name }}"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+          {% else %}
+            <div class="w-full h-full bg-surface-container-high flex items-center justify-center">
+              <span class="material-symbols-outlined text-5xl text-on-surface-variant/30">restaurant</span>
+            </div>
+          {% endif %}
+          <div class="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/20 to-transparent"></div>
+          <div class="absolute bottom-0 p-6">
+            <h4 class="text-xl font-headline text-white font-bold mb-1">{{ food.name }}</h4>
+            {% if food.description %}
+              <p class="text-white/70 text-sm line-clamp-2">{{ food.description }}</p>
+            {% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="flex flex-col items-center justify-center py-16 text-center border border-outline-variant/20 rounded-2xl">
+        <span class="material-symbols-outlined text-5xl text-on-surface-variant/30 mb-4">restaurant</span>
+        <p class="text-on-surface-variant">Food items coming soon!</p>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="py-24 px-6">
+    <div class="max-w-5xl mx-auto bg-[#006f7a] rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+      <div class="relative z-10">
+        <h2 class="text-4xl md:text-6xl font-headline text-white font-extrabold mb-6">Stay Connected to the Coast</h2>
+        <p class="text-white/70 text-lg mb-10 max-w-xl mx-auto">
+          Subscribe to get curated itineraries, seasonal updates, and secret beach spots delivered to your inbox.
+        </p>
+        <div class="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
+          <input class="flex-1 bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-white/30"
+                 placeholder="Your email address" type="email"/>
+          <button class="bg-white text-[#006f7a] px-8 py-4 rounded-2xl font-bold hover:bg-white/90 transition-all active:scale-95">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
