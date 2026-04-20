@@ -24,74 +24,95 @@
 <body class="bg-gray-50 text-gray-800">
 
   <!-- NAVBAR -->
-  <nav class="bg-white shadow sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4">
+  <nav id="main-nav" class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex justify-between items-center h-16">
 
         <!-- LOGO -->
-        <a href="{% url 'home' %}" class="text-xl font-bold text-blue-700">
-          <i class="fas fa-umbrella-beach mr-2"></i>
-          Konkan<span class="text-gray-500">Guide</span>
+        <a href="{% url 'home' %}" class="flex items-center gap-2 text-xl font-bold text-blue-700 hover:text-blue-800 transition-colors">
+          <span class="bg-blue-700 text-white rounded-lg px-2 py-0.5 text-sm font-extrabold tracking-wide">KG</span>
+          Konkan<span class="text-gray-400 font-normal">Guide</span>
         </a>
 
         <!-- DESKTOP MENU -->
-        <div class="hidden md:flex items-center space-x-6">
+        <div class="hidden md:flex items-center gap-1">
 
           <a href="{% url 'home' %}"
-            class="hover:text-blue-600 {% if request.resolver_match.url_name == 'home' %}text-blue-600 font-semibold{% endif %}">
-            Home
+            class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
+            {% if request.resolver_match.url_name == 'home' %}bg-blue-50 text-blue-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+            <i class="fas fa-home mr-1 text-xs"></i> Home
           </a>
 
           <a href="{% url 'destination_list' %}"
-            class="hover:text-blue-600 {% if 'destination' in request.path %}text-blue-600 font-semibold{% endif %}">
-            Destinations
+            class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
+            {% if 'destination' in request.path %}bg-blue-50 text-blue-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+            <i class="fas fa-map mr-1 text-xs"></i> Destinations
           </a>
 
           {% if user.is_authenticated %}
 
-          <a href="{% url 'temples' %}" class="hover:text-blue-600">Temples</a>
+          <a href="{% url 'temples' %}"
+            class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-150
+            {% if 'temple' in request.path %}bg-blue-50 text-blue-700{% endif %}">
+            <i class="fas fa-place-of-worship mr-1 text-xs"></i> Temples
+          </a>
 
-          <!-- DROPDOWN -->
+          <!-- COMMUNITY DROPDOWN -->
           <div class="relative group">
-            <button class="hover:text-blue-600 flex items-center gap-1 py-2">
-              Community <i class="fas fa-chevron-down text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+            <button class="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-150">
+              <i class="fas fa-compass mr-1 text-xs"></i> Explore
+              <i class="fas fa-chevron-down text-xs ml-0.5 transition-transform duration-200 group-hover:rotate-180"></i>
             </button>
 
-            <!--
-              Key fix: no mt-* — margin creates a dead zone outside the group element.
-              Instead, the panel sits flush (top-full), and uses pt-3 for visual gap.
-              The invisible top strip (h-3) bridges any sub-pixel gap.
-            -->
-            <div class="absolute left-1/2 -translate-x-1/2 top-full hidden group-hover:block w-56 z-50">
-              <!-- Invisible bridge strip — keeps hover alive as mouse travels down -->
-              <div class="h-3 w-full"></div>
-              <!-- Actual panel -->
-              <div class="bg-white shadow-xl rounded-xl border border-gray-100 py-2 overflow-hidden">
+            <div class="absolute left-1/2 -translate-x-1/2 top-full hidden group-hover:block w-60 z-50">
+              <div class="h-2 w-full"></div>
+              <div class="bg-white shadow-2xl rounded-2xl border border-gray-100 py-2 overflow-hidden animate-fade-in">
 
-                <a href="{% url 'home_spots' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                  <i class="fas fa-map-marker-alt text-blue-400 w-4 text-center"></i> Hidden Spots
+                <p class="px-4 pt-1 pb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Discover</p>
+
+                <a href="{% url 'home_spots' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                  <span class="w-7 h-7 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-map-marker-alt text-xs"></i>
+                  </span>
+                  Hidden Spots
                 </a>
 
-                <a href="{% url 'food_home' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                  <i class="fas fa-utensils text-blue-400 w-4 text-center"></i> Local Food
+                <a href="{% url 'food_home' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                  <span class="w-7 h-7 bg-green-100 text-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-utensils text-xs"></i>
+                  </span>
+                  Local Food
                 </a>
 
-                <a href="{% url 'home_users' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                  <i class="fas fa-users text-blue-400 w-4 text-center"></i> Explore Users
+                <a href="{% url 'home_users' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                  <span class="w-7 h-7 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-users text-xs"></i>
+                  </span>
+                  Explore Users
                 </a>
 
-                <div class="border-t border-gray-100 my-1"></div>
+                <div class="border-t border-gray-100 my-1.5 mx-4"></div>
+                <p class="px-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Contribute</p>
 
-                <a href="{% url 'create_destination' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                  <i class="fas fa-plus-circle text-orange-400 w-4 text-center"></i> Add Place
+                <a href="{% url 'create_destination' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                  <span class="w-7 h-7 bg-orange-100 text-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-plus text-xs"></i>
+                  </span>
+                  Add Place
                 </a>
 
-                <a href="{% url 'create_food' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                  <i class="fas fa-utensils text-orange-400 w-4 text-center"></i> Add Food Dish
+                <a href="{% url 'create_food' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                  <span class="w-7 h-7 bg-orange-100 text-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-drumstick-bite text-xs"></i>
+                  </span>
+                  Add Food Dish
                 </a>
 
-                <a href="{% url 'create_spot' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                  <i class="fas fa-map-pin text-orange-400 w-4 text-center"></i> Add Spot
+                <a href="{% url 'create_spot' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                  <span class="w-7 h-7 bg-orange-100 text-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-map-pin text-xs"></i>
+                  </span>
+                  Add Spot
                 </a>
 
               </div>
@@ -100,54 +121,136 @@
 
           <!-- PROFILE -->
           <a href="{% url 'my_profile' %}"
-            class="border border-blue-600 text-blue-600 px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition">
-            My Profile
+            class="flex items-center gap-1.5 ml-2 px-3 py-1.5 rounded-lg border border-blue-200 text-blue-700 text-sm font-medium hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-150">
+            <i class="fas fa-user-circle text-sm"></i>
+            {{ user.username|truncatechars:12 }}
           </a>
 
           <!-- LOGOUT -->
-          <form action="{% url 'logout' %}" method="post">
+          <form action="{% url 'logout' %}" method="post" class="ml-1">
             {% csrf_token %}
-            <button class="text-red-500 hover:text-red-600">
-              <i class="fas fa-sign-out-alt"></i>
+            <button type="submit"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm font-medium hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-150">
+              <i class="fas fa-sign-out-alt text-sm"></i>
+              Logout
             </button>
           </form>
 
           {% else %}
 
-          <a href="{% url 'login' %}"
-            class="border border-blue-600 text-blue-600 px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition">
-            Login
-          </a>
-
-          <a href="{% url 'register' %}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
-            Sign Up
-          </a>
+          <div class="flex items-center gap-2 ml-2">
+            <a href="{% url 'login' %}"
+              class="px-4 py-1.5 rounded-lg border border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-600 hover:text-white transition-all duration-150">
+              Login
+            </a>
+            <a href="{% url 'register' %}"
+              class="px-4 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 shadow-sm hover:shadow-md transition-all duration-150">
+              Sign Up
+            </a>
+          </div>
 
           {% endif %}
         </div>
 
-        <!-- MOBILE BUTTON -->
-        <button id="menu-btn" class="md:hidden text-gray-700">
-          <i class="fas fa-bars"></i>
+        <!-- HAMBURGER BUTTON -->
+        <button id="menu-btn" aria-label="Toggle menu" aria-expanded="false"
+          class="md:hidden relative w-9 h-9 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <i id="menu-icon-open" class="fas fa-bars text-lg"></i>
+          <i id="menu-icon-close" class="fas fa-times text-lg hidden"></i>
         </button>
 
       </div>
     </div>
 
     <!-- MOBILE MENU -->
-    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
-      <a href="{% url 'home' %}" class="block py-2">Home</a>
-      <a href="{% url 'destination_list' %}" class="block py-2">Destinations</a>
+    <div id="mobile-menu"
+      class="hidden md:hidden border-t border-gray-100 bg-white overflow-hidden">
+      <div class="px-4 pt-3 pb-4 space-y-1">
 
-      {% if user.is_authenticated %}
-      <a href="{% url 'temples' %}" class="block py-2">Temples</a>
-      <a href="{% url 'home_spots' %}" class="block py-2">Hidden Spots</a>
-      <a href="{% url 'food_home' %}" class="block py-2">Food</a>
-      <a href="{% url 'my_profile' %}" class="block py-2">Profile</a>
-      {% else %}
-      <a href="{% url 'login' %}" class="block py-2">Login</a>
-      <a href="{% url 'register' %}" class="block py-2">Sign Up</a>
-      {% endif %}
+        <!-- Public links -->
+        <a href="{% url 'home' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors
+          {% if request.resolver_match.url_name == 'home' %}bg-blue-50 text-blue-700{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <i class="fas fa-home w-4 text-center text-gray-400"></i> Home
+        </a>
+
+        <a href="{% url 'destination_list' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors
+          {% if 'destination' in request.path %}bg-blue-50 text-blue-700{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <i class="fas fa-map w-4 text-center text-gray-400"></i> Destinations
+        </a>
+
+        {% if user.is_authenticated %}
+
+        <a href="{% url 'temples' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+          <i class="fas fa-place-of-worship w-4 text-center text-gray-400"></i> Temples
+        </a>
+
+        <a href="{% url 'home_spots' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+          <i class="fas fa-map-marker-alt w-4 text-center text-gray-400"></i> Hidden Spots
+        </a>
+
+        <a href="{% url 'food_home' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+          <i class="fas fa-utensils w-4 text-center text-gray-400"></i> Local Food
+        </a>
+
+        <a href="{% url 'home_users' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+          <i class="fas fa-users w-4 text-center text-gray-400"></i> Explore Users
+        </a>
+
+        <div class="border-t border-gray-100 my-2"></div>
+
+        <a href="{% url 'create_destination' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors">
+          <i class="fas fa-plus-circle w-4 text-center"></i> Add Place
+        </a>
+
+        <a href="{% url 'create_food' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors">
+          <i class="fas fa-drumstick-bite w-4 text-center"></i> Add Food Dish
+        </a>
+
+        <a href="{% url 'create_spot' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors">
+          <i class="fas fa-map-pin w-4 text-center"></i> Add Spot
+        </a>
+
+        <div class="border-t border-gray-100 my-2"></div>
+
+        <!-- Profile & Logout -->
+        <a href="{% url 'my_profile' %}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors">
+          <i class="fas fa-user-circle w-4 text-center"></i>
+          {{ user.username }} (My Profile)
+        </a>
+
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit"
+            class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors mt-1">
+            <i class="fas fa-sign-out-alt w-4 text-center"></i> Logout
+          </button>
+        </form>
+
+        {% else %}
+
+        <div class="border-t border-gray-100 pt-3 flex flex-col gap-2">
+          <a href="{% url 'login' %}"
+            class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-600 hover:text-white transition-all">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+          <a href="{% url 'register' %}"
+            class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-all shadow-sm">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </a>
+        </div>
+
+        {% endif %}
+      </div>
     </div>
   </nav>
 
@@ -197,11 +300,52 @@
     </div>
   </footer>
 
-  <!-- SIMPLE JS -->
+  <!-- NAVBAR JS -->
   <script>
-    document.getElementById("menu-btn").addEventListener("click", function () {
-      document.getElementById("mobile-menu").classList.toggle("hidden");
-    });
+    (function () {
+      const btn = document.getElementById('menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('menu-icon-open');
+      const iconClose = document.getElementById('menu-icon-close');
+
+      function openMenu() {
+        menu.classList.remove('hidden');
+        iconOpen.classList.add('hidden');
+        iconClose.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeMenu() {
+        menu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        menu.classList.contains('hidden') ? openMenu() : closeMenu();
+      });
+
+      // Close when clicking a link inside the menu
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeMenu);
+      });
+
+      // Close when clicking outside
+      document.addEventListener('click', function (e) {
+        if (!menu.classList.contains('hidden') &&
+            !menu.contains(e.target) &&
+            !btn.contains(e.target)) {
+          closeMenu();
+        }
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeMenu();
+      });
+    })();
   </script>
 
   {% block extra_js %}{% endblock %}
