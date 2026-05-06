@@ -1,540 +1,198 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ profile.name|default:profile.username|title }} | Konkan Guide{% endblock %}
-
-{% block extra_css %}
-<style>
-  .profile-hero {
-    position: relative;
-    background:
-      linear-gradient(180deg, rgba(10, 61, 98, 0.22) 0%, rgba(10, 61, 98, 0.88) 100%),
-      url("{% static 'images/cover.jpg' %}") center/cover no-repeat;
-    min-height: 420px;
-    display: flex;
-    align-items: end;
-  }
-
-  .profile-shell {
-    margin-top: -88px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .profile-card-surface {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(202, 240, 248, 0.7);
-    border-radius: 24px;
-    box-shadow: 0 18px 45px rgba(10, 61, 98, 0.12);
-  }
-
-  .profile-avatar {
-    width: 158px;
-    height: 158px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid rgba(255, 255, 255, 0.95);
-    box-shadow: 0 12px 30px rgba(10, 61, 98, 0.22);
-    background: var(--white-foam);
-  }
-
-  .profile-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.55rem 1rem;
-    border-radius: 999px;
-    background: rgba(202, 240, 248, 0.7);
-    color: var(--ocean-deep);
-    font-size: 0.92rem;
-    font-weight: 600;
-  }
-
-  .stat-tile {
-    border-radius: 20px;
-    padding: 1.15rem;
-    background: linear-gradient(135deg, rgba(202, 240, 248, 0.55), rgba(253, 240, 213, 0.72));
-    border: 1px solid rgba(72, 202, 228, 0.18);
-    height: 100%;
-  }
-
-  .stat-tile .stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--ocean-deep);
-    line-height: 1;
-  }
-
-  .section-panel {
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(202, 240, 248, 0.8);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .activity-item {
-    position: relative;
-    padding-left: 4.5rem;
-  }
-
-  .activity-item + .activity-item {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(10, 61, 98, 0.08);
-  }
-
-  .activity-icon {
-    position: absolute;
-    left: -0.5rem;
-    top: 1.5rem;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-light));
-    color: white;
-    box-shadow: 0 12px 24px rgba(0, 119, 182, 0.16);
-  }
-
-  .nav-pills.profile-tabs .nav-link {
-    border-radius: 999px;
-    color: var(--text-main) !important;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 0.8rem 1.2rem !important;
-  }
-
-  .nav-pills.profile-tabs .nav-link.active {
-    color: white !important;
-    background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));
-    box-shadow: 0 10px 22px rgba(10, 61, 98, 0.18);
-  }
-
-  .contribution-thumb {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-
-  .social-action {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(202, 240, 248, 0.68);
-    color: var(--ocean-deep);
-    font-size: 1.1rem;
-  }
-
-  .social-action::after {
-    display: none;
-  }
-
-  .empty-state {
-    border: 1px dashed rgba(10, 61, 98, 0.18);
-    border-radius: 20px;
-    background: rgba(248, 250, 252, 0.8);
-  }
-
-  @media (max-width: 767.98px) {
-    .profile-hero {
-      min-height: 360px;
-    }
-
-    .profile-shell {
-      margin-top: -64px;
-    }
-
-    .profile-avatar {
-      width: 122px;
-      height: 122px;
-    }
-  }
-</style>
-{% endblock %}
-
 {% block content %}
-<section class="profile-hero">
-  <div class="container py-5 text-white">
-    <div class="row">
-      <div class="col-lg-8">
-        <nav aria-label="breadcrumb" class="mb-3">
-          <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item">
-              <a href="{% url 'home' %}" class="text-white opacity-75">Home</a>
-            </li>
-            <li class="breadcrumb-item">
-              <a href="{% url 'home_users' %}" class="text-white opacity-75">Community</a>
-            </li>
-            <li class="breadcrumb-item active text-white" aria-current="page">
-              {{ profile.name|default:profile.username|title }}
-            </li>
-          </ol>
-        </nav>
-        <span class="badge rounded-pill text-bg-light text-primary px-3 py-2 mb-3">Konkan Explorer Profile</span>
-        <h1 class="display-4 fw-bold text-white mb-3">{{ profile.name|default:profile.username|title }}</h1>
-        <p class="lead mb-0 opacity-75">
-          {{ profile.short_intro|default:"Sharing coastal finds, local flavors, and hidden corners of Konkan." }}
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<div class="container profile-shell pb-5">
-  <div class="profile-card-surface p-4 p-lg-5 mb-4">
-    <div class="row g-4 align-items-end">
-      <div class="col-lg-auto text-center text-lg-start">
-        {% if profile.profile_image %}
-          <img src="{{ profile.profile_image.url }}" alt="{{ profile.username }}" class="profile-avatar">
-        {% else %}
-          <img src="{% static 'images/user-default.png' %}" alt="{{ profile.username }}" class="profile-avatar">
-        {% endif %}
-      </div>
+<!-- HERO -->
+<div class="relative bg-cover bg-center h-[420px] flex items-end"
+  style="background-image: linear-gradient(rgba(10,61,98,0.3), rgba(10,61,98,0.9))">
+  <div class=" max-w-7xl mx-auto px-4 pb-10 text-white w-full">
 
-      <div class="col-lg">
-        <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-end gap-4">
-          <div>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="profile-chip">
-                <i class="fas fa-at"></i> {{ profile.username|default:"traveler" }}
-              </span>
-              <span class="profile-chip">
-                <i class="fas fa-calendar-alt"></i> Member since
-                {% if profile.user %}
-                  {{ profile.user.date_joined|date:"F Y" }}
-                {% else %}
-                  {{ profile.created|date:"F Y" }}
-                {% endif %}
-              </span>
-              {% if latest_contribution %}
-                <span class="profile-chip">
-                  <i class="fas {{ latest_contribution.icon }}"></i> Active {{ latest_contribution.timestamp|timesince }} ago
-                </span>
-              {% endif %}
-            </div>
-            <p class="text-muted mb-0" style="max-width: 720px;">
-              {{ profile.bio|default:"This explorer has not added a long bio yet, but their Konkan journey is already taking shape through the places, flavors, and stories they share." }}
-            </p>
-          </div>
-
-          {% if user == profile.user %}
-            <div class="d-flex flex-wrap gap-2">
-              <a href="{% url 'create_users' %}" class="btn btn-primary">
-                <i class="fas fa-pen me-2"></i>Edit Profile
-              </a>
-              <a href="{% url 'destination_list' %}" class="btn btn-outline-primary">
-                <i class="fas fa-map me-2"></i>Explore Konkan
-              </a>
-            </div>
-          {% endif %}
-        </div>
-      </div>
+    <!-- BREADCRUMB -->
+    <div class="text-sm mb-3 text-white/70">
+      <a href="{% url 'home' %}" class="hover:underline">Home</a> /
+      <a href="{% url 'home_users' %}" class="hover:underline">Community</a> /
+      <span>{{ profile.name|default:profile.username|title }}</span>
     </div>
 
-    <div class="row row-cols-2 row-cols-lg-4 g-3 mt-4">
-      <div class="col">
-        <div class="stat-tile">
-          <div class="stat-value">{{ total_contributions }}</div>
-          <div class="text-muted small text-uppercase mt-2">Total Contributions</div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="stat-tile">
-          <div class="stat-value">{{ destination_count }}</div>
-          <div class="text-muted small text-uppercase mt-2">Destinations Shared</div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="stat-tile">
-          <div class="stat-value">{{ spot_count|add:food_count }}</div>
-          <div class="text-muted small text-uppercase mt-2">Local Finds Posted</div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="stat-tile">
-          <div class="stat-value">{% if average_review_rating %}{{ average_review_rating }}{% else %}{{ review_count }}{% endif %}</div>
-          <div class="text-muted small text-uppercase mt-2">{% if average_review_rating %}Average Review Rating{% else %}Reviews Written{% endif %}</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-2">
+      {{ profile.name|default:profile.username|title }}
+    </h1>
 
-  <div class="row g-4">
-    <div class="col-lg-8">
-      <div class="section-panel p-3 p-md-4">
-        <ul class="nav nav-pills profile-tabs gap-2 mb-4" id="profile-tabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="activity-tab" data-bs-toggle="pill" data-bs-target="#activity-pane" type="button" role="tab" aria-controls="activity-pane" aria-selected="true">
-              Activity
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contributions-tab" data-bs-toggle="pill" data-bs-target="#contributions-pane" type="button" role="tab" aria-controls="contributions-pane" aria-selected="false">
-              Contributions
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="reviews-tab" data-bs-toggle="pill" data-bs-target="#reviews-pane" type="button" role="tab" aria-controls="reviews-pane" aria-selected="false">
-              Reviews
-            </button>
-          </li>
-        </ul>
-
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="activity-pane" role="tabpanel" aria-labelledby="activity-tab" tabindex="0">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-              <div>
-                <h3 class="fw-bold mb-1">Recent Journey Activity</h3>
-                <p class="text-muted mb-0">A live snapshot of what this explorer has been adding to Konkan Guide.</p>
-              </div>
-              <span class="badge rounded-pill text-bg-light border px-3 py-2">
-                {{ recent_activity|length }} recent updates
-              </span>
-            </div>
-
-            {% for item in recent_activity %}
-              <div class="activity-item">
-                {% if item.photo_url %}
-                  <img src="{{ item.photo_url }}" alt="{{ item.title }}" class="activity-icon" style="object-fit: cover;" />
-                {% else %}
-                  <span class="activity-icon"><i class="fas {{ item.icon }}"></i></span>
-                {% endif %}
-                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-                  <div>
-                    <p class="small text-uppercase text-muted fw-semibold mb-1">{{ item.label }}</p>
-                    <h5 class="mb-1">
-                      <a href="{{ item.url }}" class="text-decoration-none">{{ item.title }}</a>
-                    </h5>
-                    <p class="text-muted mb-0">{{ item.subtitle }}</p>
-                  </div>
-                  <span class="text-muted small">{{ item.timestamp|date:"M d, Y" }}</span>
-                </div>
-              </div>
-            {% empty %}
-              <div class="empty-state text-center p-5">
-                <h4 class="fw-bold mb-2">Journey just getting started</h4>
-                <p class="text-muted mb-0">Once this member shares places, food, spots, or reviews, their activity will appear here automatically.</p>
-              </div>
-            {% endfor %}
-          </div>
-
-          <div class="tab-pane fade" id="contributions-pane" role="tabpanel" aria-labelledby="contributions-tab" tabindex="0">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-              <div>
-                <h3 class="fw-bold mb-1">Shared Places and Finds</h3>
-                <p class="text-muted mb-0">Real submissions from this profile across destinations, hidden spots, and food stories.</p>
-              </div>
-              <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ total_contributions }} total</span>
-            </div>
-
-            {% if recent_destinations or recent_spots or recent_food_items %}
-              <div class="row g-4">
-                {% for destination in recent_destinations %}
-                  <div class="col-md-6">
-                    <div class="card h-100 border-0">
-                      <div class="position-relative">
-                        <img src="{{ destination.main_image.url }}" alt="{{ destination.title }}" class="contribution-thumb">
-                        <span class="badge badge-coastal position-absolute top-0 end-0 m-3">{{ destination.category }}</span>
-                      </div>
-                      <div class="card-body p-4">
-                        <p class="text-uppercase text-muted fw-semibold small mb-2">Destination</p>
-                        <h5 class="fw-bold">{{ destination.title }}</h5>
-                        <p class="text-muted small mb-3">{{ destination.location_name }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <span class="small text-muted">{{ destination.created_at|date:"M d, Y" }}</span>
-                          <a href="{{ destination.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View Place</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                {% endfor %}
-
-                {% for spot in recent_spots %}
-                  <div class="col-md-6">
-                    <div class="card h-100 border-0">
-                      <div class="position-relative">
-                        {% if spot.photo %}
-                          <img src="{{ spot.photo.url }}" alt="{{ spot.name }}" class="contribution-thumb">
-                        {% else %}
-                          <img src="{% static 'images/cover.jpg' %}" alt="{{ spot.name }}" class="contribution-thumb">
-                        {% endif %}
-                        <span class="badge rounded-pill bg-light text-primary position-absolute top-0 end-0 m-3">
-                          {{ spot.category.name|default:"Hidden Spot" }}
-                        </span>
-                      </div>
-                      <div class="card-body p-4">
-                        <p class="text-uppercase text-muted fw-semibold small mb-2">Hidden Spot</p>
-                        <h5 class="fw-bold">{{ spot.name }}</h5>
-                        <p class="text-muted small mb-3">{{ spot.description|default:"A local gem shared with the community."|truncatewords:16 }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <span class="small text-muted">{{ spot.created_at|date:"M d, Y" }}</span>
-                          <a href="{% url 'details_spots' spot.id %}" class="btn btn-sm btn-outline-primary">Explore Spot</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                {% endfor %}
-
-                {% for food in recent_food_items %}
-                  <div class="col-md-6">
-                    <div class="card h-100 border-0">
-                      <div class="position-relative">
-                        {% if food.photo %}
-                          <img src="{{ food.photo.url }}" alt="{{ food.name }}" class="contribution-thumb">
-                        {% else %}
-                          <img src="{% static 'images/cover.jpg' %}" alt="{{ food.name }}" class="contribution-thumb">
-                        {% endif %}
-                        <span class="badge rounded-pill bg-light text-primary position-absolute top-0 end-0 m-3">
-                          Local Food
-                        </span>
-                      </div>
-                      <div class="card-body p-4">
-                        <p class="text-uppercase text-muted fw-semibold small mb-2">Food Story</p>
-                        <h5 class="fw-bold">{{ food.name }}</h5>
-                        <p class="text-muted small mb-3">{{ food.description|default:"A Konkan dish recommendation from the community."|truncatewords:16 }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <span class="small text-muted">{{ food.created_at|date:"M d, Y" }}</span>
-                          <a href="{% url 'details' food.id %}" class="btn btn-sm btn-outline-primary">View Dish</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-            {% else %}
-              <div class="empty-state text-center p-5">
-                <h4 class="fw-bold mb-2">No contributions yet</h4>
-                <p class="text-muted mb-0">This profile has not posted any destinations, hidden spots, or food stories yet.</p>
-              </div>
-            {% endif %}
-          </div>
-
-          <div class="tab-pane fade" id="reviews-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-              <div>
-                <h3 class="fw-bold mb-1">Traveler Reviews</h3>
-                <p class="text-muted mb-0">Ratings and written experiences this explorer has shared on destination pages.</p>
-              </div>
-              <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ review_count }} reviews</span>
-            </div>
-
-            {% for review in recent_reviews %}
-              <div class="card border-0 mb-3">
-                <div class="card-body p-4">
-                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
-                    <div>
-                      <p class="text-uppercase text-muted fw-semibold small mb-1">Review for</p>
-                      <h5 class="mb-1">
-                        <a href="{{ review.destination.get_absolute_url }}" class="text-decoration-none">{{ review.destination.title }}</a>
-                      </h5>
-                      <p class="text-muted small mb-0">{{ review.created_at|date:"M d, Y" }}</p>
-                    </div>
-                    <div class="text-warning fs-6">
-                      {% for i in "12345"|make_list %}
-                        {% if forloop.counter <= review.rating %}
-                          <i class="fas fa-star"></i>
-                        {% else %}
-                          <i class="far fa-star opacity-25"></i>
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <p class="text-muted mb-0">{{ review.comment }}</p>
-                </div>
-              </div>
-            {% empty %}
-              <div class="empty-state text-center p-5">
-                <h4 class="fw-bold mb-2">No reviews written yet</h4>
-                <p class="text-muted mb-0">As this member reviews destinations, those recommendations will show up here.</p>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4">
-      <div class="section-panel p-4 mb-4">
-        <h4 class="fw-bold mb-4">Profile Snapshot</h4>
-        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-          <span class="text-muted">Verified destinations</span>
-          <span class="fw-bold">{{ verified_destination_count }}</span>
-        </div>
-        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-          <span class="text-muted">Hidden spots shared</span>
-          <span class="fw-bold">{{ spot_count }}</span>
-        </div>
-        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-          <span class="text-muted">Food stories shared</span>
-          <span class="fw-bold">{{ food_count }}</span>
-        </div>
-        <div class="d-flex justify-content-between align-items-center py-2">
-          <span class="text-muted">Community reviews</span>
-          <span class="fw-bold">{{ review_count }}</span>
-        </div>
-      </div>
-
-      <div class="section-panel p-4 mb-4">
-        <h4 class="fw-bold mb-4">Connect</h4>
-        <div class="d-flex flex-wrap gap-2 mb-3">
-          {% if profile.social_github %}
-            <a href="{{ profile.social_github }}" class="social-action" target="_blank" rel="noopener" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-          {% endif %}
-          {% if profile.social_linkedin %}
-            <a href="{{ profile.social_linkedin }}" class="social-action" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-          {% endif %}
-          {% if profile.social_twitter %}
-            <a href="{{ profile.social_twitter }}" class="social-action" target="_blank" rel="noopener" aria-label="Twitter">
-              <i class="fab fa-twitter"></i>
-            </a>
-          {% endif %}
-          {% if profile.social_youtube %}
-            <a href="{{ profile.social_youtube }}" class="social-action" target="_blank" rel="noopener" aria-label="YouTube">
-              <i class="fab fa-youtube"></i>
-            </a>
-          {% endif %}
-          {% if profile.social_website %}
-            <a href="{{ profile.social_website }}" class="social-action" target="_blank" rel="noopener" aria-label="Website">
-              <i class="fas fa-globe"></i>
-            </a>
-          {% endif %}
-        </div>
-
-        {% if profile.email or profile.user.email %}
-          <p class="text-muted mb-1">Email</p>
-          <p class="fw-semibold mb-0">{{ profile.email|default:profile.user.email }}</p>
-        {% else %}
-          <p class="text-muted mb-0">No contact details shared publicly yet.</p>
-        {% endif %}
-      </div>
-
-      <div class="section-panel p-4">
-        <h4 class="fw-bold mb-3">Latest Highlight</h4>
-        {% if latest_contribution %}
-          <p class="text-uppercase text-muted fw-semibold small mb-1">{{ latest_contribution.label }}</p>
-          <h5 class="mb-2">
-            <a href="{{ latest_contribution.url }}" class="text-decoration-none">{{ latest_contribution.title }}</a>
-          </h5>
-          <p class="text-muted mb-3">{{ latest_contribution.subtitle }}</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="small text-muted">{{ latest_contribution.timestamp|date:"M d, Y" }}</span>
-            <a href="{{ latest_contribution.url }}" class="btn btn-sm btn-outline-primary">Open</a>
-          </div>
-        {% else %}
-          <p class="text-muted mb-0">The next contribution this explorer shares will appear here.</p>
-        {% endif %}
-      </div>
-    </div>
+    <p class="text-white/80 max-w-2xl">
+      {{ profile.short_intro|default:"Sharing coastal finds, local flavors, and hidden corners of Konkan." }}
+    </p>
   </div>
 </div>
+
+<!-- PROFILE CARD -->
+<div class="max-w-7xl mx-auto px-4 -mt-20 relative z-10">
+
+  <div class="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+
+    <div class="flex flex-col md:flex-row gap-6 items-center md:items-end">
+
+      <!-- AVATAR -->
+      {% if profile.profile_image %}
+      <img src="{{ profile.profile_image.url }}"
+        class="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg">
+      {% else %}
+      <img src="{% static 'images/user-default.png' %}"
+        class="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg">
+      {% endif %}
+
+      <!-- INFO -->
+      <div class="flex-1 text-center md:text-left">
+
+        <div class="flex flex-wrap gap-2 justify-center md:justify-start mb-3">
+
+          <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+            @{{ profile.username }}
+          </span>
+
+          <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+            Member since
+            {% if profile.user %}
+            {{ profile.user.date_joined|date:"F Y" }}
+            {% else %}
+            {{ profile.created|date:"F Y" }}
+            {% endif %}
+          </span>
+
+          {% if latest_contribution %}
+          <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+            Active {{ latest_contribution.timestamp|timesince }} ago
+          </span>
+          {% endif %}
+        </div>
+
+        <p class="text-gray-600 max-w-xl">
+          {{ profile.bio|default:"Explorer building their Konkan journey..." }}
+        </p>
+      </div>
+
+      <!-- ACTIONS -->
+      {% if user == profile.user %}
+      <div class="flex gap-2">
+        <a href="{% url 'create_users' %}"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          Edit Profile
+        </a>
+        <a href="{% url 'destination_list' %}"
+          class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition">
+          Explore
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+
+      <div class="bg-blue-50 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold">{{ total_contributions }}</div>
+        <div class="text-sm text-gray-500">Total</div>
+      </div>
+
+      <div class="bg-blue-50 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold">{{ destination_count }}</div>
+        <div class="text-sm text-gray-500">Destinations</div>
+      </div>
+
+      <div class="bg-blue-50 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold">{{ spot_count|add:food_count }}</div>
+        <div class="text-sm text-gray-500">Finds</div>
+      </div>
+
+      <div class="bg-blue-50 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold">
+          {% if average_review_rating %}{{ average_review_rating }}{% else %}{{ review_count }}{% endif %}
+        </div>
+        <div class="text-sm text-gray-500">
+          {% if average_review_rating %}Rating{% else %}Reviews{% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid lg:grid-cols-3 gap-6">
+
+    <!-- LEFT -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- ACTIVITY -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h3 class="text-xl font-bold mb-4">Recent Activity</h3>
+
+        {% for item in recent_activity %}
+        <div class="flex gap-4 mb-4">
+
+          <div class="w-14 h-14 rounded-lg bg-blue-500 flex items-center justify-center text-white">
+            <i class="fas {{ item.icon }}"></i>
+          </div>
+
+          <div class="flex-1">
+            <p class="text-sm text-gray-500">{{ item.label }}</p>
+            <h4 class="font-semibold">
+              <a href="{{ item.url }}">{{ item.title }}</a>
+            </h4>
+            <p class="text-gray-500 text-sm">{{ item.subtitle }}</p>
+          </div>
+
+          <div class="text-sm text-gray-400">
+            {{ item.timestamp|date:"M d, Y" }}
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-500">No activity yet</p>
+        {% endfor %}
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="space-y-6">
+
+      <!-- SNAPSHOT -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h4 class="font-bold mb-4">Snapshot</h4>
+
+        <div class="flex justify-between py-2 border-b">
+          <span>Destinations</span>
+          <span>{{ destination_count }}</span>
+        </div>
+
+        <div class="flex justify-between py-2 border-b">
+          <span>Spots</span>
+          <span>{{ spot_count }}</span>
+        </div>
+
+        <div class="flex justify-between py-2">
+          <span>Reviews</span>
+          <span>{{ review_count }}</span>
+        </div>
+      </div>
+
+      <!-- SOCIAL -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h4 class="font-bold mb-4">Connect</h4>
+
+        <div class="flex gap-3">
+          {% if profile.social_github %}
+          <a href="{{ profile.social_github }}" class="p-3 bg-gray-100 rounded-full"><i class="fab fa-github"></i></a>
+          {% endif %}
+          {% if profile.social_linkedin %}
+          <a href="{{ profile.social_linkedin }}" class="p-3 bg-gray-100 rounded-full"><i
+              class="fab fa-linkedin"></i></a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}
