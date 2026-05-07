@@ -17,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- CSS Dependencies -->
+    <!-- Preserved Bootstrap for backward compatibility of inner pages -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -26,195 +27,155 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- Custom Modular CSS -->
+    <!-- Custom Modular CSS & Tailwind -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/components.css' %}" />
     <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+
+    <!-- Development Tailwind CDN (Temporary for immediate rendering during migration) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        corePlugins: { preflight: false },
+        theme: {
+          extend: {
+            colors: {
+              ocean: { deep: "#0a3d62", mid: "#0077b6", light: "#48cae4" },
+              aqua: { mist: "#caf0f8" },
+              sand: { warm: "#fdf0d5" },
+              sunset: { coral: "#ff7b54", gold: "#ffb703" },
+              foam: "#f8fafc",
+              navy: { dark: "#1b263b" },
+            },
+            fontFamily: {
+              sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+              display: ["Playfair Display", "ui-serif", "Georgia", "serif"],
+            }
+          }
+        }
+      }
+    </script>
 
     {% block extra_css %}{% endblock %}
   </head>
 
-  <body>
+  <body class="font-sans text-navy-dark bg-slate-50 antialiased overflow-x-hidden">
     <!-- Accessibility Skip Link -->
-    <a href="#main-content" class="visually-hidden-focusable"
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-ocean-mid text-white px-4 py-2 rounded z-50"
       >Skip to content</a
     >
 
-    <!-- Top Navigation -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-      <div class="container text-body">
-        <a class="navbar-brand" href="{% url 'home' %}">
-          <i class="fas fa-umbrella-beach me-2"></i>
-          Konkan<span class="text-secondary">Guide</span>
+    <!-- Top Navigation (Tailwind Converted) -->
+    <nav id="mainNav" class="sticky top-0 bg-white/95 backdrop-blur-md border-b border-aqua-mist/50 py-4 transition-all duration-300 z-50">
+      <div class="container mx-auto px-4 lg:px-8 flex justify-between items-center">
+        <!-- Brand -->
+        <a class="text-2xl font-bold text-ocean-mid flex items-center hover:opacity-90 transition-opacity" href="{% url 'home' %}">
+          <i class="fas fa-umbrella-beach mr-2 text-ocean-light"></i>
+          Konkan<span class="text-sunset-coral">Guide</span>
         </a>
 
-        <button
-          class="navbar-toggler border-0"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarMain"
-          aria-controls="navbarMain"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
+        <!-- Mobile Toggle Button -->
+        <button id="mobileMenuBtn" class="lg:hidden text-ocean-mid focus:outline-none p-2 rounded-lg hover:bg-aqua-mist/30 transition-colors" aria-label="Toggle navigation">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarMain">
-          <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-                href="{% url 'home' %}"
-                >Home</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link {% if 'destination' in request.path %}active{% endif %}"
-                href="{% url 'destination_list' %}"
-                >Destinations</a
-              >
-            </li>
+        <!-- Desktop & Mobile Menu -->
+        <div id="navMenu" class="hidden lg:flex flex-col lg:flex-row lg:items-center w-full lg:w-auto absolute lg:static top-full left-0 bg-white lg:bg-transparent shadow-lg lg:shadow-none p-6 lg:p-0 gap-4 lg:gap-2 lg:ml-auto border-b lg:border-none border-gray-100">
+          <a class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors {% if request.resolver_match.url_name == 'home' %}text-sunset-coral{% endif %}" href="{% url 'home' %}">Home</a>
+          
+          <a class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors {% if 'destination' in request.path %}text-sunset-coral{% endif %}" href="{% url 'destination_list' %}">Destinations</a>
 
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'temples' %}">Temples</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                Community
-              </a>
-              <ul class="dropdown-menu border-0 shadow-sm">
-                <li>
-                  <a class="dropdown-item" href="{% url 'home_spots' %}"
-                    >Hidden Spots</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'food_home' %}"
-                    >Local Food</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'home_users' %}"
-                    >Explore Users</a
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'create_destination' %}"
-                    ><i class="fas fa-plus-circle me-1"></i> Add Place</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'create_food' %}"
-                    ><i class="fas fa-utensils me-1"></i> Add Food Dish</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'create_spot' %}"
-                    ><i class="fas fa-map-marker-alt me-1"></i> Add Hidden Spot</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item ms-lg-3">
-              <a
-                class="btn btn-outline-primary btn-sm"
-                href="{% url 'my_profile' %}"
-              >
-                <i class="fas fa-user-circle me-1"></i> My Profile
-              </a>
-            </li>
-            <li class="nav-item ms-lg-2">
-              <form action="{% url 'logout' %}" method="post" class="d-inline">
-                {% csrf_token %}
-                <button
-                  type="submit"
-                  class="btn btn-link nav-link p-0 border-0"
-                  title="Logout"
-                >
-                  <i class="fas fa-sign-out-alt"></i>
-                </button>
-              </form>
-            </li>
-            {% else %}
-            <li class="nav-item ms-lg-3">
-              <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}"
-                >Login</a
-              >
-            </li>
-            <li class="nav-item ms-lg-2">
-              <a class="btn btn-primary btn-sm" href="{% url 'register' %}"
-                >Sign Up</a
-              >
-            </li>
-            {% endif %}
-          </ul>
+          {% if user.is_authenticated %}
+            <a class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors" href="{% url 'temples' %}">Temples</a>
+            
+            <!-- Dropdown -->
+            <div class="relative group">
+              <button class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors flex items-center gap-1 w-full text-left lg:w-auto">
+                Community <i class="fas fa-chevron-down text-[10px] ml-1 mt-0.5"></i>
+              </button>
+              <div class="lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56 bg-white lg:rounded-xl lg:shadow-xl lg:opacity-0 lg:invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 flex flex-col pl-4 lg:pl-0 py-2 border border-gray-100">
+                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid transition-colors" href="{% url 'home_spots' %}">Hidden Spots</a>
+                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid transition-colors" href="{% url 'food_home' %}">Local Food</a>
+                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid transition-colors" href="{% url 'home_users' %}">Explore Users</a>
+                <div class="h-px bg-gray-100 my-1 lg:mx-4"></div>
+                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid flex items-center transition-colors" href="{% url 'create_destination' %}"><i class="fas fa-plus-circle w-5 text-ocean-light"></i> Add Place</a>
+                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid flex items-center transition-colors" href="{% url 'create_food' %}"><i class="fas fa-utensils w-5 text-ocean-light"></i> Add Food Dish</a>
+                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid flex items-center transition-colors" href="{% url 'create_spot' %}"><i class="fas fa-map-marker-alt w-5 text-ocean-light"></i> Add Hidden Spot</a>
+              </div>
+            </div>
+
+            <a class="lg:ml-4 border-2 border-ocean-mid/20 text-ocean-mid hover:bg-ocean-mid hover:text-white hover:border-ocean-mid px-5 py-2 rounded-xl font-semibold transition-all flex items-center justify-center lg:justify-start" href="{% url 'my_profile' %}">
+              <i class="fas fa-user-circle mr-2"></i> My Profile
+            </a>
+
+            <form action="{% url 'logout' %}" method="post" class="lg:ml-2 mt-2 lg:mt-0">
+              {% csrf_token %}
+              <button type="submit" class="w-full lg:w-auto text-gray-500 hover:text-red-500 hover:bg-red-50 lg:hover:bg-transparent rounded-lg px-4 py-2 lg:px-2 flex items-center justify-center lg:justify-start transition-colors" title="Logout">
+                <i class="fas fa-sign-out-alt lg:mr-0 mr-2"></i> <span class="lg:hidden font-medium">Logout</span>
+              </button>
+            </form>
+          {% else %}
+            <div class="flex flex-col lg:flex-row gap-3 lg:gap-2 lg:ml-4 mt-2 lg:mt-0">
+              <a class="border-2 border-ocean-mid text-ocean-mid hover:bg-ocean-mid hover:text-white px-6 py-2.5 lg:py-2 rounded-xl font-semibold transition-all text-center" href="{% url 'login' %}">Login</a>
+              <a class="bg-gradient-to-r from-ocean-mid to-ocean-light text-white hover:shadow-lg hover:-translate-y-0.5 px-6 py-2.5 lg:py-2 rounded-xl font-semibold transition-all text-center" href="{% url 'register' %}">Sign Up</a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </nav>
 
-    <main id="main-content">{% block content %}{% endblock %}</main>
+    <!-- Main Content -->
+    <main id="main-content" class="min-h-[60vh]">{% block content %}{% endblock %}</main>
 
-    <footer class="footer mt-5">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-lg-4">
-            <h5 class="text-white mb-4">Konkan Guide</h5>
-            <p class="text-muted">
+    <!-- Footer (Tailwind Converted) -->
+    <footer class="bg-navy-dark text-white pt-16 pb-8 mt-20">
+      <div class="container mx-auto px-4 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+          <div class="lg:col-span-5">
+            <h5 class="text-2xl font-display font-bold text-white mb-4">Konkan Guide</h5>
+            <p class="text-gray-400 leading-relaxed max-w-md">
               A dedicated platform to explore and contribute to the beauty of
               the Konkan region. Join our community of travelers.
             </p>
-            <div class="d-flex gap-3 mt-3">
-              <a href="#" class="footer-link"
-                ><i class="fab fa-facebook"></i
-              ></a>
-              <a href="#" class="footer-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
+            <div class="flex gap-4 mt-8">
+              <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i class="fab fa-facebook"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i class="fab fa-twitter"></i></a>
             </div>
           </div>
-          <div class="col-lg-2 ms-auto">
-            <h6 class="text-white mb-4">Explore</h6>
-            <ul class="list-unstyled">
+          <div class="lg:col-span-2 lg:col-start-7">
+            <h6 class="text-lg font-semibold text-white mb-6">Explore</h6>
+            <ul class="space-y-3">
               <li>
-                <a href="{% url 'destination_list' %}" class="footer-link"
-                  >All Destinations</a
-                >
+                <a href="{% url 'destination_list' %}" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">All Destinations</a>
               </li>
               <li>
-                <a href="{% url 'temples' %}" class="footer-link">Temples</a>
+                <a href="{% url 'temples' %}" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Temples</a>
               </li>
               <li>
-                <a href="{% url 'food_home' %}" class="footer-link"
-                  >Local Food</a
-                >
+                <a href="{% url 'food_home' %}" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Local Food</a>
               </li>
             </ul>
           </div>
-          <div class="col-lg-2">
-            <h6 class="text-white mb-4">Support</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="footer-link">About Us</a></li>
-              <li><a href="#" class="footer-link">Contact</a></li>
-              <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <div class="lg:col-span-2 lg:col-start-10">
+            <h6 class="text-lg font-semibold text-white mb-6">Support</h6>
+            <ul class="space-y-3">
+              <li><a href="#" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">About Us</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Contact</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Privacy Policy</a></li>
             </ul>
           </div>
         </div>
-        <div class="border-top border-secondary mt-5 pt-4 text-center position-relative">
-          <p class="text-muted mb-0 small">
+        
+        <div class="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center relative">
+          <p class="text-gray-500 text-sm mb-4 md:mb-0">
             &copy; 2026 Konkan Guide. Crafted with
-            <i class="fas fa-heart text-danger"></i> for explorers.
+            <i class="fas fa-heart text-sunset-coral mx-1"></i> for explorers.
           </p>
-          <a href="{% url 'admin:index' %}" title="Admin Portal" style="position: absolute; bottom: 0; right: 20px; opacity: 0.15; transition: opacity 0.3s ease; color: var(--ocean-deep); font-size: 14px; text-decoration: none; z-index: 1000;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='0.15'">
+          <a href="{% url 'admin:index' %}" title="Admin Portal" class="absolute bottom-8 md:bottom-auto right-0 text-ocean-mid opacity-30 hover:opacity-100 transition-opacity text-sm">
             <i class="fas fa-fingerprint"></i>
           </a>
         </div>
@@ -224,6 +185,36 @@
     <!-- JS Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    
+    <!-- Tailwind Mobile Menu Toggle -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileBtn && navMenu) {
+          mobileBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('hidden');
+            navMenu.classList.toggle('flex');
+          });
+        }
+        
+        // Navbar Scroll Effect
+        const mainNav = document.getElementById('mainNav');
+        if (mainNav) {
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+              mainNav.classList.add('shadow-md', 'py-2');
+              mainNav.classList.remove('py-4');
+            } else {
+              mainNav.classList.remove('shadow-md', 'py-2');
+              mainNav.classList.add('py-4');
+            }
+          });
+        }
+      });
+    </script>
+    
     {% block extra_js %}{% endblock %}
   </body>
 </html>

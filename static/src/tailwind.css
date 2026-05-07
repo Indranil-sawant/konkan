@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ocean-deep: #0a3d62;
+    --ocean-mid: #0077b6;
+    --ocean-light: #48cae4;
+    --aqua-mist: #caf0f8;
+    --sand-warm: #fdf0d5;
+    --sunset-coral: #ff7b54;
+    --sunset-gold: #ffb703;
+    --white-foam: #f8fafc;
+    --navy-dark: #1b263b;
+
+    /* Backward-compatible aliases used by existing templates/CSS. */
+    --primary: var(--ocean-mid);
+    --primary-hover: #023e8a;
+    --secondary: var(--ocean-light);
+    --accent: var(--sunset-coral);
+    --highlight: var(--sunset-gold);
+    --text-main: var(--navy-dark);
+    --text-muted: #5c677d;
+    --bg-body: linear-gradient(to bottom, #f8fafc, #edf6f9);
+    --bg-card: rgba(255, 255, 255, 0.86);
+    --dark-navy: var(--navy-dark);
+    --aqua: var(--aqua-mist);
+    --white-sand: var(--sand-warm);
+    --sand-beige: var(--sand-warm);
+    --coral: var(--sunset-coral);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen overflow-x-hidden font-sans text-navy-dark antialiased;
+    background: var(--bg-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold tracking-normal text-ocean-deep;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+}
+
+@layer components {
+  .kg-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .kg-page-header {
+    @apply mb-12 bg-gradient-to-br from-ocean-deep to-ocean-light py-16 text-white shadow-coastal-sm;
+  }
+
+  .kg-card {
+    @apply overflow-hidden rounded-coastal border border-aqua-mist/70 bg-white/90 shadow-coastal-sm transition duration-300 ease-out;
+  }
+
+  .kg-card:hover {
+    @apply -translate-y-1 shadow-coastal;
+  }
+
+  .kg-button-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-gradient-to-br from-ocean-mid to-ocean-light px-6 py-3 font-semibold text-white shadow-coastal-sm transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-coastal focus:outline-none focus:ring-4 focus:ring-ocean-light/25;
+  }
+
+  .kg-button-secondary {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-ocean-mid px-6 py-3 font-semibold text-ocean-mid transition duration-300 ease-out hover:bg-ocean-mid hover:text-white focus:outline-none focus:ring-4 focus:ring-ocean-light/25;
+  }
+
+  .kg-badge {
+    @apply inline-flex items-center rounded-full bg-white/95 px-3 py-1 text-sm font-semibold text-ocean-deep shadow-coastal-sm;
+  }
+
+  .badge-coastal {
+    @apply rounded-full bg-white/95 px-3 py-2 font-semibold text-ocean-deep shadow-coastal-sm;
+  }
+
+  .bg-sand {
+    background-color: var(--sand-beige);
+  }
+
+  .bg-aqua {
+    background-color: var(--aqua);
+  }
+
+  .text-coral {
+    color: var(--coral);
+  }
+
+  .border-dashed {
+    border-style: dashed;
+  }
+}

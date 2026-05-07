@@ -5,6 +5,10 @@ set -o errexit
 echo "Installing dependencies..."
 pip install -r requirements.txt
 
+echo "Building Tailwind CSS..."
+npm install
+npm run build:css
+
 echo "Collecting static files..."
 python3 manage.py collectstatic --no-input
 
