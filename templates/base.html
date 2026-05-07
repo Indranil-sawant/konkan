@@ -1,220 +1,362 @@
 <!doctype html>
 <html lang="en">
-  {% load static %}
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Explore the beautiful Konkan region - Forts, Beaches, Temples, and authentic Food."
-    />
-    <title>
-      {% block title %}Konkan Guide | Discover the Jewel of Ratnagiri{% endblock %}
-    </title>
+{% load static %}
 
-    <!-- Preload fonts to reduce CLS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Explore the beautiful Konkan region - Forts, Beaches, Temples, and authentic Food." />
+  <title>
+    {% block title %}Konkan Guide | Discover the Jewel of Ratnagiri{% endblock %}
+  </title>
 
-    <!-- CSS Dependencies -->
-    <!-- Preserved Bootstrap for backward compatibility of inner pages -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+  <!-- Preload fonts to reduce CLS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Custom Modular CSS & Tailwind -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/components.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+  <!-- CSS Dependencies -->
+  <!-- Preserved Bootstrap for backward compatibility of inner pages -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <!-- Development Tailwind CDN (Temporary for immediate rendering during migration) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        corePlugins: { preflight: false },
-        theme: {
-          extend: {
-            colors: {
-              ocean: { deep: "#0a3d62", mid: "#0077b6", light: "#48cae4" },
-              aqua: { mist: "#caf0f8" },
-              sand: { warm: "#fdf0d5" },
-              sunset: { coral: "#ff7b54", gold: "#ffb703" },
-              foam: "#f8fafc",
-              navy: { dark: "#1b263b" },
-            },
-            fontFamily: {
-              sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
-              display: ["Playfair Display", "ui-serif", "Georgia", "serif"],
-            }
+  <!-- Custom Modular CSS & Tailwind -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+
+  <!-- Development Tailwind CDN (Temporary for immediate rendering during migration) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          colors: {
+            ocean: { deep: "#0a3d62", mid: "#0077b6", light: "#48cae4" },
+            aqua: { mist: "#caf0f8" },
+            sand: { warm: "#fdf0d5" },
+            sunset: { coral: "#ff7b54", gold: "#ffb703" },
+            foam: "#f8fafc",
+            navy: { dark: "#1b263b" },
+          },
+          fontFamily: {
+            sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+            display: ["Playfair Display", "ui-serif", "Georgia", "serif"],
           }
         }
       }
-    </script>
+    }
+  </script>
 
-    {% block extra_css %}{% endblock %}
-  </head>
+  {% block extra_css %}{% endblock %}
+</head>
 
-  <body class="font-sans text-navy-dark bg-slate-50 antialiased overflow-x-hidden">
-    <!-- Accessibility Skip Link -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-ocean-mid text-white px-4 py-2 rounded z-50"
-      >Skip to content</a
-    >
+<body class="font-sans text-navy-dark bg-slate-50 antialiased overflow-x-hidden">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-ocean-mid text-white px-4 py-2 rounded z-50">Skip
+    to content</a>
 
-    <!-- Top Navigation (Tailwind Converted) -->
-    <nav id="mainNav" class="sticky top-0 bg-white/95 backdrop-blur-md border-b border-aqua-mist/50 py-4 transition-all duration-300 z-50">
-      <div class="container mx-auto px-4 lg:px-8 flex justify-between items-center">
-        <!-- Brand -->
-        <a class="text-2xl font-bold text-ocean-mid flex items-center hover:opacity-90 transition-opacity" href="{% url 'home' %}">
-          <i class="fas fa-umbrella-beach mr-2 text-ocean-light"></i>
-          Konkan<span class="text-sunset-coral">Guide</span>
-        </a>
+  <!-- Premium Dribbble-Style Navigation -->
+  <nav id="mainNav"
+    class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
 
-        <!-- Mobile Toggle Button -->
-        <button id="mobileMenuBtn" class="lg:hidden text-ocean-mid focus:outline-none p-2 rounded-lg hover:bg-aqua-mist/30 transition-colors" aria-label="Toggle navigation">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-
-        <!-- Desktop & Mobile Menu -->
-        <div id="navMenu" class="hidden lg:flex flex-col lg:flex-row lg:items-center w-full lg:w-auto absolute lg:static top-full left-0 bg-white lg:bg-transparent shadow-lg lg:shadow-none p-6 lg:p-0 gap-4 lg:gap-2 lg:ml-auto border-b lg:border-none border-gray-100">
-          <a class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors {% if request.resolver_match.url_name == 'home' %}text-sunset-coral{% endif %}" href="{% url 'home' %}">Home</a>
-          
-          <a class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors {% if 'destination' in request.path %}text-sunset-coral{% endif %}" href="{% url 'destination_list' %}">Destinations</a>
-
-          {% if user.is_authenticated %}
-            <a class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors" href="{% url 'temples' %}">Temples</a>
-            
-            <!-- Dropdown -->
-            <div class="relative group">
-              <button class="font-medium text-navy-dark px-3 py-2 hover:text-sunset-coral transition-colors flex items-center gap-1 w-full text-left lg:w-auto">
-                Community <i class="fas fa-chevron-down text-[10px] ml-1 mt-0.5"></i>
-              </button>
-              <div class="lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:w-56 bg-white lg:rounded-xl lg:shadow-xl lg:opacity-0 lg:invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 flex flex-col pl-4 lg:pl-0 py-2 border border-gray-100">
-                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid transition-colors" href="{% url 'home_spots' %}">Hidden Spots</a>
-                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid transition-colors" href="{% url 'food_home' %}">Local Food</a>
-                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid transition-colors" href="{% url 'home_users' %}">Explore Users</a>
-                <div class="h-px bg-gray-100 my-1 lg:mx-4"></div>
-                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid flex items-center transition-colors" href="{% url 'create_destination' %}"><i class="fas fa-plus-circle w-5 text-ocean-light"></i> Add Place</a>
-                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid flex items-center transition-colors" href="{% url 'create_food' %}"><i class="fas fa-utensils w-5 text-ocean-light"></i> Add Food Dish</a>
-                <a class="px-5 py-2.5 text-sm text-navy-dark hover:bg-aqua-mist/20 hover:text-ocean-mid flex items-center transition-colors" href="{% url 'create_spot' %}"><i class="fas fa-map-marker-alt w-5 text-ocean-light"></i> Add Hidden Spot</a>
-              </div>
+        <!-- LEFT: Stylish Text/Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="{% url 'home' %}" class="flex items-center group">
+            <div
+              class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-ocean-mid to-ocean-light flex items-center justify-center text-white shadow-lg shadow-ocean-mid/30 group-hover:scale-105 transition-transform duration-300 mr-3">
+              <i class="fas fa-compass text-xl"></i>
             </div>
-
-            <a class="lg:ml-4 border-2 border-ocean-mid/20 text-ocean-mid hover:bg-ocean-mid hover:text-white hover:border-ocean-mid px-5 py-2 rounded-xl font-semibold transition-all flex items-center justify-center lg:justify-start" href="{% url 'my_profile' %}">
-              <i class="fas fa-user-circle mr-2"></i> My Profile
-            </a>
-
-            <form action="{% url 'logout' %}" method="post" class="lg:ml-2 mt-2 lg:mt-0">
-              {% csrf_token %}
-              <button type="submit" class="w-full lg:w-auto text-gray-500 hover:text-red-500 hover:bg-red-50 lg:hover:bg-transparent rounded-lg px-4 py-2 lg:px-2 flex items-center justify-center lg:justify-start transition-colors" title="Logout">
-                <i class="fas fa-sign-out-alt lg:mr-0 mr-2"></i> <span class="lg:hidden font-medium">Logout</span>
-              </button>
-            </form>
-          {% else %}
-            <div class="flex flex-col lg:flex-row gap-3 lg:gap-2 lg:ml-4 mt-2 lg:mt-0">
-              <a class="border-2 border-ocean-mid text-ocean-mid hover:bg-ocean-mid hover:text-white px-6 py-2.5 lg:py-2 rounded-xl font-semibold transition-all text-center" href="{% url 'login' %}">Login</a>
-              <a class="bg-gradient-to-r from-ocean-mid to-ocean-light text-white hover:shadow-lg hover:-translate-y-0.5 px-6 py-2.5 lg:py-2 rounded-xl font-semibold transition-all text-center" href="{% url 'register' %}">Sign Up</a>
-            </div>
-          {% endif %}
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main id="main-content" class="min-h-[60vh]">{% block content %}{% endblock %}</main>
-
-    <!-- Footer (Tailwind Converted) -->
-    <footer class="bg-navy-dark text-white pt-16 pb-8 mt-20">
-      <div class="container mx-auto px-4 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
-          <div class="lg:col-span-5">
-            <h5 class="text-2xl font-display font-bold text-white mb-4">Konkan Guide</h5>
-            <p class="text-gray-400 leading-relaxed max-w-md">
-              A dedicated platform to explore and contribute to the beauty of
-              the Konkan region. Join our community of travelers.
-            </p>
-            <div class="flex gap-4 mt-8">
-              <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i class="fab fa-facebook"></i></a>
-              <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i class="fab fa-instagram"></i></a>
-              <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i class="fab fa-twitter"></i></a>
-            </div>
-          </div>
-          <div class="lg:col-span-2 lg:col-start-7">
-            <h6 class="text-lg font-semibold text-white mb-6">Explore</h6>
-            <ul class="space-y-3">
-              <li>
-                <a href="{% url 'destination_list' %}" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">All Destinations</a>
-              </li>
-              <li>
-                <a href="{% url 'temples' %}" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Temples</a>
-              </li>
-              <li>
-                <a href="{% url 'food_home' %}" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Local Food</a>
-              </li>
-            </ul>
-          </div>
-          <div class="lg:col-span-2 lg:col-start-10">
-            <h6 class="text-lg font-semibold text-white mb-6">Support</h6>
-            <ul class="space-y-3">
-              <li><a href="#" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">About Us</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Contact</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Privacy Policy</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center relative">
-          <p class="text-gray-500 text-sm mb-4 md:mb-0">
-            &copy; 2026 Konkan Guide. Crafted with
-            <i class="fas fa-heart text-sunset-coral mx-1"></i> for explorers.
-          </p>
-          <a href="{% url 'admin:index' %}" title="Admin Portal" class="absolute bottom-8 md:bottom-auto right-0 text-ocean-mid opacity-30 hover:opacity-100 transition-opacity text-sm">
-            <i class="fas fa-fingerprint"></i>
+            <span class="font-display font-bold text-2xl text-navy-dark tracking-tight">Explore <span
+                class="text-sunset-coral relative inline-block">Ratnagiri<span
+                  class="absolute -bottom-1 left-0 w-full h-1 bg-sunset-coral/20 rounded-full"></span></span></span>
           </a>
         </div>
-      </div>
-    </footer>
 
-    <!-- JS Dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    
-    <!-- Tailwind Mobile Menu Toggle -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const mobileBtn = document.getElementById('mobileMenuBtn');
-        const navMenu = document.getElementById('navMenu');
-        
-        if (mobileBtn && navMenu) {
-          mobileBtn.addEventListener('click', function() {
-            navMenu.classList.toggle('hidden');
-            navMenu.classList.toggle('flex');
-          });
-        }
-        
-        // Navbar Scroll Effect
-        const mainNav = document.getElementById('mainNav');
-        if (mainNav) {
-          window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-              mainNav.classList.add('shadow-md', 'py-2');
-              mainNav.classList.remove('py-4');
-            } else {
-              mainNav.classList.remove('shadow-md', 'py-2');
-              mainNav.classList.add('py-4');
-            }
-          });
-        }
-      });
-    </script>
-    
-    {% block extra_js %}{% endblock %}
-  </body>
+        <!-- CENTER: Search Bar (Desktop) -->
+        <div class="hidden lg:flex flex-1 max-w-xl mx-8">
+          <form action="{% url 'search' %}" method="GET" class="relative w-full group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i
+                class="fas fa-search text-gray-400 group-focus-within:text-ocean-mid transition-colors duration-300"></i>
+            </div>
+            <input type="text" name="q"
+              class="block w-full pl-11 pr-14 py-2.5 bg-slate-50/50 border border-slate-200 rounded-full leading-5 text-navy-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ocean-light/50 focus:border-ocean-light focus:bg-white transition-all duration-300 shadow-inner"
+              placeholder="Search beaches, forts, food, destinations...">
+            <div class="absolute inset-y-1 right-1 flex items-center">
+              <button type="submit"
+                class="w-8 h-8 rounded-full bg-ocean-mid text-white flex items-center justify-center hover:bg-ocean-deep hover:shadow-md transition-all duration-300 transform hover:scale-105">
+                <i class="fas fa-arrow-right text-xs"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- RIGHT: Navigation Links & Buttons (Desktop) -->
+        <div class="hidden lg:flex items-center space-x-1">
+          <a href="{% url 'home' %}"
+            class="px-3 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5 transition-all duration-300 relative group">
+            Home
+            <span
+              class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-ocean-mid rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          </a>
+          <a href="{% url 'destination_list' %}"
+            class="px-3 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5 transition-all duration-300 relative group">
+            Explore
+          </a>
+          <a href="{% url 'temples' %}"
+            class="px-3 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5 transition-all duration-300 relative group">
+            Destinations
+          </a>
+          <a href="{% url 'food_home' %}"
+            class="px-3 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5 transition-all duration-300 relative group">
+            Food
+          </a>
+
+          <div class="w-px h-6 bg-slate-200 mx-2"></div>
+
+          <a href="{% url 'home_spots' %}"
+            class="ml-2 px-4 py-2.5 rounded-full text-sm font-bold text-ocean-mid bg-ocean-light/10 hover:bg-ocean-light/20 transition-all duration-300 border border-ocean-mid/10">
+            Plan Trip
+          </a>
+
+          {% if user.is_authenticated %}
+          <div class="relative group ml-2">
+            <button
+              class="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg hover:shadow-ocean-mid/30 transition-all duration-300 hover:-translate-y-0.5">
+              <i class="fas fa-user-circle"></i> Profile
+            </button>
+            <!-- Dropdown -->
+            <div
+              class="absolute top-full right-0 mt-4 w-48 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 before:absolute before:-top-4 before:left-0 before:w-full before:h-4">
+              <a href="{% url 'my_profile' %}"
+                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid"><i
+                  class="fas fa-user w-5 text-gray-400"></i> Dashboard</a>
+              <a href="{% url 'create_destination' %}"
+                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid"><i
+                  class="fas fa-plus w-5 text-gray-400"></i> Add Place</a>
+              <div class="h-px bg-slate-100 my-1"></div>
+              <form action="{% url 'logout' %}" method="post" class="block w-full">
+                {% csrf_token %}
+                <button type="submit"
+                  class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"><i
+                    class="fas fa-sign-out-alt w-5 text-red-400"></i> Logout</button>
+              </form>
+            </div>
+          </div>
+          {% else %}
+          <a href="{% url 'register' %}"
+            class="ml-2 px-6 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg hover:shadow-ocean-mid/30 transition-all duration-300 hover:-translate-y-0.5">
+            Get Started
+          </a>
+          {% endif %}
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center lg:hidden">
+          <button id="mobileMenuBtn"
+            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 text-navy-dark hover:text-ocean-mid hover:bg-slate-100 focus:outline-none transition-colors duration-200">
+            <span class="sr-only">Open main menu</span>
+            <i class="fas fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Slide-in Menu Overlay -->
+    <div id="mobileMenuOverlay"
+      class="fixed inset-0 z-40 bg-navy-dark/40 backdrop-blur-sm opacity-0 invisible transition-all duration-300 lg:hidden">
+    </div>
+
+    <!-- Mobile Slide-in Menu Panel -->
+    <div id="mobileMenuPanel"
+      class="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col h-full lg:hidden">
+      <!-- Close button & Header -->
+      <div class="px-6 py-5 flex items-center justify-between border-b border-slate-100">
+        <span class="font-display font-bold text-xl text-navy-dark">Menu</span>
+        <button id="closeMenuBtn"
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-gray-500 hover:bg-slate-200 hover:text-navy-dark transition-colors">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Search -->
+      <div class="px-6 py-4">
+        <form action="{% url 'search' %}" method="GET" class="relative w-full">
+          <input type="text" name="q"
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-ocean-light focus:border-ocean-light"
+            placeholder="Search destinations...">
+          <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+        </form>
+      </div>
+
+      <!-- Mobile Links -->
+      <div class="px-4 py-2 space-y-1 flex-1 overflow-y-auto">
+        <a href="{% url 'home' %}"
+          class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid transition-colors">Home</a>
+        <a href="{% url 'destination_list' %}"
+          class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid transition-colors">Explore</a>
+        <a href="{% url 'temples' %}"
+          class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid transition-colors">Destinations</a>
+        <a href="{% url 'food_home' %}"
+          class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid transition-colors">Food</a>
+        <a href="{% url 'home_spots' %}"
+          class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid transition-colors">Plan
+          Trip</a>
+      </div>
+
+      <!-- Mobile Footer / Auth -->
+      <div class="p-6 border-t border-slate-100 bg-slate-50">
+        {% if user.is_authenticated %}
+        <a href="{% url 'my_profile' %}"
+          class="flex items-center justify-center w-full px-4 py-3 mb-3 border-2 border-ocean-mid text-ocean-mid rounded-xl font-bold hover:bg-ocean-mid hover:text-white transition-colors">
+          My Profile
+        </a>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit"
+            class="w-full px-4 py-3 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors">
+            Logout
+          </button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}"
+          class="flex items-center justify-center w-full px-4 py-3 mb-3 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:border-ocean-mid hover:text-ocean-mid transition-colors">
+          Login
+        </a>
+        <a href="{% url 'register' %}"
+          class="flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-ocean-mid to-ocean-light text-white rounded-xl font-bold shadow-lg shadow-ocean-mid/20">
+          Get Started
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" class="min-h-[60vh]">{% block content %}{% endblock %}</main>
+
+  <!-- Footer (Tailwind Converted) -->
+  <footer class="bg-navy-dark text-white pt-16 pb-8 mt-20">
+    <div class="container mx-auto px-4 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-5">
+          <h5 class="text-2xl font-display font-bold text-white mb-4">Konkan Guide</h5>
+          <p class="text-gray-400 leading-relaxed max-w-md">
+            A dedicated platform to explore and contribute to the beauty of
+            the Konkan region. Join our community of travelers.
+          </p>
+          <div class="flex gap-4 mt-8">
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i
+                class="fab fa-facebook"></i></a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i
+                class="fab fa-instagram"></i></a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i
+                class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="lg:col-span-2 lg:col-start-7">
+          <h6 class="text-lg font-semibold text-white mb-6">Explore</h6>
+          <ul class="space-y-3">
+            <li>
+              <a href="{% url 'destination_list' %}"
+                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">All
+                Destinations</a>
+            </li>
+            <li>
+              <a href="{% url 'temples' %}"
+                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Temples</a>
+            </li>
+            <li>
+              <a href="{% url 'food_home' %}"
+                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Local
+                Food</a>
+            </li>
+          </ul>
+        </div>
+        <div class="lg:col-span-2 lg:col-start-10">
+          <h6 class="text-lg font-semibold text-white mb-6">Support</h6>
+          <ul class="space-y-3">
+            <li><a href="#"
+                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">About
+                Us</a></li>
+            <li><a href="#"
+                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Contact</a>
+            </li>
+            <li><a href="#"
+                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Privacy
+                Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center relative">
+        <p class="text-gray-500 text-sm mb-4 md:mb-0">
+          &copy; 2026 Konkan Guide. Crafted with
+          <i class="fas fa-heart text-sunset-coral mx-1"></i> for explorers.
+        </p>
+        <a href="{% url 'admin:index' %}" title="Admin Portal"
+          class="absolute bottom-8 md:bottom-auto right-0 text-ocean-mid opacity-30 hover:opacity-100 transition-opacity text-sm">
+          <i class="fas fa-fingerprint"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <!-- Modern Navbar JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const mobileBtn = document.getElementById('mobileMenuBtn');
+      const closeMenuBtn = document.getElementById('closeMenuBtn');
+      const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+      const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+      const mainNav = document.getElementById('mainNav');
+
+      // Toggle Mobile Menu
+      function openMenu() {
+        mobileMenuOverlay.classList.remove('opacity-0', 'invisible');
+        mobileMenuPanel.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+      }
+
+      function closeMenu() {
+        mobileMenuOverlay.classList.add('opacity-0', 'invisible');
+        mobileMenuPanel.classList.add('translate-x-full');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+
+      if (mobileBtn) mobileBtn.addEventListener('click', openMenu);
+      if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
+      if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMenu);
+
+      // Navbar Scroll Effect (Shrink & Blur)
+      if (mainNav) {
+        window.addEventListener('scroll', function () {
+          if (window.scrollY > 20) {
+            mainNav.classList.add('py-2', 'shadow-md');
+            mainNav.classList.remove('py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.03)]');
+          } else {
+            mainNav.classList.remove('py-2', 'shadow-md');
+            mainNav.classList.add('py-4', 'shadow-[0_4px_30px_rgba(0,0,0,0.03)]');
+          }
+        });
+      }
+    });
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+
 </html>

@@ -4,171 +4,206 @@
 {% block title %}{{ spots.name }} - Hidden Spot{% endblock %}
 
 {% block content %}
-<!-- Hero Header -->
-<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
-    <div class="container py-4">
-        <div class="row align-items-center">
-            <div class="col-md-8">
+<!-- Hero Header Section -->
+<div class="relative min-h-[60vh] flex items-end pb-12 pt-32">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        {% if spots.photo %}
+            <img src="{{ spots.photo.url }}" class="w-full h-full object-cover" alt="{{ spots.name }}">
+        {% else %}
+            <img src="https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover" alt="Konkan Landscape">
+        {% endif %}
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-dark/95 via-navy-dark/60 to-transparent"></div>
+    </div>
+
+    <div class="container mx-auto px-4 lg:px-8 relative z-10 w-full">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            <div class="max-w-3xl">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-2">
-                        <li class="breadcrumb-item"><a href="{% url 'home_spots' %}" class="text-white opacity-75 text-decoration-none">Hidden Spots</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">{{ spots.category }}</li>
+                    <ol class="flex items-center space-x-2 text-sm font-medium mb-4">
+                        <li><a href="{% url 'home_spots' %}" class="text-white/70 hover:text-white transition-colors">Hidden Spots</a></li>
+                        <li><span class="text-white/50 mx-2">/</span></li>
+                        <li class="text-sunset-coral" aria-current="page">{{ spots.category }}</li>
                     </ol>
                 </nav>
-                <h1 class="display-4 fw-bold mb-0">{{ spots.name }}</h1>
-                <p class="lead mb-0 opacity-75 mt-2">
-                    <i class="fas fa-user-circle me-1"></i> Shared by {{ spots.uploaded_by.username|default:"Konkan Guide Community" }}
-                </p>
-            </div>
-            <div class="col-md-4 text-md-end mt-4 mt-md-0">
-                <div class="bg-white bg-opacity-10 p-3 rounded-4 backdrop-blur">
-                    <div class="d-flex align-items-center justify-content-center justify-content-md-end">
-                        <i class="fas fa-star text-warning fs-3 me-2"></i>
-                        <span class="fs-2 fw-bold">{{ spots.rating }}</span>
-                        <span class="opacity-75 ms-1">/ 5</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white mb-4 leading-tight">
+                    {{ spots.name }}
+                </h1>
+                
+                <div class="flex items-center gap-4 text-white/80">
+                    <div class="flex items-center">
+                        <i class="fas fa-compass text-ocean-light mr-2"></i>
+                        <span>Discovered by <strong class="text-white">{{ spots.uploaded_by.username|default:"Konkan Guide Community" }}</strong></span>
                     </div>
+                    {% if spots.distance %}
+                    <div class="hidden sm:flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/30 mx-3"></span>
+                        <i class="fas fa-map-marker-alt text-sunset-coral mr-2"></i>
+                        <span>{{ spots.distance }} km away</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex-shrink-0">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 inline-flex flex-col items-center justify-center min-w-[120px]">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i class="fas fa-star text-sunset-gold text-xl"></i>
+                        <span class="text-3xl font-black text-white">{{ spots.rating }}</span>
+                    </div>
+                    <span class="text-white/70 text-sm font-medium uppercase tracking-wider">Rating</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container mb-5">
-    <div class="row g-5">
-        <!-- Main Content (Left) -->
-        <div class="col-lg-8">
-            <!-- Main Image -->
-            <div class="rounded-5 shadow-lg overflow-hidden mb-5 position-relative">
-                {% if spots.photo %}
-                    <img src="{{ spots.photo.url }}" class="img-fluid w-100" style="max-height: 500px; object-fit: cover;" alt="{{ spots.name }}">
-                {% else %}
-                    <img src="https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?auto=format&fit=crop&q=80&w=1200" class="img-fluid w-100" style="max-height: 500px; object-fit: cover;" alt="Konkan Landscape">
-                {% endif %}
-                
-                {% if spots.distance %}
-                <div class="position-absolute top-0 end-0 m-4">
-                    <span class="badge bg-white text-primary rounded-pill px-4 py-3 shadow-sm fs-6">
-                        <i class="fas fa-map-marker-alt me-2"></i>{{ spots.distance }} km away
-                    </span>
-                </div>
-                {% endif %}
-            </div>
-
-            <!-- Description Card -->
-            <div class="card border-0 shadow-sm rounded-4 mb-5">
-                <div class="card-body p-4 p-md-5">
-                    <h3 class="fw-bold text-dark mb-4 border-start border-primary border-4 ps-3">Discovery Details</h3>
-                    <p class="text-muted fs-5 lh-lg">
-                        {{ spots.description|default:"No description and travel notes provided for this hidden gem yet. Be the first to explore and share your experience!" }}
-                    </p>
-                </div>
-            </div>
-
-            <!-- Tags -->
-            {% if spots.tags.all %}
-            <div class="mb-5">
-                <h5 class="fw-bold mb-3 text-muted">Vibe & Atmosphere</h5>
-                <div class="d-flex flex-wrap gap-2">
-                    {% for tag in spots.tags.all %}
-                        <span class="badge rounded-pill bg-light text-secondary border px-3 py-2">
-                            <i class="fas fa-hashtag me-1 opacity-50"></i> {{ tag.name }}
-                        </span>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-        </div>
-
-        <!-- Sidebar (Right) -->
-        <div class="col-lg-4">
-            <!-- Quick Info Card -->
-            <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
-                <div class="bg-light p-4 border-bottom">
-                    <h5 class="fw-bold mb-0 text-dark">Liaison Info</h5>
-                </div>
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="flex-shrink-0 bg-primary bg-opacity-10 text-primary p-3 rounded-4">
-                            <i class="fas fa-clock fs-4"></i>
+<!-- Main Content Section -->
+<div class="bg-slate-50 relative">
+    <div class="container mx-auto px-4 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Left Column: Story & Tags -->
+            <div class="lg:col-span-8">
+                <!-- Description Card -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_8px_40px_rgba(15,23,42,0.04)] mb-10 border border-slate-100">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-14 h-14 rounded-2xl bg-ocean-light/10 flex items-center justify-center text-ocean-mid text-2xl">
+                            <i class="fas fa-book-open"></i>
                         </div>
-                        <div class="ms-3">
-                            <p class="text-muted small mb-0">Best Entry Times</p>
-                            <p class="fw-bold mb-0 text-dark">{{ spots.opening_hours|default:"Daylight Hours" }}</p>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="flex-shrink-0 bg-info bg-opacity-10 text-info p-3 rounded-4">
-                            <i class="fas fa-moon fs-4"></i>
-                        </div>
-                        <div class="ms-3">
-                            <p class="text-muted small mb-0">Closes Around</p>
-                            <p class="fw-bold mb-0 text-dark">{{ spots.closing_hours|default:"Dusk" }}</p>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="flex-shrink-0 bg-success bg-opacity-10 text-success p-3 rounded-4">
-                            <i class="fas fa-ticket-alt fs-4"></i>
-                        </div>
-                        <div class="ms-3">
-                            <p class="text-muted small mb-0">Est. Cost / Entry</p>
-                            <p class="fw-bold mb-0 text-dark">{% if spots.price > 0 %}₹{{ spots.price }}{% else %}Free Admission{% endif %}</p>
+                        <div>
+                            <p class="text-sm uppercase tracking-widest text-slate-400 font-bold mb-1">Travel Story</p>
+                            <h2 class="text-3xl font-black text-navy-dark">Discovery Details</h2>
                         </div>
                     </div>
                     
-                    {% if spots.map_link %}
-                    <a href="{{ spots.map_link }}" target="_blank" class="btn btn-warning w-100 py-3 rounded-pill fw-bold mt-2 shadow-sm">
-                        <i class="fas fa-location-arrow me-2"></i>Navigate to Spot
-                    </a>
-                    {% endif %}
+                    <div class="prose prose-lg max-w-none text-slate-600 leading-relaxed font-medium">
+                        <p>
+                            {{ spots.description|default:"No description and travel notes provided for this hidden gem yet. Be the first to explore and share your experience!" }}
+                        </p>
+                    </div>
                 </div>
+
+                <!-- Tags -->
+                {% if spots.tags.all %}
+                <div>
+                    <h3 class="text-xl font-bold text-navy-dark mb-4 flex items-center gap-2">
+                        <i class="fas fa-hashtag text-ocean-light"></i> Vibe & Atmosphere
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in spots.tags.all %}
+                            <span class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl font-medium shadow-sm hover:border-ocean-mid hover:text-ocean-mid transition-colors cursor-default">
+                                {{ tag.name }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
 
-            <!-- Community Info -->
-            {% if spots.uploaded_by %}
-            <div class="card border-0 shadow-sm rounded-4 bg-primary text-white p-4">
-                <div class="d-flex align-items-center">
-                    {% if spots.uploaded_by.profile_image %}
-                    <img src="{{ spots.uploaded_by.profile_image.url }}" class="rounded-circle border border-3 border-white-50 shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
-                    {% else %}
-                    <div class="rounded-circle border border-3 border-white-50 shadow-sm bg-white bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                        <i class="fas fa-user text-white fs-4"></i>
+            <!-- Right Column: Sidebar -->
+            <div class="lg:col-span-4">
+                
+                <!-- Liaison Info Card -->
+                <div class="bg-white rounded-[2rem] shadow-[0_8px_40px_rgba(15,23,42,0.04)] mb-8 border border-slate-100 overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-100 px-8 py-5">
+                        <h3 class="text-xl font-black text-navy-dark">Quick Info</h3>
                     </div>
-                    {% endif %}
-                    <div class="ms-3">
-                        <h6 class="fw-bold mb-0">Contributor</h6>
-                        <p class="small mb-0 opacity-75">{{ spots.uploaded_by.name|default:spots.uploaded_by.username }}</p>
+                    <div class="p-8 space-y-6">
+                        
+                        <!-- Timing -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-ocean-light/10 text-ocean-mid flex items-center justify-center text-xl shrink-0">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-400 uppercase tracking-wide">Best Time</p>
+                                <p class="text-navy-dark font-bold text-lg">{{ spots.opening_hours|default:"Daylight Hours" }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Closing -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fas fa-moon"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-400 uppercase tracking-wide">Closes Around</p>
+                                <p class="text-navy-dark font-bold text-lg">{{ spots.closing_hours|default:"Dusk" }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Cost -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-400 uppercase tracking-wide">Entry Cost</p>
+                                <p class="text-navy-dark font-bold text-lg">
+                                    {% if spots.price > 0 %}
+                                        ₹{{ spots.price }}
+                                    {% else %}
+                                        Free Admission
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Map Button -->
+                        {% if spots.map_link %}
+                        <div class="pt-4 border-t border-slate-100">
+                            <a href="{{ spots.map_link }}" target="_blank" class="flex items-center justify-center w-full px-6 py-4 bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg hover:shadow-ocean-mid/30 text-white rounded-xl font-bold transition-all duration-300 hover:-translate-y-1">
+                                <i class="fas fa-location-arrow mr-2"></i> Navigate to Spot
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-                <hr class="my-3 opacity-25">
-                <p class="small mb-0 italic">"This spot represents the essence of Konkan's untouched beauty. Please respect the local environment."</p>
-            </div>
-            {% endif %}
-            
-            {% if spots.uploaded_by and user.is_authenticated and spots.uploaded_by == user.profile %}
-            <div class="mt-4">
-                <div class="d-flex gap-2">
-                    <a href="{% url 'update_spot' spots.id %}" class="btn btn-outline-secondary flex-grow-1 rounded-pill py-2">
-                        <i class="fas fa-edit me-2"></i>Edit
+
+                <!-- Contributor Profile -->
+                {% if spots.uploaded_by %}
+                <div class="bg-gradient-to-br from-navy-dark to-[#0a192f] rounded-[2rem] p-8 text-white relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 p-6 opacity-10">
+                        <i class="fas fa-quote-right text-6xl"></i>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        {% if spots.uploaded_by.profile_image %}
+                            <img src="{{ spots.uploaded_by.profile_image.url }}" class="w-16 h-16 rounded-full border-2 border-ocean-light object-cover" alt="User profile">
+                        {% else %}
+                            <div class="w-16 h-16 rounded-full bg-ocean-mid flex items-center justify-center text-white text-2xl border-2 border-ocean-light">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-ocean-light text-sm font-bold uppercase tracking-widest mb-1">Contributor</p>
+                            <h4 class="text-xl font-black text-white">{{ spots.uploaded_by.name|default:spots.uploaded_by.username }}</h4>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-300 italic leading-relaxed relative z-10">
+                        "This spot represents the essence of Konkan's untouched beauty. Please respect the local environment."
+                    </p>
+                </div>
+                {% endif %}
+
+                <!-- Action Buttons for Owner -->
+                {% if spots.uploaded_by and user.is_authenticated and spots.uploaded_by == user.profile %}
+                <div class="mt-6 flex gap-3">
+                    <a href="{% url 'update_spot' spots.id %}" class="flex-1 px-4 py-3 bg-white border-2 border-slate-200 text-slate-700 hover:border-ocean-mid hover:text-ocean-mid rounded-xl font-bold transition-colors text-center">
+                        <i class="fas fa-edit mr-2"></i> Edit
                     </a>
-                    <a href="{% url 'delete_spot' spots.id %}" class="btn btn-outline-danger flex-grow-1 rounded-pill py-2">
-                        <i class="fas fa-trash me-2"></i>Delete
+                    <a href="{% url 'delete_spot' spots.id %}" class="flex-1 px-4 py-3 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl font-bold transition-colors text-center">
+                        <i class="fas fa-trash mr-2"></i> Delete
                     </a>
                 </div>
+                {% endif %}
+
             </div>
-            {% endif %}
         </div>
     </div>
 </div>
 
-<style>
-    .backdrop-blur {
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-    }
-    .lh-lg {
-        line-height: 1.8 !important;
-    }
-</style>
 {% endblock %}

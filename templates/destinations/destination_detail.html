@@ -2,181 +2,301 @@
 {% load static %}
 
 {% block content %}
-<!-- Premium Detail Header -->
-<div class="hero-wrapper" style="height: 60vh; min-height: 400px;">
-    {% if destination.main_image %}
-    <img src="{{ destination.main_image.url }}" alt="{{ destination.title }}" class="hero-bg" loading="eager">
-    {% endif %}
-    <div class="hero-overlay"></div>
-    <div class="container hero-content text-start">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-3">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white opacity-75">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'destination_list' %}" class="text-white opacity-75">Destinations</a></li>
-                <li class="breadcrumb-item active text-white" aria-current="page">{{ destination.title }}</li>
-            </ol>
-        </nav>
-        <span class="badge badge-coastal mb-3">{{ destination.category }}</span>
-        <h1 class="display-3 fw-bold mb-2">{{ destination.title }}</h1>
-        <p class="lead mb-0"><i class="fas fa-map-marker-alt me-2"></i> {{ destination.location_name }}</p>
+<!-- Premium Detail Hero -->
+<div class="relative min-h-[60vh] flex items-end pb-16 pt-32 overflow-hidden">
+    <!-- Cinematic Background Image -->
+    <div class="absolute inset-0 z-0">
+        {% if destination.main_image %}
+        <img src="{{ destination.main_image.url }}" alt="{{ destination.title }}" class="w-full h-full object-cover transform scale-105 motion-safe:animate-[pulse_20s_ease-in-out_infinite_alternate]" loading="eager">
+        {% else %}
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80" alt="Konkan Coastline" class="w-full h-full object-cover transform scale-105">
+        {% endif %}
+        <!-- Luxury Dark Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-dark/95 via-navy-dark/50 to-navy-dark/30"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="container mx-auto px-6 lg:px-10 relative z-10 w-full">
+        <div class="max-w-4xl">
+            <nav aria-label="breadcrumb">
+                <ol class="flex items-center space-x-2 text-sm font-medium mb-6">
+                    <li><a href="{% url 'home' %}" class="text-white/70 hover:text-white transition-colors">Home</a></li>
+                    <li><span class="text-white/40 mx-2">/</span></li>
+                    <li><a href="{% url 'destination_list' %}" class="text-white/70 hover:text-white transition-colors">Destinations</a></li>
+                    <li><span class="text-white/40 mx-2">/</span></li>
+                    <li class="text-sunset-coral" aria-current="page">{{ destination.title }}</li>
+                </ol>
+            </nav>
+            
+            <div class="flex flex-wrap items-center gap-4 mb-4">
+                <span class="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold text-white uppercase tracking-wider border border-white/20">
+                    {{ destination.category }}
+                </span>
+                <div class="flex items-center text-ocean-light font-bold text-sm bg-navy-dark/40 px-4 py-1.5 rounded-full backdrop-blur-md">
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    {{ destination.location_name }}
+                </div>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1] drop-shadow-lg">
+                {{ destination.title }}
+            </h1>
+        </div>
     </div>
 </div>
 
-<div class="container section-padding pt-5">
-    <div class="row g-5">
-        <!-- Content Column -->
-        <div class="col-lg-8">
-            <div class="mb-5">
-                <h3 class="fw-bold mb-4">About this Destination</h3>
-                <div class="text-muted lead-sm" style="font-size: 1.1rem; line-height: 1.8;">
-                    {{ destination.description|linebreaks }}
-                </div>
-            </div>
+<!-- Main Content Area -->
+<div class="bg-slate-50 relative pb-32">
+    <!-- Decorative overlapping layer -->
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-navy-dark to-transparent opacity-10 pointer-events-none"></div>
 
-            {% if destination.travel_tips %}
-            <div class="bg-sand p-4 rounded-4 mb-5 border-start border-primary border-4" style="background-color: var(--sand-beige);">
-                <h5 class="fw-bold mb-3"><i class="fas fa-lightbulb text-primary me-2"></i> Local Insights & Tips</h5>
-                <div class="text-muted">
-                    {{ destination.travel_tips|linebreaks }}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Gallery Section -->
-            <div class="mb-5">
-                <h4 class="fw-bold mb-4">Captured Moments</h4>
-                <div class="row g-3">
-                    {% for img in destination.gallery.all %}
-                    <div class="col-md-4 col-6">
-                        <div class="card border-0 overflow-hidden shadow-sm">
-                            <img src="{{ img.image.url }}" class="img-fluid rounded card-img-top" 
-                                 style="height: 200px; object-fit: cover;" alt="Gallery image">
+    <div class="container mx-auto px-6 lg:px-10 -mt-8 relative z-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Left Column: Story, Gallery & Reviews -->
+            <div class="lg:col-span-8 space-y-12">
+                
+                <!-- About Section -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-14 h-14 rounded-2xl bg-ocean-light/10 flex items-center justify-center text-ocean-mid text-2xl">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm uppercase tracking-widest text-slate-400 font-bold mb-1">The Story</p>
+                            <h2 class="text-3xl font-black text-navy-dark">About this Destination</h2>
                         </div>
                     </div>
-                    {% empty %}
-                    <div class="col-12">
-                        <p class="text-muted italic">Sharing experiences through eyes of our explorers.</p>
+                    <div class="prose prose-lg max-w-none text-slate-600 leading-relaxed font-medium">
+                        {{ destination.description|linebreaks }}
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
 
-            <!-- Reviews Section -->
-            <hr class="my-5 opacity-25">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <h3 class="fw-bold mb-0">Traveler Reviews</h3>
-                <div class="badge bg-white text-dark border p-2 rounded-pill shadow-sm">
-                    <i class="fas fa-star text-warning me-1"></i> 4.8 Average
-                </div>
-            </div>
-
-            <!-- Add Review Card -->
-            <div class="card border-0 shadow-sm mb-5">
-                <div class="card-body p-4">
-                    <h5 class="fw-bold mb-3">Share your experience</h5>
-                    <form method="post" class="review-form">
-                        {% csrf_token %}
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="small fw-bold mb-1">Display Name</label>
-                                {{ review_form.author_name }}
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small fw-bold mb-1">Rating</label>
-                                {{ review_form.rating }}
-                            </div>
-                            <div class="col-12">
-                                <label class="small fw-bold mb-1">Your Story</label>
-                                {{ review_form.comment }}
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary px-4">Post Review</button>
-                            </div>
+                <!-- Local Insights & Tips -->
+                {% if destination.travel_tips %}
+                <div class="bg-gradient-to-br from-sand-light to-orange-50 rounded-[2rem] p-8 md:p-10 shadow-inner border border-orange-100 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                        <i class="fas fa-lightbulb text-8xl text-sunset-gold"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-black text-navy-dark mb-4 flex items-center gap-3">
+                            <i class="fas fa-lightbulb text-sunset-gold"></i> Local Insights & Tips
+                        </h3>
+                        <div class="prose prose-lg text-slate-700 font-medium leading-relaxed">
+                            {{ destination.travel_tips|linebreaks }}
                         </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Reviews List -->
-            <div class="reviews-list">
-                {% for review in reviews %}
-                <div class="card border-0 shadow-sm mb-3">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-aqua rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px; background-color: var(--aqua);">
-                                    <i class="fas fa-user text-primary"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0">{{ review.author_name|default:review.user.username|default:"Anonymous Explorer" }}</h6>
-                                    <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
-                                </div>
-                            </div>
-                            <div class="text-warning small">
-                                {% for i in "12345"|make_list %}
-                                    {% if forloop.counter <= review.rating %}
-                                        <i class="fas fa-star"></i>
-                                    {% else %}
-                                        <i class="far fa-star opacity-25"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <p class="card-text text-muted mb-0">{{ review.comment }}</p>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="text-center py-5 bg-light rounded-4 border-dashed">
-                    <p class="text-muted mb-0">No reviews yet. Be the first to share your journey!</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Sidebar Info Column -->
-        <div class="col-lg-4">
-            <div class="sticky-top" style="top: 100px; z-index: 10;">
-                <div class="card border-0 shadow-md mb-4 overflow-hidden">
-                    <div class="card-header bg-dark text-white p-3 border-0">
-                        <h6 class="mb-0 fw-bold"><i class="fas fa-info-circle me-2"></i> Essential Info</h6>
-                    </div>
-                    <div class="card-body p-0">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between p-3 border-light">
-                                <span class="text-muted small">Best Season</span>
-                                <span class="fw-bold small">{{ destination.best_time_to_visit|default:"Sept - March" }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-3 border-light">
-                                <span class="text-muted small">Entry Requirement</span>
-                                <span class="fw-bold small">{{ destination.entry_fees|default:"No Ticket" }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-3 border-light">
-                                <span class="text-muted small">Visitor Hours</span>
-                                <span class="fw-bold small">{{ destination.timings|default:"Dawn to Dusk" }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Google Map Card -->
-                {% if destination.latitude and destination.longitude %}
-                <div class="card border-0 shadow-md overflow-hidden rounded-4">
-                    <div class="card-body p-0">
-                        <iframe width="100%" height="300" frameborder="0" style="border:0"
-                            src="https://maps.google.com/maps?q={{ destination.latitude }},{{ destination.longitude }}&hl=en&z=14&output=embed"
-                            allowfullscreen loading="lazy">
-                        </iframe>
-                    </div>
-                    <div class="card-footer bg-white p-3 border-0 text-center">
-                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ destination.latitude }},{{ destination.longitude }}" 
-                           target="_blank" class="btn btn-link btn-sm text-primary fw-bold text-decoration-none">
-                            <i class="fas fa-directions me-1"></i> Get Navigation
-                        </a>
                     </div>
                 </div>
                 {% endif %}
+
+                <!-- Captured Moments Gallery -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 text-2xl">
+                            <i class="fas fa-camera-retro"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-black text-navy-dark">Captured Moments</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {% for img in destination.gallery.all %}
+                        <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] shadow-md cursor-pointer">
+                            <img src="{{ img.image.url }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" alt="Gallery image">
+                            <div class="absolute inset-0 bg-navy-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                        {% empty %}
+                        <div class="col-span-2 md:col-span-3 text-center py-12 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                            <i class="fas fa-images text-4xl text-slate-300 mb-3"></i>
+                            <p class="text-slate-500 font-medium">Sharing experiences through the eyes of our explorers.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Traveler Reviews Section -->
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 px-4">
+                        <div>
+                            <h2 class="text-4xl font-black text-navy-dark tracking-tight">Traveler Reviews</h2>
+                        </div>
+                        <div class="inline-flex items-center gap-2 bg-white px-5 py-2 rounded-full shadow-sm border border-slate-100 font-bold text-navy-dark">
+                            <i class="fas fa-star text-sunset-gold"></i> 4.8 Average
+                        </div>
+                    </div>
+
+                    <!-- Add Review Form -->
+                    <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 mb-10 review-form-container">
+                        <h3 class="text-2xl font-black text-navy-dark mb-6">Share your experience</h3>
+                        <form method="post" class="space-y-6">
+                            {% csrf_token %}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Display Name</label>
+                                    {{ review_form.author_name }}
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Rating</label>
+                                    {{ review_form.rating }}
+                                </div>
+                                <div class="col-span-1 md:col-span-2">
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Your Story</label>
+                                    {{ review_form.comment }}
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-ocean-mid to-ocean-light hover:from-ocean-light hover:to-ocean-mid text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-ocean-mid/40 hover:-translate-y-1 transition-all duration-300">
+                                Post Review
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div class="space-y-6">
+                        {% for review in reviews %}
+                        <div class="bg-white rounded-3xl p-8 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-shadow">
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-ocean-light to-ocean-mid flex items-center justify-center text-white text-xl shadow-md">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-black text-lg text-navy-dark">{{ review.author_name|default:review.user.username|default:"Anonymous Explorer" }}</h4>
+                                        <p class="text-slate-400 text-sm font-medium">{{ review.created_at|date:"M d, Y" }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex text-sunset-gold gap-1 text-sm bg-orange-50 px-3 py-1.5 rounded-full">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star text-orange-200"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="text-slate-600 font-medium leading-relaxed pl-18 sm:pl-18">{{ review.comment }}</p>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-16 bg-white rounded-[2rem] border-2 border-dashed border-slate-200">
+                            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300 text-3xl">
+                                <i class="fas fa-comment-dots"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-navy-dark mb-2">No reviews yet</h4>
+                            <p class="text-slate-500 font-medium">Be the first to share your journey and inspire others!</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+
+            <!-- Right Column: Sidebar Info & Map -->
+            <div class="lg:col-span-4">
+                <div class="sticky top-32 space-y-8">
+                    
+                    <!-- Essential Info Card -->
+                    <div class="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+                        <div class="bg-navy-dark p-6 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-ocean-light/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                            <h3 class="text-xl font-black text-white relative z-10 flex items-center gap-3">
+                                <i class="fas fa-info-circle text-ocean-light"></i> Essential Info
+                            </h3>
+                        </div>
+                        
+                        <div class="p-6 space-y-6">
+                            <!-- Best Season -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-orange-50 text-sunset-coral flex items-center justify-center text-xl shrink-0">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Best Season</p>
+                                    <p class="text-navy-dark font-black">{{ destination.best_time_to_visit|default:"Sept - March" }}</p>
+                                </div>
+                            </div>
+                            
+                            <hr class="border-slate-100">
+
+                            <!-- Entry Requirement -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fas fa-ticket-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Entry Requirement</p>
+                                    <p class="text-navy-dark font-black">{{ destination.entry_fees|default:"No Ticket" }}</p>
+                                </div>
+                            </div>
+
+                            <hr class="border-slate-100">
+
+                            <!-- Visitor Hours -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Visitor Hours</p>
+                                    <p class="text-navy-dark font-black">{{ destination.timings|default:"Dawn to Dusk" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google Map Card -->
+                    {% if destination.latitude and destination.longitude %}
+                    <div class="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-col">
+                        <div class="h-64 w-full relative">
+                            <iframe width="100%" height="100%" frameborder="0" style="border:0" class="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"
+                                src="https://maps.google.com/maps?q={{ destination.latitude }},{{ destination.longitude }}&hl=en&z=14&output=embed"
+                                allowfullscreen loading="lazy">
+                            </iframe>
+                        </div>
+                        <div class="p-4 bg-white border-t border-slate-100">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination={{ destination.latitude }},{{ destination.longitude }}" 
+                               target="_blank" class="flex items-center justify-center w-full py-3 bg-slate-50 hover:bg-ocean-mid text-navy-dark hover:text-white rounded-xl font-bold transition-colors">
+                                <i class="fas fa-directions mr-2"></i> Get Navigation
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<style>
+    /* Styling to ensure Django forms adopt the premium UI look automatically */
+    .review-form-container input[type="text"],
+    .review-form-container input[type="email"],
+    .review-form-container textarea,
+    .review-form-container select {
+        width: 100%;
+        background-color: #f8fafc; /* slate-50 */
+        border: 2px solid transparent;
+        border-radius: 0.75rem; /* xl */
+        padding: 1rem 1.25rem;
+        font-weight: 500;
+        color: #0f172a; /* slate-900 */
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    
+    .review-form-container input[type="text"]:focus,
+    .review-form-container input[type="email"]:focus,
+    .review-form-container textarea:focus,
+    .review-form-container select:focus {
+        border-color: rgba(0, 119, 182, 0.5); /* ocean-mid with opacity */
+        background-color: #ffffff;
+        box-shadow: 0 4px 14px 0 rgba(0, 119, 182, 0.1);
+    }
+
+    .review-form-container textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+</style>
 {% endblock %}

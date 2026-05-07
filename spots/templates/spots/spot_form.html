@@ -4,113 +4,129 @@
 {% block title %}Hidden Spot - Konkan Guide{% endblock %}
 
 {% block content %}
-<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
-    <div class="container py-3 text-center">
-        <h1 class="display-5 fw-bold mb-2">Uncover New Horizons</h1>
-        <p class="lead opacity-75 mb-0">Record a hidden spot and share its secret with the world.</p>
+<!-- Premium Header Section -->
+<div class="relative bg-navy-dark pt-32 pb-40 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-purple-500/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
+        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-ocean-light/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-navy-dark"></div>
+    </div>
+
+    <div class="container mx-auto px-6 lg:px-10 relative z-10 text-center max-w-4xl">
+        <p class="text-ocean-light font-bold tracking-[0.2em] uppercase mb-4 text-sm">Uncover New Horizons</p>
+        <h1 class="text-5xl md:text-6xl font-black text-white tracking-tight mb-6">Add / Edit Hidden Spot</h1>
+        <p class="text-xl text-white/70 font-medium leading-relaxed">
+            Record a hidden spot and share its secret with the world.
+        </p>
     </div>
 </div>
 
-<div class="container mb-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <div class="card-body p-4 p-md-5">
-                    <div class="mb-5 border-start border-primary border-4 ps-4">
-                        <h4 class="fw-bold mb-2">Add / Edit Hidden Spot</h4>
-                        <p class="text-muted small mb-0">
-                            Tell us about a location that isn't on the regular tourist map.
-                        </p>
-                    </div>
-
-                    <form method="post" enctype="multipart/form-data" class="modern-form">
-                        {% csrf_token %}
-                        
-                        <div class="row g-4">
-                            {% for field in spots_form %}
-                            <div class="col-12">
-                                <div class="form-group mb-0">
-                                    <label for="{{ field.id_for_label }}" class="small fw-bold text-dark mb-2 d-flex align-items-center">
-                                        {% if field.name == 'name' %}<i class="fas fa-map-marked text-primary me-2"></i>
-                                        {% elif field.name == 'description' %}<i class="fas fa-align-left text-primary me-2"></i>
-                                        {% elif field.name == 'price' %}<i class="fas fa-coins text-primary me-2"></i>
-                                        {% elif field.name == 'photo' %}<i class="fas fa-camera text-primary me-2"></i>
-                                        {% elif field.name == 'rating' %}<i class="fas fa-star text-primary me-2"></i>
-                                        {% elif field.name == 'map_link' %}<i class="fas fa-map-location-dot text-primary me-2"></i>
-                                        {% elif field.name == 'distance' %}<i class="fas fa-route text-primary me-2"></i>
-                                        {% elif field.name == 'opening_hours' %}<i class="fas fa-sun text-primary me-2"></i>
-                                        {% elif field.name == 'closing_hours' %}<i class="fas fa-moon text-primary me-2"></i>
-                                        {% elif field.name == 'category' %}<i class="fas fa-th-large text-primary me-2"></i>
-                                        {% elif field.name == 'tags' %}<i class="fas fa-tags text-primary me-2"></i>
-                                        {% endif %}
-                                        {{ field.label }}
-                                    </label>
-                                    
-                                    {{ field }}
-                                    
-                                    {% if field.help_text %}
-                                    <div class="form-text small opacity-75 mt-1">{{ field.help_text }}</div>
-                                    {% endif %}
-                                    
-                                    {% for error in field.errors %}
-                                    <div class="text-danger small mt-1">
-                                        <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="d-flex flex-column flex-md-row gap-3 mt-5 pt-4 border-top border-light">
-                            <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold flex-grow-1 shadow-sm">
-                                Save Local Spot
-                            </button>
-                            <a href="{% url 'home_spots' %}" class="btn btn-light rounded-pill px-5 py-3 text-muted">
-                                Cancel
-                            </a>
-                        </div>
-                    </form>
+<div class="relative z-20 bg-slate-50 min-h-screen pb-24 -mt-16">
+    <div class="container mx-auto px-6 lg:px-10 max-w-4xl">
+        <div class="bg-white rounded-[2rem] shadow-[0_20px_40px_rgb(0,0,0,0.06)] border border-slate-100 p-8 md:p-12">
+            
+            <div class="flex items-center gap-4 mb-10">
+                <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 text-2xl">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-navy-dark">Spot Details</h2>
+                    <p class="text-slate-500 font-medium">Tell us about a location that isn't on the regular tourist map.</p>
                 </div>
             </div>
+
+            <form method="post" enctype="multipart/form-data" class="modern-form space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for field in spots_form %}
+                    <div class="{% if field.name == 'description' or field.name == 'map_link' or field.name == 'tags' %}md:col-span-2{% else %}col-span-1{% endif %}">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center">
+                            {% if field.name == 'name' %}<i class="fas fa-map-marked text-purple-500 mr-2"></i>
+                            {% elif field.name == 'description' %}<i class="fas fa-align-left text-purple-500 mr-2"></i>
+                            {% elif field.name == 'price' %}<i class="fas fa-coins text-purple-500 mr-2"></i>
+                            {% elif field.name == 'photo' %}<i class="fas fa-camera text-purple-500 mr-2"></i>
+                            {% elif field.name == 'rating' %}<i class="fas fa-star text-purple-500 mr-2"></i>
+                            {% elif field.name == 'map_link' %}<i class="fas fa-map-location-dot text-purple-500 mr-2"></i>
+                            {% elif field.name == 'distance' %}<i class="fas fa-route text-purple-500 mr-2"></i>
+                            {% elif field.name == 'opening_hours' %}<i class="fas fa-sun text-purple-500 mr-2"></i>
+                            {% elif field.name == 'closing_hours' %}<i class="fas fa-moon text-purple-500 mr-2"></i>
+                            {% elif field.name == 'category' %}<i class="fas fa-th-large text-purple-500 mr-2"></i>
+                            {% elif field.name == 'tags' %}<i class="fas fa-tags text-purple-500 mr-2"></i>
+                            {% endif %}
+                            {{ field.label }}
+                        </label>
+                        
+                        <div class="relative custom-form-field">
+                            {{ field }}
+                        </div>
+                        
+                        {% if field.help_text %}
+                        <p class="text-slate-400 text-sm mt-2 font-medium">{{ field.help_text }}</p>
+                        {% endif %}
+                        
+                        {% for error in field.errors %}
+                        <p class="text-red-500 text-sm mt-2 font-bold flex items-center gap-1">
+                            <i class="fas fa-exclamation-circle"></i> {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-8 mt-8 border-t border-slate-100">
+                    <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-purple-500/40 hover:-translate-y-1 transition-all duration-300">
+                        Save Local Spot
+                    </button>
+                    <a href="{% url 'home_spots' %}" class="flex-1 py-4 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl font-bold text-center border border-slate-200 transition-all duration-300">
+                        Cancel
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<script>
-    document.querySelectorAll('input:not([type="checkbox"]):not([type="file"]), textarea, select').forEach(el => {
-        el.classList.add('form-control', 'px-3');
-        if (el.tagName !== 'TEXTAREA') {
-            el.classList.add('rounded-pill');
-        } else {
-            el.classList.add('rounded-4');
-            el.setAttribute('rows', '4');
-        }
-    });
+<style>
+    .custom-form-field input:not([type="checkbox"]):not([type="file"]),
+    .custom-form-field textarea,
+    .custom-form-field select {
+        width: 100%;
+        background-color: #f8fafc;
+        border: 2px solid transparent;
+        border-radius: 0.75rem;
+        padding: 1rem 1.25rem;
+        font-weight: 500;
+        color: #0f172a;
+        transition: all 0.3s ease;
+        outline: none;
+    }
     
-    document.querySelectorAll('input[type="file"]').forEach(el => {
-        el.classList.add('form-control', 'rounded-pill');
-    });
-
-    const style = document.createElement('style');
-    style.textContent = `
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.25rem rgba(0, 119, 182, 0.15);
-        }
-        .modern-form label {
-            transition: color 0.3s ease;
-        }
-        .form-group:focus-within label {
-            color: var(--ocean-deep) !important;
-        }
-        /* Style for multiple select / tags */
-        select[multiple] {
-            border-radius: 1rem !important;
-            padding: 1rem !important;
-            min-height: 120px;
-        }
-    `;
-    document.head.appendChild(style);
-</script>
+    .custom-form-field input:focus,
+    .custom-form-field textarea:focus,
+    .custom-form-field select:focus {
+        border-color: rgba(168, 85, 247, 0.5); /* Purple-500 */
+        background-color: #ffffff;
+        box-shadow: 0 4px 14px 0 rgba(168, 85, 247, 0.1);
+    }
+    
+    .custom-form-field textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .custom-form-field input[type="file"] {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #f8fafc;
+        border-radius: 0.75rem;
+        border: 2px dashed #cbd5e1;
+        cursor: pointer;
+    }
+    
+    .custom-form-field select[multiple] {
+        min-height: 120px;
+        border-radius: 1rem;
+    }
+</style>
 {% endblock %}

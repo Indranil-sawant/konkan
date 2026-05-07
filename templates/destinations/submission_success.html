@@ -2,17 +2,43 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5 text-center">
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-body py-5">
-            <h1 class="display-4 text-success mb-4"><i class="bi bi-check-circle-fill"></i> Success!</h1>
-            <h3 class="mb-3">Thank you for your submission.</h3>
-            <p class="lead">Your destination has been submitted successfully.</p>
-            <p class="text-muted">It is currently pending verified by an administrator. Once approved, it will be
-                visible to everyone.</p>
-            <div class="mt-4">
-                <a href="{% url 'destination_list' %}" class="btn btn-primary">Browse Destinations</a>
-                <a href="{% url 'create_destination' %}" class="btn btn-outline-secondary">Submit Another</a>
+<!-- Premium Header Section -->
+<div class="relative bg-navy-dark pt-32 pb-32 overflow-hidden min-h-[70vh] flex items-center">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-green-500/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
+        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-ocean-light/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-navy-dark"></div>
+    </div>
+
+    <div class="container mx-auto px-6 lg:px-10 relative z-10 w-full max-w-2xl">
+        <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_20px_40px_rgb(0,0,0,0.2)] text-center relative overflow-hidden">
+            <!-- Success indicator -->
+            <div class="absolute top-0 left-0 right-0 h-2 bg-green-500"></div>
+            
+            <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 text-green-500 text-5xl">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h2 class="text-4xl md:text-5xl font-black text-navy-dark tracking-tight mb-4">
+                Success!
+            </h2>
+            
+            <p class="text-xl text-slate-600 font-medium mb-4 leading-relaxed">
+                Thank you for your submission.<br>
+                <strong class="text-navy-dark">Your destination has been submitted successfully.</strong>
+            </p>
+            
+            <p class="text-slate-500 font-medium mb-10 max-w-md mx-auto">
+                It is currently pending verified by an administrator. Once approved, it will be visible to everyone.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'destination_list' %}" class="px-8 py-4 bg-gradient-to-r from-ocean-mid to-ocean-light hover:from-ocean-light hover:to-ocean-mid text-white rounded-xl font-bold shadow-lg hover:shadow-ocean-mid/40 hover:-translate-y-1 transition-all">
+                    Browse Destinations
+                </a>
+                <a href="{% url 'create_destination' %}" class="px-8 py-4 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl font-bold transition-colors border border-slate-200">
+                    Submit Another
+                </a>
             </div>
         </div>
     </div>

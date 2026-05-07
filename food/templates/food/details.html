@@ -1,80 +1,122 @@
 {% extends "base.html" %}
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>second page</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-       <h1>Where to travel</h1>
-         <p> This is the about page of the konkan guide website. Here you will find information about various travel spots in the Konkan region.</p>
+{% load static %}
 
 {% block content %}
-<div class="container py-5">
-
-    <!-- Hero Section -->
-    <div class="row g-4 mb-4">
-        <div class="col-12 col-lg-6">
-            <div class="rounded shadow-sm overflow-hidden">
-                {% if food_items.photo %}
-                    <img src="{{ food_items.photo.url }}" class="img-fluid w-100" style="height:350px; object-fit:cover;">
-                {% else %}
-                    <img src="https://via.placeholder.com/600x350" class="img-fluid w-100">
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-6 d-flex flex-column justify-content-center">
-            <h1 class="fw-bold">{{ food_items.name }}</h1>
-
-            <p class="text-muted mb-1">Category: {{ food_items.category }}</p>
-            <p class="text-muted mb-1">Price: {{ food_items.price }} /-</p>
-            <p class="text-muted mb-2">Rating: ⭐ {{ food_items.rating }}/5</p>
-            <div class="mt-3">
-                <a href="{{ spot3.map_location }}" 
-                   class="btn btn-warning text-dark fw-semibold px-4" 
-                   target="_blank">
-                    📍 View on Map
-                </a>
-            </div>
-        </div>
+<!-- Premium Detail Hero -->
+<div class="relative min-h-[50vh] flex items-end pb-16 pt-32 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        {% if food_items.photo %}
+        <img src="{{ food_items.photo.url }}" alt="{{ food_items.name }}" class="w-full h-full object-cover transform scale-105 motion-safe:animate-[pulse_20s_ease-in-out_infinite_alternate]" loading="eager">
+        {% else %}
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=2000&q=80" alt="Konkan Food" class="w-full h-full object-cover transform scale-105">
+        {% endif %}
+        <!-- Luxury Dark Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-dark/95 via-navy-dark/50 to-navy-dark/30"></div>
     </div>
 
-    <!-- Details Section -->
-    <div class="row g-4">
-        <div class="col-12 col-lg-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h4 class="fw-bold mb-3">Description</h4>
-                    <p class="text-muted">{{ food_items.description }}</p>
+    <!-- Hero Content -->
+    <div class="container mx-auto px-6 lg:px-10 relative z-10 w-full">
+        <div class="max-w-4xl">
+            <nav aria-label="breadcrumb">
+                <ol class="flex items-center space-x-2 text-sm font-medium mb-6">
+                    <li><a href="{% url 'home' %}" class="text-white/70 hover:text-white transition-colors">Home</a></li>
+                    <li><span class="text-white/40 mx-2">/</span></li>
+                    <li><a href="{% url 'food_home' %}" class="text-white/70 hover:text-white transition-colors">Food</a></li>
+                    <li><span class="text-white/40 mx-2">/</span></li>
+                    <li class="text-sunset-coral" aria-current="page">{{ food_items.name }}</li>
+                </ol>
+            </nav>
+            
+            <div class="flex flex-wrap items-center gap-4 mb-4">
+                <span class="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold text-white uppercase tracking-wider border border-white/20">
+                    {{ food_items.category }}
+                </span>
+                <div class="flex items-center text-sunset-gold font-bold text-sm bg-navy-dark/40 px-4 py-1.5 rounded-full backdrop-blur-md">
+                    <i class="fas fa-star mr-2"></i>
+                    {{ food_items.rating }}/5
                 </div>
             </div>
-        </div>
 
-        <div class="col-12 col-lg-4">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-3">Timings</h5>
-
-                    <p class="mb-1">
-                        <span class="badge bg-success px-3 py-2">Opens: {{  food_items.opening_hours }}</span>
-                    </p>
-                    <p>
-                        <span class="badge bg-danger px-3 py-2">Closes: {{ food_items.closing_hours }}</span>
-                    </p>
-                </div>
-            </div>
+            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1] drop-shadow-lg mb-4">
+                {{ food_items.name }}
+            </h1>
+            <h2 class="text-3xl font-bold text-white/90">₹{{ food_items.price }} /-</h2>
         </div>
     </div>
+</div>
 
+<div class="bg-slate-50 relative pb-32">
+    <!-- Decorative overlapping layer -->
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-navy-dark to-transparent opacity-10 pointer-events-none"></div>
+
+    <div class="container mx-auto px-6 lg:px-10 -mt-8 relative z-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <div class="lg:col-span-8 space-y-12">
+                <!-- Description Section -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center text-sunset-coral text-2xl">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm uppercase tracking-widest text-slate-400 font-bold mb-1">About</p>
+                            <h2 class="text-3xl font-black text-navy-dark">Description</h2>
+                        </div>
+                    </div>
+                    <div class="prose prose-lg max-w-none text-slate-600 leading-relaxed font-medium">
+                        {{ food_items.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4">
+                <div class="sticky top-32 space-y-8">
+                    <!-- Timings Card -->
+                    <div class="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+                        <div class="bg-navy-dark p-6 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-ocean-light/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                            <h3 class="text-xl font-black text-white relative z-10 flex items-center gap-3">
+                                <i class="fas fa-clock text-ocean-light"></i> Timings
+                            </h3>
+                        </div>
+                        
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-green-50 text-emerald-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Opens</p>
+                                    <p class="text-navy-dark font-black">{{ food_items.opening_hours }}</p>
+                                </div>
+                            </div>
+                            
+                            <hr class="border-slate-100">
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fas fa-door-closed"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Closes</p>
+                                    <p class="text-navy-dark font-black">{{ food_items.closing_hours }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if spot3.map_location %}
+                    <a href="{{ spot3.map_location }}" target="_blank" class="flex items-center justify-center w-full py-4 bg-gradient-to-r from-ocean-mid to-ocean-light hover:from-ocean-light hover:to-ocean-mid text-white rounded-[1.5rem] font-bold text-lg shadow-lg hover:shadow-ocean-mid/40 hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-map-marker-alt mr-2"></i> View on Map
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 {% endblock %}
-
-        <script src="" async defer></script>
-    </body>
-</html>
 
 
