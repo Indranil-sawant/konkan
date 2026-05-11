@@ -45,7 +45,7 @@ def food_detail(request, id):
 
 def search(request):        
     query = request.GET.get('q', '')
-    destination_results = Destination.objects.filter(name__icontains=query)
+    destination_results = Destination.objects.filter(title__icontains=query)
     spot_results = Spots.objects.filter(name__icontains=query)
     food_results = FoodItem.objects.filter(name__icontains=query)
 
