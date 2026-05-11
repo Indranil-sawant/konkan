@@ -3,7 +3,7 @@
 
 {% block content %}
 <!-- Premium Header Section -->
-<div class="relative bg-navy-dark pt-32 pb-32 overflow-hidden">
+<div class="relative bg-navy-dark overflow-hidden" style="padding-top: calc(var(--nav-height, 72px) + 2rem); padding-bottom: 3.5rem;">
     <div class="absolute inset-0 z-0">
         <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-ocean-light/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
         <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-sunset-coral/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
@@ -12,7 +12,7 @@
 
     <div class="container mx-auto px-6 lg:px-10 relative z-10 text-center max-w-4xl">
         <p class="text-ocean-light font-bold tracking-[0.2em] uppercase mb-4 text-sm">Explore</p>
-        <h1 class="text-5xl md:text-6xl font-black text-white tracking-tight mb-6">Search Results</h1>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight mb-6 text-balance">Search Results</h1>
         
         {% if query %}
             <p class="text-xl text-white/70 font-medium leading-relaxed">
@@ -24,8 +24,8 @@
     </div>
 </div>
 
-<div class="bg-slate-50 relative pb-32 pt-16 min-h-screen">
-    <div class="container mx-auto px-6 lg:px-10">
+<div class="bg-slate-50 relative pb-16 lg:pb-32 pt-10 lg:pt-16 min-h-screen">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-10">
 
         <!-- Destinations -->
         {% if destination_results %}
@@ -37,10 +37,10 @@
                 <h2 class="text-3xl font-black text-navy-dark">Destinations</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {% for dest in destination_results %}
-                <div class="group bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] border border-slate-100 transition-all duration-500 hover:-translate-y-2 flex flex-col">
-                    <div class="relative h-56 overflow-hidden">
+                <div class="group bg-white rounded-[1.5rem] lg:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] border border-slate-100 transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                    <div class="relative overflow-hidden" style="height:clamp(160px,30vw,224px);">
                         {% if dest.photo %}
                         <img src="{{ dest.photo.url }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                         {% else %}
@@ -49,7 +49,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-navy-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     
-                    <div class="p-8 flex-1 flex flex-col bg-white">
+                    <div class="p-5 lg:p-8 flex-1 flex flex-col bg-white">
                         <h3 class="text-xl font-black text-navy-dark mb-3">{{ dest.name }}</h3>
                         <p class="text-slate-500 leading-relaxed font-medium mb-6 flex-1">{{ dest.description|truncatewords:15 }}</p>
                         
@@ -73,10 +73,10 @@
                 <h2 class="text-3xl font-black text-navy-dark">Hidden Spots</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {% for spot in spot_results %}
-                <div class="group bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] border border-slate-100 transition-all duration-500 hover:-translate-y-2 flex flex-col">
-                    <div class="relative h-56 overflow-hidden">
+                <div class="group bg-white rounded-[1.5rem] lg:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] border border-slate-100 transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                    <div class="relative overflow-hidden" style="height:clamp(160px,30vw,224px);">
                         {% if spot.photo %}
                         <img src="{{ spot.photo.url }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                         {% else %}
@@ -85,7 +85,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-navy-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     
-                    <div class="p-8 flex-1 flex flex-col bg-white">
+                    <div class="p-5 lg:p-8 flex-1 flex flex-col bg-white">
                         <div class="mb-6 flex-1">
                             <span class="inline-block px-3 py-1 bg-purple-50 text-purple-600 text-xs font-bold rounded-full mb-3">{{ spot.category.name }}</span>
                             <h3 class="text-xl font-black text-navy-dark">{{ spot.name }}</h3>
@@ -111,10 +111,10 @@
                 <h2 class="text-3xl font-black text-navy-dark">Coastal Food</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {% for food in food_results %}
-                <div class="group bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] border border-slate-100 transition-all duration-500 hover:-translate-y-2 flex flex-col">
-                    <div class="relative h-56 overflow-hidden">
+                <div class="group bg-white rounded-[1.5rem] lg:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] border border-slate-100 transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                    <div class="relative overflow-hidden" style="height:clamp(160px,30vw,224px);">
                         {% if food.photo %}
                         <img src="{{ food.photo.url }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                         {% else %}
@@ -123,7 +123,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-navy-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     
-                    <div class="p-8 flex-1 flex flex-col bg-white">
+                    <div class="p-5 lg:p-8 flex-1 flex flex-col bg-white">
                         <div class="mb-6 flex-1">
                             <span class="inline-block px-3 py-1 bg-orange-50 text-sunset-coral text-xs font-bold rounded-full mb-3">{{ food.category.name }}</span>
                             <h3 class="text-xl font-black text-navy-dark">{{ food.name }}</h3>

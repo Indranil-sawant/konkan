@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="{% static 'css/components.css' %}" />
   <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
   <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+  <!-- Mobile-First Responsive System -->
+  <link rel="stylesheet" href="{% static 'css/mobile.css' %}" />
 
   <!-- Development Tailwind CDN (Temporary for immediate rendering during migration) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -53,24 +55,24 @@
   {% block extra_css %}{% endblock %}
 </head>
 
-<body class="font-sans text-navy-dark bg-slate-50 antialiased overflow-x-hidden">
+<body class="font-sans text-navy-dark bg-slate-50 antialiased overflow-x-hidden" style="min-width:320px">
   <!-- Accessibility Skip Link -->
   <a href="#main-content"
     class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-ocean-mid text-white px-4 py-2 rounded z-50">Skip
     to content</a>
 
   <!-- Premium Dribbble-Style Navigation -->
-  <nav id="mainNav" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-4" aria-label="Main Navigation">
+  <nav id="mainNav" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3 lg:py-4" aria-label="Main Navigation" style="max-width:100vw">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-14">
+      <div class="flex justify-between items-center h-12 lg:h-14">
 
         <!-- LEFT: Logo -->
-        <div class="flex-shrink-0 flex items-center">
+        <div class="flex-shrink-0 flex items-center min-w-0">
           <a href="{% url 'home' %}" class="flex items-center group focus:outline-none focus:ring-2 focus:ring-ocean-mid rounded-xl p-1" aria-label="Home">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-ocean-mid to-ocean-light flex items-center justify-center text-white shadow-lg shadow-ocean-mid/30 group-hover:scale-105 transition-transform duration-300 mr-3">
-              <i class="fas fa-compass text-xl" aria-hidden="true"></i>
+            <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-2xl bg-gradient-to-tr from-ocean-mid to-ocean-light flex items-center justify-center text-white shadow-lg shadow-ocean-mid/30 group-hover:scale-105 transition-transform duration-300 mr-2 lg:mr-3 flex-shrink-0">
+              <i class="fas fa-compass text-lg lg:text-xl" aria-hidden="true"></i>
             </div>
-            <span class="font-display font-bold text-2xl text-navy-dark tracking-tight">Explore <span class="text-sunset-coral relative inline-block">Ratnagiri<span class="absolute -bottom-1 left-0 w-full h-1 bg-sunset-coral/20 rounded-full"></span></span></span>
+            <span class="font-display font-bold text-lg sm:text-xl lg:text-2xl text-navy-dark tracking-tight whitespace-nowrap">Explore <span class="text-sunset-coral relative inline-block">Ratnagiri<span class="absolute -bottom-1 left-0 w-full h-1 bg-sunset-coral/20 rounded-full"></span></span></span>
           </a>
         </div>
 
@@ -178,10 +180,10 @@
         </div>
 
         <!-- Mobile Menu Button -->
-        <div class="flex items-center lg:hidden">
+        <div class="flex items-center lg:hidden ml-2">
           <button id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileMenuPanel" aria-label="Open main menu"
-            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 text-navy-dark hover:text-ocean-mid hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 transition-colors duration-200">
-            <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+            class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-50 text-navy-dark hover:text-ocean-mid hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 transition-colors duration-200 flex-shrink-0">
+            <i class="fas fa-bars text-lg" aria-hidden="true" id="mobileMenuIcon"></i>
           </button>
         </div>
       </div>
@@ -264,7 +266,7 @@
       </div>
 
       <!-- Mobile Footer / Auth -->
-      <div class="p-6 border-t border-slate-100 bg-slate-50 pb-safe">
+      <div class="p-6 border-t border-slate-100 bg-slate-50" style="padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem))">
         {% if user.is_authenticated %}
         <a href="{% url 'my_profile' %}"
           class="flex items-center justify-center w-full px-4 py-3 mb-3 border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 rounded-xl font-bold {% if request.resolver_match.url_name == 'my_profile' %}bg-ocean-mid border-ocean-mid text-white shadow-md{% else %}border-ocean-mid text-ocean-mid hover:bg-ocean-mid hover:text-white{% endif %}">
@@ -292,12 +294,12 @@
   </nav>
 
   <!-- Main Content -->
-  <main id="main-content" class="min-h-[60vh]">{% block content %}{% endblock %}</main>
+  <main id="main-content" class="min-h-[60vh]" style="padding-top:var(--nav-height, 72px)">{% block content %}{% endblock %}</main>
 
   <!-- Footer (Tailwind Converted) -->
-  <footer class="bg-navy-dark text-white pt-16 pb-8 mt-20">
+  <footer class="bg-navy-dark text-white pt-12 lg:pt-16 pb-8 mt-12 lg:mt-20">
     <div class="container mx-auto px-4 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
         <div class="lg:col-span-5">
           <h5 class="text-2xl font-display font-bold text-white mb-4">Konkan Guide</h5>
           <p class="text-gray-400 leading-relaxed max-w-md">
@@ -351,7 +353,7 @@
         </div>
       </div>
 
-      <div class="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center relative">
+      <div class="border-t border-white/10 mt-10 lg:mt-16 pt-8 flex flex-col md:flex-row justify-between items-center relative gap-3">
         <p class="text-gray-500 text-sm mb-4 md:mb-0">
           &copy; 2026 Konkan Guide. Crafted with
           <i class="fas fa-heart text-sunset-coral mx-1"></i> for explorers.
@@ -382,9 +384,12 @@
         if(!mobileMenuOverlay || !mobileMenuPanel) return;
         mobileMenuOverlay.classList.remove('opacity-0', 'invisible');
         mobileMenuPanel.classList.remove('translate-x-full');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        // Use class-based body lock (mobile.css handles position:fixed)
+        document.body.classList.add('menu-open');
+        document.body.dataset.scrollY = window.scrollY;
         mobileBtn?.setAttribute('aria-expanded', 'true');
-        
+        const menuIcon = document.getElementById('mobileMenuIcon');
+        if (menuIcon) { menuIcon.className = 'fas fa-times text-lg'; }
         // Accessibility: Trap focus inside menu
         const focusableElements = mobileMenuPanel.querySelectorAll('a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
         if (focusableElements.length) {
@@ -396,8 +401,12 @@
         if(!mobileMenuOverlay || !mobileMenuPanel) return;
         mobileMenuOverlay.classList.add('opacity-0', 'invisible');
         mobileMenuPanel.classList.add('translate-x-full');
-        document.body.style.overflow = ''; // Restore scrolling
+        const scrollY = document.body.dataset.scrollY || '0';
+        document.body.classList.remove('menu-open');
+        window.scrollTo(0, parseInt(scrollY));
         mobileBtn?.setAttribute('aria-expanded', 'false');
+        const menuIcon = document.getElementById('mobileMenuIcon');
+        if (menuIcon) { menuIcon.className = 'fas fa-bars text-lg'; }
         mobileBtn?.focus(); // Return focus to button
       }
 
