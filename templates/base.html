@@ -14,6 +14,8 @@
   <!-- Preload fonts to reduce CLS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800;900&family=Be+Vietnam+Pro:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
   <!-- CSS Dependencies -->
   <!-- Preserved Bootstrap for backward compatibility of inner pages -->
@@ -29,33 +31,107 @@
   <link rel="stylesheet" href="{% static 'css/mobile.css' %}" />
 
   <!-- Development Tailwind CDN (Temporary for immediate rendering during migration) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
+      darkMode: "class",
       corePlugins: { preflight: false },
       theme: {
         extend: {
           colors: {
+            // Legacy colors
             ocean: { deep: "#0a3d62", mid: "#0077b6", light: "#48cae4" },
             aqua: { mist: "#caf0f8" },
             sand: { warm: "#fdf0d5" },
-            sunset: { coral: "#ff7b54", gold: "#ffb703" },
             foam: "#f8fafc",
             navy: { dark: "#1b263b" },
+            
+            // New UI colors
+            "surface": "#131315",
+            "on-surface": "#e4e2e4",
+            "on-surface-variant": "#c6c6cd",
+            "on-primary": "#283044",
+            "outline": "#909097",
+            "ocean-cyan": "#38bdf8",
+            "sunset-gold": "#fbbf24",
+            "sunset-coral": "#f43f5e",
+            "background": "#131315",
+            "surface-variant": "#353436",
+            "surface-tint": "#bec6e0",
+            "inverse-on-surface": "#303032",
+            "on-error": "#690005",
+            "on-primary-container": "#798098",
+            "tertiary": "#7bd0ff",
+            "inverse-surface": "#e4e2e4",
+            "primary-container": "#0f172a",
+            "cosmic-konkan-start": "#9333ea",
+            "cosmic-konkan-mid": "#ec4899",
+            "cosmic-konkan-end": "#f43f5e",
+            "primary": "#bec6e0",
+            "surface-container": "#1f1f21",
+            "surface-container-lowest": "#0e0e10",
+            "surface-container-low": "#1b1b1d",
+            "surface-container-high": "#2a2a2b",
+            "surface-container-highest": "#353436",
+            "surface-bright": "#39393b",
+            "outline-variant": "#45464d",
           },
           fontFamily: {
+            // Legacy
             sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
             display: ["Playfair Display", "ui-serif", "Georgia", "serif"],
+            // New
+            "quote": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"],
+            "body-relaxed": ["Be Vietnam Pro", "sans-serif"],
+            "eyebrow": ["Be Vietnam Pro", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "display-xl": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          fontSize: {
+            "quote": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "800" }],
+            "body-relaxed": ["18px", { "lineHeight": "1.7", "fontWeight": "500" }],
+            "eyebrow": ["10px", { "lineHeight": "1.0", "letterSpacing": "0.3em", "fontWeight": "700" }],
+            "headline-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "display-xl": ["clamp(48px, 8vw, 96px)", { "lineHeight": "1.0", "letterSpacing": "-0.04em", "fontWeight": "900" }]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "container-max": "1440px",
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "bento-row-height-tablet": "240px",
+            "margin-desktop": "1.5rem",
+            "bento-row-height": "300px"
           }
         }
       }
     }
   </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .glow-border { position: relative; }
+    .glow-border::before { content: ''; position: absolute; inset: -1px; background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), transparent, rgba(56, 189, 248, 0.2)); z-index: -1; border-radius: inherit; }
+    .glow-border:hover { box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); }
+    .masonry-grid { column-count: 1; column-gap: 1.5rem; }
+    @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
+    @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+    @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
+    .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
+    .ambient-orb { position: absolute; filter: blur(100px); opacity: 0.3; z-index: 0; pointer-events: none; }
+  </style>
 
   {% block extra_css %}{% endblock %}
 </head>
 
-<body class="font-sans text-navy-dark bg-slate-50 antialiased overflow-x-hidden" style="min-width:320px">
+<body class="bg-surface text-on-surface font-body-relaxed selection:bg-ocean-cyan/30 overflow-x-hidden antialiased" style="min-width:320px">
   <!-- Accessibility Skip Link -->
   <a href="#main-content"
     class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-ocean-mid text-white px-4 py-2 rounded z-50">Skip
@@ -68,72 +144,40 @@
   <main id="main-content" class="min-h-[60vh]" style="padding-top:var(--nav-height, 72px)">{% block content %}{% endblock %}</main>
 
   <!-- Footer (Tailwind Converted) -->
-  <footer class="bg-navy-dark text-white pt-12 lg:pt-16 pb-8 mt-12 lg:mt-20">
-    <div class="container mx-auto px-4 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
-        <div class="lg:col-span-5">
-          <h5 class="text-2xl font-display font-bold text-white mb-4">Konkan Guide</h5>
-          <p class="text-gray-400 leading-relaxed max-w-md">
-            A dedicated platform to explore and contribute to the beauty of
-            the Konkan region. Join our community of travelers.
-          </p>
-          <div class="flex gap-4 mt-8">
-            <a href="#"
-              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i
-                class="fab fa-facebook"></i></a>
-            <a href="#"
-              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i
-                class="fab fa-instagram"></i></a>
-            <a href="#"
-              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-ocean-mid hover:text-white hover:border-ocean-mid transition-all"><i
-                class="fab fa-twitter"></i></a>
-          </div>
-        </div>
-        <div class="lg:col-span-2 lg:col-start-7">
-          <h6 class="text-lg font-semibold text-white mb-6">Explore</h6>
-          <ul class="space-y-3">
-            <li>
-              <a href="{% url 'destination_list' %}"
-                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">All
-                Destinations</a>
-            </li>
-            <li>
-              <a href="{% url 'temples' %}"
-                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Temples</a>
-            </li>
-            <li>
-              <a href="{% url 'food_home' %}"
-                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Local
-                Food</a>
-            </li>
-          </ul>
-        </div>
-        <div class="lg:col-span-2 lg:col-start-10">
-          <h6 class="text-lg font-semibold text-white mb-6">Support</h6>
-          <ul class="space-y-3">
-            <li><a href="#"
-                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">About
-                Us</a></li>
-            <li><a href="#"
-                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Contact</a>
-            </li>
-            <li><a href="#"
-                class="text-gray-400 hover:text-ocean-light hover:translate-x-1 transition-all inline-block">Privacy
-                Policy</a></li>
-          </ul>
+  <footer class="w-full relative mt-20 border-t border-outline-variant/30 bg-surface-container-lowest">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-20 max-w-container-max mx-auto">
+      <div class="md:col-span-1">
+        <span class="font-display-xl text-headline-lg text-on-surface block mb-6">KONKAN</span>
+        <p class="text-on-surface-variant font-body-relaxed text-sm mb-8">A cinematic digital journal capturing the soul of the coast. Curated for the modern wanderer.</p>
+        <div class="flex gap-4">
+          <span class="material-symbols-outlined text-on-surface-variant hover:text-ocean-cyan cursor-pointer" data-icon="language">language</span>
+          <span class="material-symbols-outlined text-on-surface-variant hover:text-ocean-cyan cursor-pointer" data-icon="rss_feed">rss_feed</span>
         </div>
       </div>
-
-      <div class="border-t border-white/10 mt-10 lg:mt-16 pt-8 flex flex-col md:flex-row justify-between items-center relative gap-3">
-        <p class="text-gray-500 text-sm mb-4 md:mb-0">
-          &copy; 2026 Konkan Guide. Crafted with
-          <i class="fas fa-heart text-sunset-coral mx-1"></i> for explorers.
-        </p>
-        <a href="{% url 'admin:index' %}" title="Admin Portal"
-          class="absolute bottom-8 md:bottom-auto right-0 text-ocean-mid opacity-30 hover:opacity-100 transition-opacity text-sm">
-          <i class="fas fa-fingerprint"></i>
-        </a>
+      <div class="space-y-4">
+        <h5 class="font-eyebrow text-eyebrow text-ocean-cyan uppercase tracking-widest mb-6">Explore</h5>
+        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="{% url 'destination_list' %}">Destinations</a>
+        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="{% url 'temples' %}">Culture & Temples</a>
+        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="{% url 'food_home' %}">Local Food</a>
       </div>
+      <div class="space-y-4">
+        <h5 class="font-eyebrow text-eyebrow text-ocean-cyan uppercase tracking-widest mb-6">Contact</h5>
+        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="#">Contact Us</a>
+        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="#">Privacy Policy</a>
+        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="#">Press</a>
+      </div>
+      <div>
+        <h5 class="font-eyebrow text-eyebrow text-ocean-cyan uppercase tracking-widest mb-6">Newsletter</h5>
+        <p class="text-xs text-on-surface-variant mb-4">Receive monthly cinematic dispatches.</p>
+        <div class="flex border-b border-white/20 pb-2">
+          <input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0 outline-none text-white placeholder-white/50" placeholder="email@journal.com" type="email" />
+          <button class="material-symbols-outlined text-ocean-cyan" data-icon="arrow_forward">arrow_forward</button>
+        </div>
+      </div>
+    </div>
+    <div class="py-8 px-4 text-center border-t border-white/5 relative flex justify-center items-center">
+      <p class="font-body-relaxed text-xs text-on-surface-variant">© 2026 Konkan Immersive. Cinematic Digital Journal.</p>
+      <a href="{% url 'admin:index' %}" title="Admin Portal" class="absolute right-4 text-ocean-cyan opacity-30 hover:opacity-100 transition-opacity text-sm"><i class="fas fa-fingerprint"></i></a>
     </div>
   </footer>
 
