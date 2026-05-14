@@ -57,6 +57,12 @@
                <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
             </div>
             <a href="{% url 'my_profile' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-user w-5 text-center text-gray-400"></i> Dashboard</a>
+            <a href="{% url 'inbox' %}" class="flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors">
+              <span><i class="fas fa-envelope w-5 text-center text-gray-400"></i> Messages</span>
+              {% if user.profile.unread_message_count > 0 %}
+              <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ user.profile.unread_message_count }}</span>
+              {% endif %}
+            </a>
             <a href="{% url 'home_users' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-users w-5 text-center text-gray-400"></i> Users Directory</a>
             
             <div class="h-px bg-slate-100 my-2 mx-4"></div>
@@ -127,6 +133,12 @@
       <div class="h-px bg-slate-100 my-5 mx-4"></div>
       <p class="px-4 mb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Account & Contribute</p>
       <a href="{% url 'home_users' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-users w-6 text-center text-gray-400 mr-2"></i> Users Directory</a>
+      <a href="{% url 'inbox' %}" class="flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors">
+        <div class="flex items-center"><i class="fas fa-envelope w-6 text-center text-gray-400 mr-2"></i> Messages</div>
+        {% if user.profile.unread_message_count > 0 %}
+        <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ user.profile.unread_message_count }}</span>
+        {% endif %}
+      </a>
       <a href="{% url 'create_destination' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-map-marker-alt w-6 text-center text-gray-400 mr-2"></i> Add Destination</a>
       <a href="{% url 'create_spot' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-map-pin w-6 text-center text-gray-400 mr-2"></i> Add Spot</a>
       <a href="{% url 'create_food' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-utensils w-6 text-center text-gray-400 mr-2"></i> Add Food</a>

@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from django.urls import path
 from . import views
 urlpatterns = [
@@ -5,4 +6,5 @@ urlpatterns = [
     path('profile/', views.my_profile, name='my_profile'),
     path('create_users/',views.create_users,name='create_users'),
     path('user_profile/<str:pk>', views.user_page , name='user_profile') ,
+    path('inbox/', views.inbox, name='inbox'),
 ]   # URL patterns for food a

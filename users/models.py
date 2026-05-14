@@ -23,3 +23,32 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.username) # return username instead of object 1 , 2 , 3
     
+    @property
+    def unread_message_count(self):
+        return self.received_messages.filter(is_read=False).count()
+    
+
+class message(models.Model):
+    sender = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='sent_messages'
+    )
+
+    recipient = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='received_messages'
+    )
+    subject = models.CharField(max_length=200, null=False, blank=False)
+    body = models.TextField(null=False, blank=False)
+    is_read = models.BooleanField(default=False , null=True , blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    def __str__(self):
+        return str(self.subject)
+        
+    
+    class Meta:
+        ordering = ['-is_read','-created']

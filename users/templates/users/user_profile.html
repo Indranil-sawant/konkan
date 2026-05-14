@@ -83,6 +83,14 @@
           Explore
         </a>
       </div>
+      {% else %}
+      <div class="flex">
+        <a href="{% url 'inbox' %}?user={{ profile.id }}"
+          class="bg-ocean-cyan text-surface font-eyebrow text-xs uppercase tracking-widest px-6 py-3 rounded-full hover:bg-white transition-all shadow-lg hover:scale-105 active:scale-95 inline-flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">forum</span>
+          Message
+        </a>
+      </div>
       {% endif %}
     </div>
 
