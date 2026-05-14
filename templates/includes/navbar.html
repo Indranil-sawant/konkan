@@ -1,4 +1,5 @@
 {% load static %}
+<<<<<<< HEAD
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 border-b border-white/10 bg-surface/10 backdrop-blur-xl shadow-2xl shadow-black/20">
     <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
@@ -24,6 +25,87 @@
                 </a>
             {% endif %}
             <a href="{% url 'home_spots' %}" class="bg-ocean-cyan text-on-primary px-6 py-2 rounded-full font-eyebrow text-eyebrow uppercase tracking-widest hover:scale-105 active:scale-95 transition-all">Plan Trip</a>
+=======
+<!-- Premium Responsive Navbar -->
+<nav id="mainNav" class="fixed w-full top-0 z-[100] transition-all duration-300 bg-white/95 backdrop-blur-xl border-b border-slate-200/50 shadow-sm py-3" aria-label="Main Navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14">
+
+      <!-- LEFT: Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="{% url 'home' %}" class="flex items-center group focus:outline-none focus:ring-2 focus:ring-ocean-mid rounded-xl p-1" aria-label="Home">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-ocean-mid to-ocean-light flex items-center justify-center text-white shadow-lg shadow-ocean-mid/30 group-hover:scale-105 transition-transform duration-300 mr-3">
+            <i class="fas fa-compass text-xl" aria-hidden="true"></i>
+          </div>
+          <span class="font-display font-bold text-2xl text-navy-dark tracking-tight">Explore <span class="text-sunset-coral relative inline-block">Ratnagiri</span></span>
+        </a>
+      </div>
+
+      <!-- CENTER: Search (Desktop) -->
+      <div class="hidden lg:flex flex-1 max-w-xl mx-8">
+        <form action="{% url 'search' %}" method="GET" class="relative w-full group" role="search">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i class="fas fa-search text-gray-400 group-focus-within:text-ocean-mid transition-colors duration-300" aria-hidden="true"></i>
+          </div>
+          <label for="desktop-search" class="sr-only">Search</label>
+          <input type="text" id="desktop-search" name="q" value="{{ request.GET.q|default:'' }}"
+            class="block w-full pl-11 pr-14 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm leading-5 text-navy-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ocean-light/50 focus:border-ocean-light focus:bg-white transition-all shadow-inner"
+            placeholder="Search destinations...">
+          <div class="absolute inset-y-1 right-1 flex items-center">
+            <button type="submit" aria-label="Submit Search" class="w-8 h-8 rounded-full bg-ocean-mid text-white flex items-center justify-center hover:bg-ocean-deep hover:shadow-md transition-all focus:outline-none">
+              <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT: Desktop Links -->
+      <div class="hidden lg:flex items-center space-x-1">
+        <a href="{% url 'home' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'home' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Home</a>
+        <a href="{% url 'destination_list' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'destination_list' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Destinations</a>
+        <a href="{% url 'temples' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'temples' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Temples</a>
+        <a href="{% url 'food_home' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'food_home' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Food</a>
+
+        <div class="w-px h-6 bg-slate-200 mx-2" aria-hidden="true"></div>
+
+        <a href="{% url 'home_spots' %}" class="ml-2 px-4 py-2.5 rounded-full text-sm font-bold transition-all border {% if request.resolver_match.url_name == 'home_spots' %}text-white bg-ocean-mid border-ocean-mid shadow-md{% else %}text-ocean-mid bg-ocean-light/10 hover:bg-ocean-light/20 border-ocean-mid/10{% endif %}">Plan Trip</a>
+
+        {% if user.is_authenticated %}
+        <div class="relative group ml-2" id="desktopProfileContainer">
+          <button id="desktopProfileBtn" aria-haspopup="true" aria-expanded="false" class="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-ocean-mid/50">
+            <i class="fas fa-user-circle"></i> Profile
+            <i class="fas fa-chevron-down text-xs opacity-70 ml-1 transition-transform" id="desktopProfileIcon"></i>
+          </button>
+          
+          <!-- Dropdown -->
+          <div id="desktopProfileMenu" class="absolute top-full right-0 mt-3 w-64 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 py-2 opacity-0 invisible translate-y-2 transition-all duration-200 z-[110]">
+            <div class="px-4 py-3 border-b border-slate-50 mb-1">
+               <p class="text-sm font-bold text-navy-dark truncate">{{ user.username }}</p>
+               <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
+            </div>
+            <a href="{% url 'my_profile' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-user w-5 text-center text-gray-400"></i> Dashboard</a>
+            <a href="{% url 'inbox' %}" class="flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors">
+              <span><i class="fas fa-envelope w-5 text-center text-gray-400"></i> Messages</span>
+              {% if user.profile.unread_message_count > 0 %}
+              <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ user.profile.unread_message_count }}</span>
+              {% endif %}
+            </a>
+            <a href="{% url 'home_users' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-users w-5 text-center text-gray-400"></i> Users Directory</a>
+            
+            <div class="h-px bg-slate-100 my-2 mx-4"></div>
+            <span class="block px-4 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">Contribute</span>
+            
+            <a href="{% url 'create_destination' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-map-marker-alt w-5 text-center text-gray-400"></i> Add Destination</a>
+            <a href="{% url 'create_spot' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-map-pin w-5 text-center text-gray-400"></i> Add Spot</a>
+            <a href="{% url 'create_food' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-utensils w-5 text-center text-gray-400"></i> Add Food</a>
+            
+            <div class="h-px bg-slate-100 my-2 mx-4"></div>
+            <form action="{% url 'logout' %}" method="post" class="block w-full m-0">
+              {% csrf_token %}
+              <button type="submit" class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 focus:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-5 text-center text-red-400"></i> Logout</button>
+            </form>
+          </div>
+>>>>>>> 6c83b65 ( Implemented chatbox)
         </div>
     </div>
 </nav>
@@ -48,4 +130,150 @@
             <span class="font-eyebrow text-[10px] mt-1">Profile</span>
         </a>
     </div>
+<<<<<<< HEAD
 </nav>
+=======
+
+    <!-- Mobile Navigation Links -->
+    <nav class="px-4 pb-6 space-y-2">
+      <a href="{% url 'home' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'home' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Home</a>
+      <a href="{% url 'destination_list' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'destination_list' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Destinations</a>
+      <a href="{% url 'temples' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'temples' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Temples</a>
+      <a href="{% url 'food_home' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'food_home' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Food</a>
+      <a href="{% url 'home_spots' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'home_spots' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Plan Trip</a>
+      
+      {% if user.is_authenticated %}
+      <div class="h-px bg-slate-100 my-5 mx-4"></div>
+      <p class="px-4 mb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Account & Contribute</p>
+      <a href="{% url 'home_users' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-users w-6 text-center text-gray-400 mr-2"></i> Users Directory</a>
+      <a href="{% url 'inbox' %}" class="flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors">
+        <div class="flex items-center"><i class="fas fa-envelope w-6 text-center text-gray-400 mr-2"></i> Messages</div>
+        {% if user.profile.unread_message_count > 0 %}
+        <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ user.profile.unread_message_count }}</span>
+        {% endif %}
+      </a>
+      <a href="{% url 'create_destination' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-map-marker-alt w-6 text-center text-gray-400 mr-2"></i> Add Destination</a>
+      <a href="{% url 'create_spot' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-map-pin w-6 text-center text-gray-400 mr-2"></i> Add Spot</a>
+      <a href="{% url 'create_food' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-utensils w-6 text-center text-gray-400 mr-2"></i> Add Food</a>
+      {% endif %}
+    </nav>
+  </div>
+
+  <!-- Drawer Footer (Auth) -->
+  <div class="flex-shrink-0 p-6 border-t border-slate-100 bg-slate-50 relative z-10" style="padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));">
+    {% if user.is_authenticated %}
+    <a href="{% url 'my_profile' %}" class="flex items-center justify-center w-full px-4 py-3.5 mb-3 rounded-xl font-bold border-2 border-ocean-mid text-ocean-mid hover:bg-ocean-mid hover:text-white transition-all shadow-sm">My Profile</a>
+    <form action="{% url 'logout' %}" method="post" class="m-0">
+      {% csrf_token %}
+      <button type="submit" class="w-full px-4 py-3.5 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors">Logout</button>
+    </form>
+    {% else %}
+    <a href="{% url 'login' %}" class="flex items-center justify-center w-full px-4 py-3.5 mb-3 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:border-ocean-mid hover:text-ocean-mid transition-colors">Login</a>
+    <a href="{% url 'register' %}" class="flex items-center justify-center gap-2 w-full px-4 py-3.5 bg-gradient-to-r from-ocean-mid to-ocean-light text-white rounded-xl font-bold shadow-lg">Register</a>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- CSS Fix for Body Scroll Lock padding -->
+<style>
+  body.drawer-open {
+    overflow: hidden;
+  }
+</style>
+
+<!-- Vanilla JS for Navbar & Mobile Drawer -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // 1. Mobile Drawer Logic
+  const mobileToggle = document.getElementById('mobileMenuToggle');
+  const mobileClose = document.getElementById('mobileDrawerClose');
+  const mobileOverlay = document.getElementById('mobileDrawerOverlay');
+  const mobilePanel = document.getElementById('mobileDrawerPanel');
+  const toggleIcon = document.getElementById('mobileMenuToggleIcon');
+  
+  function openDrawer() {
+    mobileOverlay.classList.remove('opacity-0', 'invisible');
+    mobilePanel.classList.remove('translate-x-full');
+    document.body.classList.add('drawer-open'); // Lock body scroll
+    toggleIcon.classList.replace('fa-bars', 'fa-times');
+    mobileToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeDrawer() {
+    mobileOverlay.classList.add('opacity-0', 'invisible');
+    mobilePanel.classList.add('translate-x-full');
+    document.body.classList.remove('drawer-open'); // Unlock scroll
+    toggleIcon.classList.replace('fa-times', 'fa-bars');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
+  if (mobileClose) mobileClose.addEventListener('click', closeDrawer);
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeDrawer);
+
+  // Close drawer on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !mobilePanel.classList.contains('translate-x-full')) {
+      closeDrawer();
+    }
+  });
+
+  // 2. Desktop Profile Dropdown Logic
+  const profileBtn = document.getElementById('desktopProfileBtn');
+  const profileMenu = document.getElementById('desktopProfileMenu');
+  const profileIcon = document.getElementById('desktopProfileIcon');
+
+  if (profileBtn && profileMenu) {
+    profileBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isHidden = profileMenu.classList.contains('opacity-0');
+      if (isHidden) {
+        profileMenu.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+        profileMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+        profileBtn.setAttribute('aria-expanded', 'true');
+        if (profileIcon) profileIcon.classList.add('rotate-180');
+      } else {
+        profileMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+        profileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        profileBtn.setAttribute('aria-expanded', 'false');
+        if (profileIcon) profileIcon.classList.remove('rotate-180');
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+        profileMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+        profileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        profileBtn.setAttribute('aria-expanded', 'false');
+        if (profileIcon) profileIcon.classList.remove('rotate-180');
+      }
+    });
+  }
+
+  // 3. Navbar scroll shrink effect
+  const mainNav = document.getElementById('mainNav');
+  let ticking = false;
+  
+  if (mainNav) {
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          if (window.scrollY > 20) {
+            mainNav.classList.add('py-2');
+            mainNav.classList.remove('py-3');
+          } else {
+            mainNav.classList.add('py-3');
+            mainNav.classList.remove('py-2');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, {passive: true});
+  }
+});
+</script>
+>>>>>>> 6c83b65 ( Implemented chatbox)

@@ -8,6 +8,9 @@ from destinations.models import Destination
 from spots.models import Spots
 from food.models import FoodItem
 from reviews.models import Review
+from .models import message
+# pyrefly: ignore [missing-import]
+from django.db.models import Q
 
 # Create your views here.
 
@@ -165,5 +168,76 @@ def my_profile(request):
 
 @login_required(login_url='login')
 def inbox(request):
+    profile = request.user.profile
     
-    return render(request, 'users/inbox.html')
+    selected_user_id = request.GET.get('user')
+    selected_user = None
+    if selected_user_id:
+        selected_user = Profile.objects.filter(id=selected_user_id).first()
+        
+    if request.method == 'POST' and selected_user:
+        body = request.POST.get('message')
+        if body:
+            message.objects.create(
+                sender=profile,
+                recipient=selected_user,
+                body=body,
+                subject='Chat Message'
+            )
+            return redirect(f"{reverse('inbox')}?user={selected_user.id}")
+
+    # Unique users we have chatted with
+    sent_msgs = message.objects.filter(sender=profile).select_related('recipient')
+    received_msgs = message.objects.filter(recipient=profile).select_related('sender')
+    
+    chatted_profiles = set([msg.recipient for msg in sent_msgs] + [msg.sender for msg in received_msgs])
+    if selected_user:
+        chatted_profiles.add(selected_user)
+
+    chats = []
+    from django.utils import timezone
+    from datetime import datetime
+    
+    for p in chatted_profiles:
+        # Get last message
+        last_message = message.objects.filter(
+            Q(sender=profile, recipient=p) |
+            Q(sender=p, recipient=profile)
+        ).order_by('-created').first()
+
+        unread_count = message.objects.filter(
+            recipient=profile,
+            sender=p,
+            is_read=False
+        ).count()
+
+        chats.append({
+            'other_user': p,
+            'last_message': last_message,
+            'unread_count': unread_count
+        })
+
+    # Sort chats by last_message created descending
+    chats = sorted(
+        chats, 
+        key=lambda x: x['last_message'].created if x['last_message'] else timezone.make_aware(datetime.min), 
+        reverse=True
+    )
+
+    conversation_messages = []
+    if selected_user:
+        conversation_messages = message.objects.filter(
+            Q(sender=profile, recipient=selected_user) |
+            Q(sender=selected_user, recipient=profile)
+        ).order_by('created')
+        
+        # Mark as read
+        unread_messages = conversation_messages.filter(recipient=profile, is_read=False)
+        unread_messages.update(is_read=True)
+
+    context = {
+        'chats': chats,
+        'selected_user': selected_user,
+        'messages': conversation_messages
+    }
+    return render(request, 'users/messages.html', context)
