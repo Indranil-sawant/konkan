@@ -3,7 +3,7 @@ from destinations.models import Destination
 from spots.models import Spots
 from food.models import FoodItem
 def home(request):
-    featured_destinations = Destination.objects.all().order_by('-created_at')[:3] # Just taking latest 3 as featured for now
+    featured_destinations = Destination.objects.all().order_by('-created_at')[:8] # Just taking latest 3 as featured for now
     categories = Destination.CATEGORY_CHOICES
     
     # Simple logic to get trending forts (e.g. random or specific logic)
