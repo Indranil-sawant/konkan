@@ -1,5 +1,6 @@
-<!-- Premium Dribbble-Style Navigation -->
-<nav id="mainNav" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-4" aria-label="Main Navigation">
+{% load static %}
+<!-- Premium Responsive Navbar -->
+<nav id="mainNav" class="fixed w-full top-0 z-[100] transition-all duration-300 bg-white/95 backdrop-blur-xl border-b border-slate-200/50 shadow-sm py-3" aria-label="Main Navigation">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-14">
 
@@ -9,11 +10,11 @@
           <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-ocean-mid to-ocean-light flex items-center justify-center text-white shadow-lg shadow-ocean-mid/30 group-hover:scale-105 transition-transform duration-300 mr-3">
             <i class="fas fa-compass text-xl" aria-hidden="true"></i>
           </div>
-          <span class="font-display font-bold text-2xl text-navy-dark tracking-tight">Explore <span class="text-sunset-coral relative inline-block">Ratnagiri<span class="absolute -bottom-1 left-0 w-full h-1 bg-sunset-coral/20 rounded-full"></span></span></span>
+          <span class="font-display font-bold text-2xl text-navy-dark tracking-tight">Explore <span class="text-sunset-coral relative inline-block">Ratnagiri</span></span>
         </a>
       </div>
 
-      <!-- CENTER: Search -->
+      <!-- CENTER: Search (Desktop) -->
       <div class="hidden lg:flex flex-1 max-w-xl mx-8">
         <form action="{% url 'search' %}" method="GET" class="relative w-full group" role="search">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -21,11 +22,10 @@
           </div>
           <label for="desktop-search" class="sr-only">Search</label>
           <input type="text" id="desktop-search" name="q" value="{{ request.GET.q|default:'' }}"
-            class="block w-full pl-11 pr-14 py-2.5 bg-slate-50/50 border border-slate-200 rounded-full leading-5 text-navy-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ocean-light/50 focus:border-ocean-light focus:bg-white transition-all duration-300 shadow-inner"
-            placeholder="Search beaches, forts, food...">
+            class="block w-full pl-11 pr-14 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm leading-5 text-navy-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ocean-light/50 focus:border-ocean-light focus:bg-white transition-all shadow-inner"
+            placeholder="Search destinations...">
           <div class="absolute inset-y-1 right-1 flex items-center">
-            <button type="submit" aria-label="Submit Search"
-              class="w-8 h-8 rounded-full bg-ocean-mid text-white flex items-center justify-center hover:bg-ocean-deep hover:shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-ocean-mid">
+            <button type="submit" aria-label="Submit Search" class="w-8 h-8 rounded-full bg-ocean-mid text-white flex items-center justify-center hover:bg-ocean-deep hover:shadow-md transition-all focus:outline-none">
               <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
             </button>
           </div>
@@ -34,198 +34,220 @@
 
       <!-- RIGHT: Desktop Links -->
       <div class="hidden lg:flex items-center space-x-1">
-        <a href="{% url 'home' %}"
-          class="px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 relative group focus:outline-none focus:ring-2 focus:ring-ocean-light/50 {% if request.resolver_match.url_name == 'home' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">
-          Home
-          <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-ocean-mid rounded-full transition-opacity {% if request.resolver_match.url_name == 'home' %}opacity-100{% else %}opacity-0 group-hover:opacity-100{% endif %}"></span>
-        </a>
-        <a href="{% url 'destination_list' %}"
-          class="px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 relative group focus:outline-none focus:ring-2 focus:ring-ocean-light/50 {% if request.resolver_match.url_name == 'destination_list' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">
-          Destinations
-          <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-ocean-mid rounded-full transition-opacity {% if request.resolver_match.url_name == 'destination_list' %}opacity-100{% else %}opacity-0 group-hover:opacity-100{% endif %}"></span>
-        </a>
-        <a href="{% url 'temples' %}"
-          class="px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 relative group focus:outline-none focus:ring-2 focus:ring-ocean-light/50 {% if request.resolver_match.url_name == 'temples' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">
-          Temples
-          <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-ocean-mid rounded-full transition-opacity {% if request.resolver_match.url_name == 'temples' %}opacity-100{% else %}opacity-0 group-hover:opacity-100{% endif %}"></span>
-        </a>
-        <a href="{% url 'food_home' %}"
-          class="px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 relative group focus:outline-none focus:ring-2 focus:ring-ocean-light/50 {% if request.resolver_match.url_name == 'food_home' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">
-          Food
-          <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-ocean-mid rounded-full transition-opacity {% if request.resolver_match.url_name == 'food_home' %}opacity-100{% else %}opacity-0 group-hover:opacity-100{% endif %}"></span>
-        </a>
+        <a href="{% url 'home' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'home' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Home</a>
+        <a href="{% url 'destination_list' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'destination_list' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Destinations</a>
+        <a href="{% url 'temples' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'temples' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Temples</a>
+        <a href="{% url 'food_home' %}" class="px-3 py-2 rounded-xl text-sm font-semibold transition-all relative group focus:outline-none {% if request.resolver_match.url_name == 'food_home' %}text-ocean-mid{% else %}text-gray-600 hover:text-ocean-mid hover:bg-ocean-mid/5{% endif %}">Food</a>
 
         <div class="w-px h-6 bg-slate-200 mx-2" aria-hidden="true"></div>
 
-        <a href="{% url 'home_spots' %}"
-          class="ml-2 px-4 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border focus:outline-none focus:ring-2 focus:ring-ocean-light/50 {% if request.resolver_match.url_name == 'home_spots' %}text-white bg-ocean-mid border-ocean-mid shadow-md{% else %}text-ocean-mid bg-ocean-light/10 hover:bg-ocean-light/20 border-ocean-mid/10{% endif %}">
-          Plan Trip
-        </a>
+        <a href="{% url 'home_spots' %}" class="ml-2 px-4 py-2.5 rounded-full text-sm font-bold transition-all border {% if request.resolver_match.url_name == 'home_spots' %}text-white bg-ocean-mid border-ocean-mid shadow-md{% else %}text-ocean-mid bg-ocean-light/10 hover:bg-ocean-light/20 border-ocean-mid/10{% endif %}">Plan Trip</a>
 
         {% if user.is_authenticated %}
-        <div class="relative group ml-2 dropdown-container">
-          <button aria-haspopup="true" aria-expanded="false"
-            class="dropdown-trigger flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg hover:shadow-ocean-mid/30 transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 focus:ring-offset-2">
-            <i class="fas fa-user-circle" aria-hidden="true"></i> Profile
-            <i class="fas fa-chevron-down text-xs opacity-70 ml-1 transition-transform duration-300 group-hover:rotate-180" aria-hidden="true"></i>
+        <div class="relative group ml-2" id="desktopProfileContainer">
+          <button id="desktopProfileBtn" aria-haspopup="true" aria-expanded="false" class="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-ocean-mid/50">
+            <i class="fas fa-user-circle"></i> Profile
+            <i class="fas fa-chevron-down text-xs opacity-70 ml-1 transition-transform" id="desktopProfileIcon"></i>
           </button>
           
           <!-- Dropdown -->
-          <div
-            class="dropdown-menu absolute top-full right-0 mt-3 w-60 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 before:absolute before:-top-4 before:left-0 before:w-full before:h-4 z-50">
-            
+          <div id="desktopProfileMenu" class="absolute top-full right-0 mt-3 w-64 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 py-2 opacity-0 invisible translate-y-2 transition-all duration-200 z-[110]">
             <div class="px-4 py-3 border-b border-slate-50 mb-1">
                <p class="text-sm font-bold text-navy-dark truncate">{{ user.username }}</p>
                <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
             </div>
-
-            <a href="{% url 'my_profile' %}"
-              class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid focus:bg-slate-50 focus:text-ocean-mid focus:outline-none transition-colors"><i
-                class="fas fa-user w-5 text-gray-400 text-center" aria-hidden="true"></i> Dashboard</a>
-            <a href="{% url 'home_users' %}"
-              class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid focus:bg-slate-50 focus:text-ocean-mid focus:outline-none transition-colors"><i
-                class="fas fa-users w-5 text-gray-400 text-center" aria-hidden="true"></i> Users Directory</a>
+            <a href="{% url 'my_profile' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-user w-5 text-center text-gray-400"></i> Dashboard</a>
+            <a href="{% url 'home_users' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-users w-5 text-center text-gray-400"></i> Users Directory</a>
             
-            <div class="h-px bg-slate-100 my-2 mx-4" aria-hidden="true"></div>
+            <div class="h-px bg-slate-100 my-2 mx-4"></div>
             <span class="block px-4 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">Contribute</span>
             
-            <a href="{% url 'create_destination' %}"
-              class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid focus:bg-slate-50 focus:text-ocean-mid focus:outline-none transition-colors"><i
-                class="fas fa-map-marker-alt w-5 text-gray-400 text-center" aria-hidden="true"></i> Add Destination</a>
-            <a href="{% url 'create_spot' %}"
-              class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid focus:bg-slate-50 focus:text-ocean-mid focus:outline-none transition-colors"><i
-                class="fas fa-map-pin w-5 text-gray-400 text-center" aria-hidden="true"></i> Add Spot</a>
-            <a href="{% url 'create_food' %}"
-              class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid focus:bg-slate-50 focus:text-ocean-mid focus:outline-none transition-colors"><i
-                class="fas fa-utensils w-5 text-gray-400 text-center" aria-hidden="true"></i> Add Food</a>
+            <a href="{% url 'create_destination' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-map-marker-alt w-5 text-center text-gray-400"></i> Add Destination</a>
+            <a href="{% url 'create_spot' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-map-pin w-5 text-center text-gray-400"></i> Add Spot</a>
+            <a href="{% url 'create_food' %}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-50 hover:text-ocean-mid transition-colors"><i class="fas fa-utensils w-5 text-center text-gray-400"></i> Add Food</a>
             
-            <div class="h-px bg-slate-100 my-2 mx-4" aria-hidden="true"></div>
+            <div class="h-px bg-slate-100 my-2 mx-4"></div>
             <form action="{% url 'logout' %}" method="post" class="block w-full m-0">
               {% csrf_token %}
-              <button type="submit"
-                class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 focus:bg-red-50 focus:outline-none transition-colors"><i
-                  class="fas fa-sign-out-alt w-5 text-red-400 text-center" aria-hidden="true"></i> Logout</button>
+              <button type="submit" class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 focus:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-5 text-center text-red-400"></i> Logout</button>
             </form>
           </div>
         </div>
         {% else %}
-        <a href="{% url 'register' %}"
-          class="flex items-center gap-2 ml-2 px-5 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg hover:shadow-ocean-mid/30 transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 focus:ring-offset-2">
-          <i class="fas fa-user-circle" aria-hidden="true"></i> Profile
-        </a>
+        <a href="{% url 'login' %}" class="ml-2 px-5 py-2.5 rounded-full text-sm font-bold text-ocean-mid border-2 border-ocean-mid hover:bg-ocean-mid hover:text-white transition-all">Login</a>
+        <a href="{% url 'register' %}" class="ml-2 px-5 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-ocean-mid to-ocean-light hover:shadow-lg transition-all"><i class="fas fa-user-circle"></i> Profile</a>
         {% endif %}
       </div>
 
-      <!-- Mobile Menu Button -->
-      <div class="flex items-center lg:hidden">
-        <button id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileMenuPanel" aria-label="Open main menu"
-          class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 text-navy-dark hover:text-ocean-mid hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 transition-colors duration-200">
-          <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+      <!-- Mobile Hamburger Button -->
+      <div class="flex items-center lg:hidden relative z-[101]">
+        <button id="mobileMenuToggle" aria-expanded="false" aria-label="Toggle menu" class="w-11 h-11 rounded-xl bg-slate-50 text-navy-dark hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-ocean-mid flex items-center justify-center transition-colors">
+          <i class="fas fa-bars text-xl" id="mobileMenuToggleIcon"></i>
         </button>
       </div>
-    </div>
-  </div>
 
-  <!-- Mobile Slide-in Menu Overlay -->
-  <div id="mobileMenuOverlay" aria-hidden="true"
-    class="fixed inset-0 z-40 bg-navy-dark/60 backdrop-blur-sm opacity-0 invisible transition-all duration-300 lg:hidden">
-  </div>
-
-  <!-- Mobile Slide-in Menu Panel -->
-  <div id="mobileMenuPanel" role="dialog" aria-modal="true" aria-label="Mobile Navigation"
-    class="fixed inset-y-0 right-0 z-50 w-[85%] max-w-sm bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col h-full lg:hidden">
-    
-    <!-- Header -->
-    <div class="px-6 py-5 flex items-center justify-between border-b border-slate-100">
-      <span class="font-display font-bold text-xl text-navy-dark">Menu</span>
-      <button id="closeMenuBtn" aria-label="Close menu"
-        class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-gray-500 hover:bg-slate-200 hover:text-navy-dark focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors">
-        <i class="fas fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-
-    <!-- Mobile Search -->
-    <div class="px-6 py-4">
-      <form action="{% url 'search' %}" method="GET" class="relative w-full" role="search">
-        <label for="mobile-search" class="sr-only">Search</label>
-        <input type="text" id="mobile-search" name="q" value="{{ request.GET.q|default:'' }}"
-          class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ocean-light focus:border-ocean-light transition-shadow"
-          placeholder="Search destinations...">
-        <i class="fas fa-search absolute left-4 top-4 text-gray-400" aria-hidden="true"></i>
-      </form>
-    </div>
-
-    <!-- Mobile Links -->
-    <div class="px-4 py-2 flex-1 overflow-y-auto">
-      <nav class="space-y-1">
-        <a href="{% url 'home' %}"
-          class="block px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'home' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          Home
-        </a>
-        <a href="{% url 'destination_list' %}"
-          class="block px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'destination_list' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          Destinations
-        </a>
-        <a href="{% url 'temples' %}"
-          class="block px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'temples' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          Temples
-        </a>
-        <a href="{% url 'food_home' %}"
-          class="block px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'food_home' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          Food
-        </a>
-        <a href="{% url 'home_spots' %}"
-          class="block px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'home_spots' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          Plan Trip
-        </a>
-
-        {% if user.is_authenticated %}
-        <div class="h-px bg-slate-100 my-4 mx-4" aria-hidden="true"></div>
-        <p class="px-4 mb-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Account & Contribute</p>
-        <a href="{% url 'home_users' %}"
-          class="flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'home_users' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          <i class="fas fa-users w-6 text-center mr-3 {% if request.resolver_match.url_name == 'home_users' %}text-ocean-mid{% else %}text-gray-400{% endif %}" aria-hidden="true"></i> Users Directory
-        </a>
-        <a href="{% url 'create_destination' %}"
-          class="flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'create_destination' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          <i class="fas fa-map-marker-alt w-6 text-center mr-3 {% if request.resolver_match.url_name == 'create_destination' %}text-ocean-mid{% else %}text-gray-400{% endif %}" aria-hidden="true"></i> Add Destination
-        </a>
-        <a href="{% url 'create_spot' %}"
-          class="flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'create_spot' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          <i class="fas fa-map-pin w-6 text-center mr-3 {% if request.resolver_match.url_name == 'create_spot' %}text-ocean-mid{% else %}text-gray-400{% endif %}" aria-hidden="true"></i> Add Spot
-        </a>
-        <a href="{% url 'create_food' %}"
-          class="flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 {% if request.resolver_match.url_name == 'create_food' %}text-ocean-mid bg-ocean-mid/10{% else %}text-gray-700 hover:bg-ocean-mid/5 hover:text-ocean-mid{% endif %}">
-          <i class="fas fa-utensils w-6 text-center mr-3 {% if request.resolver_match.url_name == 'create_food' %}text-ocean-mid{% else %}text-gray-400{% endif %}" aria-hidden="true"></i> Add Food
-        </a>
-        {% endif %}
-      </nav>
-    </div>
-
-    <!-- Mobile Footer / Auth -->
-    <div class="p-6 border-t border-slate-100 bg-slate-50 pb-safe">
-      {% if user.is_authenticated %}
-      <a href="{% url 'my_profile' %}"
-        class="flex items-center justify-center w-full px-4 py-3 mb-3 border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 rounded-xl font-bold {% if request.resolver_match.url_name == 'my_profile' %}bg-ocean-mid border-ocean-mid text-white shadow-md{% else %}border-ocean-mid text-ocean-mid hover:bg-ocean-mid hover:text-white{% endif %}">
-        My Profile
-      </a>
-      <form action="{% url 'logout' %}" method="post" class="m-0">
-        {% csrf_token %}
-        <button type="submit"
-          class="w-full px-4 py-3 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors">
-          Logout
-        </button>
-      </form>
-      {% else %}
-      <a href="{% url 'login' %}"
-        class="flex items-center justify-center w-full px-4 py-3 mb-3 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:border-ocean-mid hover:text-ocean-mid focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 transition-colors">
-        Login
-      </a>
-      <a href="{% url 'register' %}"
-        class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-ocean-mid to-ocean-light text-white rounded-xl font-bold shadow-lg shadow-ocean-mid/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ocean-mid/50 transition-transform">
-        <i class="fas fa-user-circle" aria-hidden="true"></i> Profile
-      </a>
-      {% endif %}
     </div>
   </div>
 </nav>
+
+<!-- MOBILE DRAWER SYSTEM -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-navy-dark/60 backdrop-blur-sm z-[110] opacity-0 invisible transition-all duration-300" aria-hidden="true"></div>
+
+<!-- Changed from fixed flex column to an absolute 100% height approach for bulletproof mobile UX -->
+<div id="mobileDrawerPanel" class="fixed inset-y-0 right-0 z-[120] w-[85%] max-w-[320px] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col">
+  
+  <!-- Drawer Header -->
+  <div class="flex-shrink-0 px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-white/95 backdrop-blur z-10 relative">
+    <span class="font-display font-bold text-xl text-navy-dark">Menu</span>
+    <button id="mobileDrawerClose" aria-label="Close menu" class="w-9 h-9 rounded-full bg-slate-50 text-gray-500 hover:bg-slate-200 hover:text-navy-dark flex items-center justify-center transition-colors">
+      <i class="fas fa-times text-lg"></i>
+    </button>
+  </div>
+
+  <!-- Drawer Body -->
+  <div class="flex-1 overflow-y-auto bg-white overscroll-contain relative z-0">
+    
+    <!-- Mobile Search -->
+    <div class="p-6">
+      <form action="{% url 'search' %}" method="GET" class="relative">
+        <input type="text" name="q" value="{{ request.GET.q|default:'' }}" class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ocean-mid transition-shadow" placeholder="Search destinations...">
+        <i class="fas fa-search absolute left-4 top-[1.1rem] text-gray-400"></i>
+      </form>
+    </div>
+
+    <!-- Mobile Navigation Links -->
+    <nav class="px-4 pb-6 space-y-2">
+      <a href="{% url 'home' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'home' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Home</a>
+      <a href="{% url 'destination_list' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'destination_list' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Destinations</a>
+      <a href="{% url 'temples' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'temples' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Temples</a>
+      <a href="{% url 'food_home' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'food_home' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Food</a>
+      <a href="{% url 'home_spots' %}" class="block px-4 py-3.5 rounded-xl font-bold transition-colors {% if request.resolver_match.url_name == 'home_spots' %}bg-ocean-mid/10 text-ocean-mid{% else %}text-gray-700 hover:bg-slate-50{% endif %}">Plan Trip</a>
+      
+      {% if user.is_authenticated %}
+      <div class="h-px bg-slate-100 my-5 mx-4"></div>
+      <p class="px-4 mb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Account & Contribute</p>
+      <a href="{% url 'home_users' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-users w-6 text-center text-gray-400 mr-2"></i> Users Directory</a>
+      <a href="{% url 'create_destination' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-map-marker-alt w-6 text-center text-gray-400 mr-2"></i> Add Destination</a>
+      <a href="{% url 'create_spot' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-map-pin w-6 text-center text-gray-400 mr-2"></i> Add Spot</a>
+      <a href="{% url 'create_food' %}" class="flex items-center px-4 py-3.5 rounded-xl font-bold text-gray-700 hover:bg-slate-50 transition-colors"><i class="fas fa-utensils w-6 text-center text-gray-400 mr-2"></i> Add Food</a>
+      {% endif %}
+    </nav>
+  </div>
+
+  <!-- Drawer Footer (Auth) -->
+  <div class="flex-shrink-0 p-6 border-t border-slate-100 bg-slate-50 relative z-10" style="padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));">
+    {% if user.is_authenticated %}
+    <a href="{% url 'my_profile' %}" class="flex items-center justify-center w-full px-4 py-3.5 mb-3 rounded-xl font-bold border-2 border-ocean-mid text-ocean-mid hover:bg-ocean-mid hover:text-white transition-all shadow-sm">My Profile</a>
+    <form action="{% url 'logout' %}" method="post" class="m-0">
+      {% csrf_token %}
+      <button type="submit" class="w-full px-4 py-3.5 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors">Logout</button>
+    </form>
+    {% else %}
+    <a href="{% url 'login' %}" class="flex items-center justify-center w-full px-4 py-3.5 mb-3 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:border-ocean-mid hover:text-ocean-mid transition-colors">Login</a>
+    <a href="{% url 'register' %}" class="flex items-center justify-center gap-2 w-full px-4 py-3.5 bg-gradient-to-r from-ocean-mid to-ocean-light text-white rounded-xl font-bold shadow-lg">Register</a>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- CSS Fix for Body Scroll Lock padding -->
+<style>
+  body.drawer-open {
+    overflow: hidden;
+  }
+</style>
+
+<!-- Vanilla JS for Navbar & Mobile Drawer -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // 1. Mobile Drawer Logic
+  const mobileToggle = document.getElementById('mobileMenuToggle');
+  const mobileClose = document.getElementById('mobileDrawerClose');
+  const mobileOverlay = document.getElementById('mobileDrawerOverlay');
+  const mobilePanel = document.getElementById('mobileDrawerPanel');
+  const toggleIcon = document.getElementById('mobileMenuToggleIcon');
+  
+  function openDrawer() {
+    mobileOverlay.classList.remove('opacity-0', 'invisible');
+    mobilePanel.classList.remove('translate-x-full');
+    document.body.classList.add('drawer-open'); // Lock body scroll
+    toggleIcon.classList.replace('fa-bars', 'fa-times');
+    mobileToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeDrawer() {
+    mobileOverlay.classList.add('opacity-0', 'invisible');
+    mobilePanel.classList.add('translate-x-full');
+    document.body.classList.remove('drawer-open'); // Unlock scroll
+    toggleIcon.classList.replace('fa-times', 'fa-bars');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
+  if (mobileClose) mobileClose.addEventListener('click', closeDrawer);
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeDrawer);
+
+  // Close drawer on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !mobilePanel.classList.contains('translate-x-full')) {
+      closeDrawer();
+    }
+  });
+
+  // 2. Desktop Profile Dropdown Logic
+  const profileBtn = document.getElementById('desktopProfileBtn');
+  const profileMenu = document.getElementById('desktopProfileMenu');
+  const profileIcon = document.getElementById('desktopProfileIcon');
+
+  if (profileBtn && profileMenu) {
+    profileBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isHidden = profileMenu.classList.contains('opacity-0');
+      if (isHidden) {
+        profileMenu.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+        profileMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+        profileBtn.setAttribute('aria-expanded', 'true');
+        if (profileIcon) profileIcon.classList.add('rotate-180');
+      } else {
+        profileMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+        profileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        profileBtn.setAttribute('aria-expanded', 'false');
+        if (profileIcon) profileIcon.classList.remove('rotate-180');
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+        profileMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+        profileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        profileBtn.setAttribute('aria-expanded', 'false');
+        if (profileIcon) profileIcon.classList.remove('rotate-180');
+      }
+    });
+  }
+
+  // 3. Navbar scroll shrink effect
+  const mainNav = document.getElementById('mainNav');
+  let ticking = false;
+  
+  if (mainNav) {
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          if (window.scrollY > 20) {
+            mainNav.classList.add('py-2');
+            mainNav.classList.remove('py-3');
+          } else {
+            mainNav.classList.add('py-3');
+            mainNav.classList.remove('py-2');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, {passive: true});
+  }
+});
+</script>
