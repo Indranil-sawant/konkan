@@ -5,6 +5,7 @@ Production-ready Render + Supabase configuration
 
 from pathlib import Path
 import os
+import sys
 from dotenv import load_dotenv
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
@@ -91,6 +92,7 @@ INSTALLED_APPS = [
     'food',
     'users',
     'companion',
+    'ops',
 ]
 
 # ------------------------------------------------------------------------------
@@ -185,7 +187,14 @@ TEMPLATES = [
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
-if DATABASE_URL:
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+elif DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.parse(
             DATABASE_URL,

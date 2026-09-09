@@ -1,0 +1,143 @@
+{% extends 'ops/base_ops.html' %}
+
+{% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
+
+    <!-- Header & Action -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Places & Tourist Destinations</h1>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Manage sea forts, white-sand beaches, sacred temples, viewpoints, and cultural sights.</p>
+        </div>
+        <a href="{% url 'ops_place_create' %}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 shadow-sm transition-all">
+            <i class="fas fa-plus"></i>
+            <span>Add New Place</span>
+        </a>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+        
+        <!-- Category Filter Pills -->
+        <div class="flex flex-wrap items-center gap-1.5">
+            <a href="{% url 'ops_places_list' %}" 
+               class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {% if not current_category and not current_verified %}bg-slate-900 text-white{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
+                All Places
+            </a>
+            {% for code, name in category_choices %}
+                <a href="{% url 'ops_places_list' %}?category={{ code }}" 
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {% if current_category == code %}bg-sky-500 text-white font-bold{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
+                    {{ name }}
+                </a>
+            {% endfor %}
+            <a href="{% url 'ops_places_list' %}?verified=false" 
+               class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {% if current_verified == 'false' %}bg-amber-500 text-white font-bold{% else %}bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100{% endif %}">
+                Needs Verification
+            </a>
+        </div>
+
+        <!-- Search Input -->
+        <form method="get" class="flex items-center gap-2">
+            <input type="search" name="q" value="{{ search_q }}" placeholder="Search by name or area..." 
+                   class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 outline-none focus:border-sky-500 w-48 sm:w-64">
+            <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+                Filter
+            </button>
+        </form>
+
+    </div>
+
+    <!-- Places Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50/75 text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                        <th class="py-3.5 px-6">Place / Landmark</th>
+                        <th class="py-3.5 px-4">Category</th>
+                        <th class="py-3.5 px-4">Location & GPS</th>
+                        <th class="py-3.5 px-4">Visiting Hours</th>
+                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th class="py-3.5 px-6 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-xs font-medium">
+                    {% for place in places %}
+                        <tr class="hover:bg-slate-50/60 transition-colors">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3.5">
+                                    {% if place.main_image %}
+                                        <img src="{{ place.main_image.url }}" alt="{{ place.title }}" class="w-12 h-12 rounded-xl object-cover border border-slate-200 flex-shrink-0">
+                                    {% else %}
+                                        <div class="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
+                                            <i class="fas fa-image text-sm"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <a href="{% url 'ops_place_edit' place.pk %}" class="font-bold text-slate-900 hover:text-sky-600 block text-sm">
+                                            {{ place.title }}
+                                        </a>
+                                        <span class="text-[11px] text-slate-400 truncate max-w-xs block">{{ place.description|truncatechars:60 }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold {% if place.category == 'Fort' %}bg-amber-50 text-amber-700 border border-amber-200{% elif place.category == 'Beach' %}bg-cyan-50 text-cyan-700 border border-cyan-200{% elif place.category == 'Temple' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-slate-100 text-slate-700 border border-slate-200{% endif %}">
+                                    {{ place.category }}
+                                </span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-slate-700 block font-semibold">{{ place.location_name }}</span>
+                                {% if place.latitude and place.longitude %}
+                                    <span class="text-[10px] font-mono text-slate-400 flex items-center gap-1 mt-0.5">
+                                        <i class="fas fa-location-dot text-sky-500 text-[9px]"></i> {{ place.latitude|floatformat:4 }}, {{ place.longitude|floatformat:4 }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-[10px] text-amber-600 font-bold">?? Missing Coordinates</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-slate-700 font-semibold block">{{ place.timings|default:"Open All Day" }}</span>
+                                <span class="text-[10px] text-slate-400">{{ place.entry_fees|default:"Free" }}</span>
+                            </td>
+                            <td class="py-4 px-4 text-center">
+                                <form action="{% url 'ops_place_toggle_verify' place.pk %}" method="post" class="inline-block">
+                                    {% csrf_token %}
+                                    <button type="submit" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition-all {% if place.is_verified %}bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100{% else %}bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200{% endif %}" title="Click to toggle verified status">
+                                        {% if place.is_verified %}
+                                            <i class="fas fa-check-circle text-emerald-600"></i> Verified
+                                        {% else %}
+                                            <i class="fas fa-clock text-slate-400"></i> Draft
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <a href="{% url 'destination_detail' place.slug %}" target="_blank" class="p-2 rounded-xl text-slate-400 hover:text-sky-600 hover:bg-slate-100 transition-colors" title="Live Preview">
+                                        <i class="fas fa-external-link-alt text-xs"></i>
+                                    </a>
+                                    <a href="{% url 'ops_place_edit' place.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-sky-600 hover:bg-slate-100 transition-colors" title="Edit Place">
+                                        <i class="fas fa-pen text-xs"></i>
+                                    </a>
+                                    <a href="{% url 'ops_place_delete' place.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Delete">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="py-12 text-center text-slate-400">
+                                <i class="fas fa-map-location-dot text-4xl block mb-2 opacity-40"></i>
+                                <span class="text-sm font-semibold text-slate-600">No destinations found matching your criteria.</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

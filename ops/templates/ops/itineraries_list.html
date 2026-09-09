@@ -1,0 +1,84 @@
+{% extends 'ops/base_ops.html' %}
+
+{% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
+    
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Curated Itineraries & Journeys</h1>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Build multi-day step-by-step trails with custom stops, drive times, and food breaks.</p>
+        </div>
+        <a href="{% url 'ops_itinerary_create' %}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 shadow-sm transition-all">
+            <i class="fas fa-plus"></i>
+            <span>Create Itinerary</span>
+        </a>
+    </div>
+
+    <!-- Itinerary Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for itin in itineraries %}
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden flex flex-col justify-between hover:border-sky-300 transition-all">
+                
+                <!-- Card Header -->
+                <div>
+                    {% if itin.cover_image %}
+                        <img src="{{ itin.cover_image.url }}" alt="{{ itin.title }}" class="w-full h-44 object-cover border-b border-slate-100">
+                    {% else %}
+                        <div class="w-full h-44 bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white border-b border-slate-100">
+                            <i class="fas fa-route text-4xl opacity-50"></i>
+                        </div>
+                    {% endif %}
+
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200 uppercase">
+                                {{ itin.duration_days }} Day{% if itin.duration_days > 1 %}s{% endif %}
+                            </span>
+                            <span class="text-[11px] font-bold text-slate-400">
+                                {{ itin.get_audience_display }}
+                            </span>
+                        </div>
+
+                        <h3 class="font-display font-bold text-base text-slate-900 leading-snug">
+                            {{ itin.title }}
+                        </h3>
+                        <p class="text-xs text-slate-500 line-clamp-2">
+                            {{ itin.tagline|default:itin.description }}
+                        </p>
+
+                        <!-- Days & Stops pill -->
+                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5 font-bold text-slate-800">
+                                <i class="fas fa-calendar-days text-sky-500"></i> {{ itin.days.count }} Structured Days
+                            </span>
+                            <span class="text-[11px] text-slate-500 font-semibold">
+                                {{ itin.estimated_cost_inr }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Footer -->
+                <div class="p-4 bg-slate-50/75 border-t border-slate-100 flex items-center justify-between">
+                    <a href="{% url 'itinerary_detail' itin.slug %}" target="_blank" class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1">
+                        <i class="fas fa-external-link-alt text-[10px]"></i> Preview
+                    </a>
+                    <a href="{% url 'ops_itinerary_builder' itin.pk %}" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all">
+                        <i class="fas fa-hammer text-amber-400 text-xs"></i>
+                        <span>Journey Studio ???</span>
+                    </a>
+                </div>
+
+            </div>
+        {% empty %}
+            <div class="col-span-3 py-12 text-center text-slate-400 bg-white rounded-3xl border border-slate-200">
+                <i class="fas fa-route text-4xl block mb-2 opacity-40"></i>
+                <p class="text-sm font-semibold text-slate-600">No itineraries created yet.</p>
+                <a href="{% url 'ops_itinerary_create' %}" class="mt-3 inline-block px-4 py-2 rounded-xl bg-sky-600 text-white text-xs font-bold">Create First Itinerary</a>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

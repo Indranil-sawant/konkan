@@ -1,0 +1,82 @@
+{% extends 'ops/base_ops.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto space-y-6">
+    
+    <div>
+        <a href="{% url 'ops_itineraries_list' %}" class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1 mb-1">
+            <i class="fas fa-arrow-left text-[10px]"></i> Back to Itineraries
+        </a>
+        <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">{{ page_title }}</h1>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 md:p-8">
+        <form method="post" enctype="multipart/form-data" class="space-y-5">
+            {% csrf_token %}
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Itinerary Title *</label>
+                {{ form.title }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Catchy Tagline</label>
+                {{ form.tagline }}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Duration (Days) *</label>
+                    {{ form.duration_days }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Target Audience *</label>
+                    {{ form.audience }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Season</label>
+                    {{ form.season }}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Pacing / Difficulty</label>
+                    {{ form.difficulty }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Estimated Cost (INR)</label>
+                    {{ form.estimated_cost_inr }}
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Overview Summary *</label>
+                {{ form.description }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Cover Image</label>
+                {{ form.cover_image }}
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-6">
+                <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                    {{ form.is_featured }} <span>Feature on Home</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                    {{ form.is_active }} <span>Active & Published</span>
+                </label>
+            </div>
+
+            <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
+                <a href="{% url 'ops_itineraries_list' %}" class="text-xs font-bold text-slate-500 hover:text-slate-800">Cancel</a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all">
+                    Continue to Journey Studio ?
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

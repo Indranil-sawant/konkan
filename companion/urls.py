@@ -1,4 +1,4 @@
-from django.urls import path
+﻿from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -21,4 +21,5 @@ urlpatterns = [
 
     # Telemetry & Admin Analytics
     path('analytics/', views.analytics_dashboard_view, name='companion_analytics'),
+    path('analytics/dashboard/', views.analytics_dashboard_view, name='analytics_dashboard'),
 ]

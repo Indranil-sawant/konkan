@@ -9,3 +9,7 @@ node_modules/
 .vscode/
 .idea/
 .env
+.venv/
+.venv_linux/
+*.log
+.DS_Store

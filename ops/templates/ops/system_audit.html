@@ -1,0 +1,104 @@
+{% extends 'ops/base_ops.html' %}
+
+{% block content %}
+<div class="space-y-8 max-w-7xl mx-auto">
+    
+    <div>
+        <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">System Administration & Audit Trail</h1>
+        <p class="text-xs text-slate-500 font-medium mt-0.5">Role-based staff permissions, security overview, and immutable administrative audit logs.</p>
+    </div>
+
+    <!-- 2 Columns: Users vs Audit Log -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left: Users & Roles (1 Column) -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 space-y-4">
+            <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
+                <i class="fas fa-users-gear text-sky-500"></i> Staff & User Roles
+            </h3>
+
+            <div class="divide-y divide-slate-100">
+                {% for u in users %}
+                    <div class="py-3 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">{{ u.username }}</span>
+                            <span class="text-[10px] text-slate-400 truncate block">{{ u.email|default:"No email registered" }}</span>
+                        </div>
+                        <div>
+                            {% if u.is_superuser %}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                    Super Admin
+                                </span>
+                            {% elif u.is_staff %}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200">
+                                    Staff Operator
+                                </span>
+                            {% else %}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-500">
+                                    Explorer
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 text-center">
+                <a href="/admin/auth/user/" target="_blank" class="text-xs font-bold text-sky-600 hover:underline">
+                    Manage Full User Permissions in Django Admin ?
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: Immutable Audit Trail (2 Columns) -->
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 shadow-xs p-6 space-y-4">
+            <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
+                <i class="fas fa-list-check text-indigo-500"></i> Operational Audit Trail
+            </h3>
+
+            <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-[10px] uppercase font-bold text-slate-400 bg-slate-50/50">
+                            <th class="py-2.5 px-3">Timestamp</th>
+                            <th class="py-2.5 px-3">Operator</th>
+                            <th class="py-2.5 px-3">Action</th>
+                            <th class="py-2.5 px-3">Resource</th>
+                            <th class="py-2.5 px-3">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 font-medium">
+                        {% for log in audit_logs %}
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500 whitespace-nowrap">
+                                    {{ log.timestamp|date:"M d, H:i" }}
+                                </td>
+                                <td class="py-2.5 px-3 font-bold text-slate-900">
+                                    {{ log.user.username|title|default:"System" }}
+                                </td>
+                                <td class="py-2.5 px-3">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold {% if log.action == 'CREATE' %}bg-emerald-50 text-emerald-700{% elif log.action == 'DELETE' %}bg-rose-50 text-rose-700{% elif log.action == 'BULK_ACTION' %}bg-amber-50 text-amber-700{% else %}bg-sky-50 text-sky-700{% endif %}">
+                                        {{ log.get_action_display }}
+                                    </span>
+                                </td>
+                                <td class="py-2.5 px-3 font-semibold text-slate-800">
+                                    {{ log.resource_type }}: <span class="font-normal">{{ log.resource_name|truncatechars:25 }}</span>
+                                </td>
+                                <td class="py-2.5 px-3 font-mono text-[10px] text-slate-400 truncate max-w-xs">
+                                    {{ log.details_json|default:"{}" }}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="py-8 text-center text-slate-400">No audit log entries recorded yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

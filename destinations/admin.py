@@ -13,6 +13,15 @@ class DestinationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'location_name', 'description')
     prepopulated_fields = {'slug': ('title',)}
     inlines = [GalleryInline]
+    actions = ['verify_selected', 'unverify_selected']
+
+    @admin.action(description="Mark selected destinations as Verified 🟢")
+    def verify_selected(self, request, queryset):
+        queryset.update(is_verified=True)
+
+    @admin.action(description="Mark selected destinations as Unverified ⚪")
+    def unverify_selected(self, request, queryset):
+        queryset.update(is_verified=False)
     
     fieldsets = (
         ('Basic Information', {

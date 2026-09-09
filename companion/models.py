@@ -316,3 +316,114 @@ class EmergencyContact(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_category_display()}) - {self.phone_number}"
+
+
+class FAQ(models.Model):
+    """
+    Frequently Asked Questions for Ratnagiri tourists.
+    """
+    CATEGORY_CHOICES = (
+        ('GENERAL', 'General & Travel Guide'),
+        ('TRANSPORT', 'Local Transport & Taxis'),
+        ('FOOD', 'Cuisine, Seafood & Mango Season'),
+        ('SAFETY', 'Beach Safety & Tides'),
+        ('STAY', 'Homestays & Resorts'),
+        ('NFC', 'NFC Tag & Companion Guide'),
+    )
+
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='GENERAL', db_index=True)
+    order = models.PositiveIntegerField(default=0)
+    is_published = models.BooleanField(default=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "FAQ"
+        verbose_name_plural = "FAQs"
+        ordering = ['order', 'created_at']
+
+    def __str__(self):
+        return self.question
+
+
+class TravelTip(models.Model):
+    """
+    Local insider tips, cultural customs, and travel hacks.
+    """
+    CATEGORY_CHOICES = (
+        ('BEST_TIME', 'Best Time & Seasons'),
+        ('PACKING', 'What to Pack & Essentials'),
+        ('CULTURE', 'Local Etiquette & Marathi Phrases'),
+        ('SAVINGS', 'Budget Hacks & Dining Tips'),
+        ('PHOTO', 'Photography & Sunset Vantage'),
+    )
+
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='BEST_TIME', db_index=True)
+    icon = models.CharField(max_length=50, default='fa-lightbulb', help_text="FontAwesome icon class, e.g. fa-umbrella-beach")
+    is_active = models.BooleanField(default=True, db_index=True)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+
+    def __str__(self):
+        return self.title
+
+
+class Announcement(models.Model):
+    """
+    Live platform announcements, high tide warnings, or festival notices.
+    """
+    URGENCY_CHOICES = (
+        ('INFO', 'Informational Notice'),
+        ('WARNING', 'Travel Advisory / Tide Alert'),
+        ('CRITICAL', 'Emergency / Heavy Weather Warning'),
+    )
+
+    title = models.CharField(max_length=200)
+    message = models.TextField()
+    urgency_level = models.CharField(max_length=20, choices=URGENCY_CHOICES, default='INFO', db_index=True)
+    link_url = models.CharField(max_length=255, blank=True, help_text="Optional target link URL")
+    is_active = models.BooleanField(default=True, db_index=True)
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"[{self.get_urgency_level_display()}] {self.title}"
+
+
+class AdminAuditLog(models.Model):
+    """
+    Audit log recording all critical operations actions for transparency and safety.
+    """
+    ACTION_CHOICES = (
+        ('CREATE', 'Created Object'),
+        ('UPDATE', 'Updated Object'),
+        ('DELETE', 'Deleted Object'),
+        ('STATUS_CHANGE', 'Status Changed'),
+        ('BULK_ACTION', 'Bulk Generated / Batch Action'),
+        ('VERIFY', 'Verification Status Changed'),
+    )
+
+    user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='ops_audit_logs')
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES, db_index=True)
+    resource_type = models.CharField(max_length=50, db_index=True, help_text="e.g. Place, Itinerary, NFC Tag, Partner")
+    resource_name = models.CharField(max_length=255, blank=True)
+    details_json = models.JSONField(default=dict, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        user_name = self.user.username if self.user else "System"
+        return f"{user_name} - {self.action} on {self.resource_type} '{self.resource_name}' at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"

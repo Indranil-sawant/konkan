@@ -1,0 +1,80 @@
+{% extends 'ops/base_ops.html' %}
+
+{% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
+    
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Verified Partners & Businesses</h1>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Manage partner hotels, homestays, tour operators, and restaurants distributing companion NFC tags.</p>
+        </div>
+        <a href="{% url 'ops_partner_create' %}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 shadow-sm transition-all">
+            <i class="fas fa-plus"></i>
+            <span>Add New Partner</span>
+        </a>
+    </div>
+
+    <!-- Partner Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for partner in partners %}
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 flex flex-col justify-between hover:border-sky-300 transition-all space-y-4">
+                <div>
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            {% if partner.logo %}
+                                <img src="{{ partner.logo.url }}" alt="{{ partner.business_name }}" class="w-12 h-12 rounded-2xl object-cover border border-slate-200 flex-shrink-0">
+                            {% else %}
+                                <div class="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 font-bold flex-shrink-0">
+                                    <i class="fas fa-hotel"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-900 leading-snug">{{ partner.business_name }}</h3>
+                                <span class="text-[10px] font-bold text-indigo-700 uppercase">{{ partner.get_partner_type_display }}</span>
+                            </div>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {% if partner.is_active %}bg-emerald-50 text-emerald-700{% else %}bg-slate-100 text-slate-500{% endif %}">
+                            {% if partner.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </div>
+
+                    {% if partner.short_tagline %}
+                        <p class="text-xs text-slate-500 mt-3">{{ partner.short_tagline }}</p>
+                    {% endif %}
+
+                    <!-- Assigned NFC Tags summary -->
+                    <div class="mt-4 p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs flex items-center justify-between">
+                        <span class="text-slate-600 font-semibold flex items-center gap-1.5">
+                            <i class="fas fa-nfc-symbol text-sky-600"></i> {{ partner.nfc_tags.count }} NFC Tags Assigned
+                        </span>
+                        <a href="{% url 'ops_nfc_list' %}?q={{ partner.business_name }}" class="text-sky-600 font-bold hover:underline text-[11px]">
+                            View Tags ?
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <a href="{% url 'partner_detail' partner.slug %}" target="_blank" class="text-slate-500 hover:text-slate-800 font-bold flex items-center gap-1">
+                        <i class="fas fa-external-link-alt text-[10px]"></i> View Concierge
+                    </a>
+                    <div class="flex items-center gap-2">
+                        <a href="{% url 'ops_partner_edit' partner.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-sky-600 hover:bg-slate-100 transition-colors">
+                            <i class="fas fa-pen text-xs"></i>
+                        </a>
+                        <a href="{% url 'ops_partner_delete' partner.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors">
+                            <i class="fas fa-trash text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-span-3 py-12 text-center text-slate-400 bg-white rounded-3xl border border-slate-200">
+                <i class="fas fa-handshake-angle text-4xl block mb-2 opacity-40"></i>
+                <p class="text-sm font-semibold text-slate-600">No partner businesses registered yet.</p>
+                <a href="{% url 'ops_partner_create' %}" class="mt-3 inline-block px-4 py-2 rounded-xl bg-sky-600 text-white text-xs font-bold">Add First Partner</a>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

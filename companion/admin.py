@@ -8,8 +8,17 @@ from .models import (
     ItineraryStop,
     NFCTag,
     NFCTapEvent,
-    EmergencyContact
+    EmergencyContact,
+    FAQ,
+    TravelTip,
+    Announcement,
+    AdminAuditLog
 )
+
+# Admin Site Customization
+admin.site.site_header = "Ratnagiri Tourism Operations Control Center"
+admin.site.site_title = "Konkan Ops CMS"
+admin.site.index_title = "Platform Operations & Content Management"
 
 
 class ItineraryStopInline(admin.TabularInline):
@@ -60,6 +69,15 @@ class NFCTagAdmin(admin.ModelAdmin):
     list_filter = ('tag_type', 'target_experience', 'is_active', 'assigned_partner')
     search_fields = ('tag_uid', 'title', 'custom_welcome_title')
     readonly_fields = ('tap_count', 'unique_visitor_count', 'created_at', 'last_tapped_at', 'live_tap_link', 'qr_code_link')
+    actions = ['activate_tags', 'pause_tags']
+
+    @admin.action(description="Activate selected NFC tags")
+    def activate_tags(self, request, queryset):
+        queryset.update(is_active=True)
+
+    @admin.action(description="Pause selected NFC tags")
+    def pause_tags(self, request, queryset):
+        queryset.update(is_active=False)
 
     def live_tap_link(self, obj):
         url = reverse('nfc_tap_entry', kwargs={'tag_uid': obj.tag_uid})
@@ -97,3 +115,37 @@ class EmergencyContactAdmin(admin.ModelAdmin):
     list_filter = ('category', 'is_24x7', 'is_active')
     search_fields = ('name', 'phone_number', 'address')
     list_editable = ('order', 'is_active')
+
+
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ('question', 'category', 'order', 'is_published')
+    list_filter = ('category', 'is_published')
+    search_fields = ('question', 'answer')
+    list_editable = ('order', 'is_published')
+
+
+@admin.register(TravelTip)
+class TravelTipAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'order', 'is_active')
+    list_filter = ('category', 'is_active')
+    search_fields = ('title', 'content')
+    list_editable = ('order', 'is_active')
+
+
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = ('title', 'urgency_level', 'is_active', 'start_time', 'end_time', 'created_at')
+    list_filter = ('urgency_level', 'is_active')
+    search_fields = ('title', 'message')
+
+
+@admin.register(AdminAuditLog)
+class AdminAuditLogAdmin(admin.ModelAdmin):
+    list_display = ('timestamp', 'user', 'action', 'resource_type', 'resource_name')
+    list_filter = ('action', 'resource_type', 'timestamp')
+    search_fields = ('user__username', 'resource_name', 'resource_type')
+    readonly_fields = ('user', 'action', 'resource_type', 'resource_name', 'details_json', 'timestamp')
+
+    def has_add_permission(self, request):
+        return False

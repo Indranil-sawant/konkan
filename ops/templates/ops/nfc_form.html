@@ -1,0 +1,82 @@
+{% extends 'ops/base_ops.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto space-y-6">
+    
+    <div>
+        <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1 mb-1">
+            <i class="fas fa-arrow-left text-[10px]"></i> Back to NFC Inventory
+        </a>
+        <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">{{ page_title }}</h1>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 md:p-8">
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Token UID *</label>
+                    {{ form.tag_uid }}
+                    {% if form.tag_uid.errors %}<span class="text-xs text-rose-500">{{ form.tag_uid.errors.0 }}</span>{% endif %}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Title / Location *</label>
+                    {{ form.title }}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Type</label>
+                    {{ form.tag_type }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Target Experience</label>
+                    {{ form.target_experience }}
+                </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                <span class="text-xs font-bold text-slate-800 block">Experience Associations (Optional)</span>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Assigned Partner / Hotel</label>
+                    {{ form.assigned_partner }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Assigned Itinerary</label>
+                    {{ form.assigned_itinerary }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Assigned Destination</label>
+                    {{ form.assigned_destination }}
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Custom Welcome Title</label>
+                {{ form.custom_welcome_title }}
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Custom Welcome Message</label>
+                {{ form.custom_welcome_message }}
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                    {{ form.is_active }} <span>Tag is Active ??</span>
+                </label>
+            </div>
+
+            <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
+                <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-slate-500 hover:text-slate-800">Cancel</a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all">
+                    Save NFC Tag
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
