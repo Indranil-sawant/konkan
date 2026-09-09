@@ -6,8 +6,8 @@ Production-ready Render + Supabase configuration
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from decouple import config
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 
 # ------------------------------------------------------------------------------
 # BASE DIRECTORY
@@ -22,12 +22,15 @@ load_dotenv(BASE_DIR / '.env')
 # SECURITY
 # ------------------------------------------------------------------------------
 
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
-    'django-insecure-change-this-in-production'
-)
-
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-change-this-in-production-dev-only'
+    else:
+        raise ImproperlyConfigured("The SECRET_KEY environment variable must be set when DEBUG is False.")
+
 
 ALLOWED_HOSTS = [
     'konkan.onrender.com',
@@ -87,6 +90,7 @@ INSTALLED_APPS = [
     'spots',
     'food',
     'users',
+    'companion',
 ]
 
 # ------------------------------------------------------------------------------
@@ -251,13 +255,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # STORAGE CONFIGURATION
 # ------------------------------------------------------------------------------
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+}
+
+if os.environ.get('CLOUDINARY_CLOUD_NAME') or os.environ.get('CLOUDINARY_URL'):
+    DEFAULT_STORAGE_BACKEND = "cloudinary_storage.storage.MediaCloudinaryStorage"
+else:
+    DEFAULT_STORAGE_BACKEND = "django.core.files.storage.FileSystemStorage"
+
+WHITENOISE_MANIFEST_STRICT = False
+
 STORAGES = {
     "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        "BACKEND": DEFAULT_STORAGE_BACKEND,
     },
 
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage" if DEBUG else "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 

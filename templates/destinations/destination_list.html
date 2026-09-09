@@ -1,180 +1,193 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800;900&family=Be+Vietnam+Pro:wght@500;700&display=swap" rel="stylesheet"/>
-<style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    
-    /* Typography Utilities */
-    .font-display-xl { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 900; letter-spacing: -0.04em; }
-    .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
-    .font-eyebrow { font-family: 'Be Vietnam Pro', sans-serif; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
-    .font-body-relaxed { font-family: 'Be Vietnam Pro', sans-serif; font-weight: 500; line-height: 1.7; }
-    .font-quote { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; line-height: 1.4; }
-
-    /* Masonry Layout */
-    .masonry-grid { column-count: 1; column-gap: 1.5rem; }
-    @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
-    @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-    @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
-    
-    .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
-
-    /* Premium Glass Cards */
-    .premium-glow-card {
-        position: relative;
-        border-radius: 1.5rem;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        overflow: hidden;
-    }
-
-    .premium-glow-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(56, 189, 248, 0.4);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
-    }
-
-    .image-zoom-container img { transition: transform 1000ms cubic-bezier(0.23, 1, 0.32, 1); }
-    .premium-glow-card:hover .image-zoom-container img { transform: scale(1.1); }
-
-    /* Ambient Motion */
-    .ambient-orb {
-        position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.4;
-        animation: pulse-orb 10s infinite alternate;
-    }
-    @keyframes pulse-orb {
-        0% { transform: scale(1); opacity: 0.3; }
-        100% { transform: scale(1.2); opacity: 0.5; }
-    }
-</style>
-{% endblock %}
+{% block title %}Destinations Directory | Konkan Guide{% endblock %}
 
 {% block content %}
-<!-- Isolate dark mode background explicitly for this view -->
-<div class="bg-[#131315] text-[#e4e2e4] min-h-screen relative overflow-x-hidden font-body-relaxed -mt-10" style="padding-top: calc(var(--nav-height, 72px) + 2rem);">
+<div class="min-h-screen bg-[#f8fafc] pb-24">
     
-    <!-- Ambient Background Layer -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="ambient-orb w-[600px] h-[600px] bg-purple-600 top-[-5%] left-[-10%]"></div>
-        <div class="ambient-orb w-[500px] h-[500px] bg-[#38bdf8] bottom-[10%] right-[-5%]" style="animation-delay: -2s;"></div>
-        <div class="ambient-orb w-[400px] h-[400px] bg-rose-500 top-[30%] right-[10%]" style="animation-delay: -5s;"></div>
-    </div>
+    <!-- Hero Header Banner -->
+    <header class="relative py-14 lg:py-18 bg-gradient-to-b from-sky-50/70 via-slate-50 to-[#f8fafc] border-b border-slate-200/80 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <nav class="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
+                        <a href="{% url 'home' %}" class="hover:text-ocean-mid transition-colors">Home</a>
+                        <span>/</span>
+                        <span class="text-ocean-mid font-black">Destinations Directory</span>
+                    </nav>
+                    <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight">
+                        The Coastline <span class="text-transparent bg-clip-text bg-gradient-to-r from-ocean-mid via-ocean-dark to-amber-600">Redefined.</span>
+                    </h1>
+                    <p class="text-slate-600 text-sm sm:text-base mt-3 max-w-xl leading-relaxed">
+                        Curated sea forts, secluded shorelines, sacred shrines, and coastal wonders across Maharashtra.
+                    </p>
+                </div>
 
-    <!-- Main Content Canvas -->
-    <main class="relative z-10 px-4 md:px-8 max-w-[1440px] mx-auto pb-24">
-        
-        <!-- Header & Filter Bar -->
-        <header class="mb-12">
-            <h1 class="font-display-xl text-5xl md:text-7xl mb-6 text-white leading-[1.1]">The Coastline<br/><span class="text-[#38bdf8]">Redefined.</span></h1>
-            
-            <form action="{% url 'destination_list' %}" method="get" class="flex flex-wrap gap-3 mt-8 items-center bg-white/5 backdrop-blur-xl p-2 rounded-2xl border border-white/10 w-fit shadow-lg">
-                <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search by name..." class="bg-transparent border-none outline-none text-white px-4 py-2 w-full sm:w-48 font-body-relaxed text-sm focus:ring-0 placeholder:text-white/40">
-                <button type="submit" class="px-6 py-2 rounded-xl bg-[#38bdf8] text-slate-900 font-eyebrow text-[10px] hover:scale-105 transition-transform flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">search</span> Search
-                </button>
-                <div class="hidden sm:block h-6 w-[1px] bg-white/10 mx-2"></div>
-                <a href="{% url 'destination_list' %}" class="px-6 py-2 rounded-xl text-white/50 hover:bg-white/5 font-eyebrow text-[10px] transition-all flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">clear_all</span> Clear
+                {% if user.is_authenticated %}
+                <a href="{% url 'create_destination' %}" class="px-6 py-3.5 rounded-full bg-ocean-mid hover:bg-ocean-dark text-white text-xs font-bold uppercase tracking-wider shadow-tactile hover:shadow-lg transition-all self-start md:self-auto flex items-center gap-2 flex-shrink-0">
+                    <i class="fas fa-plus"></i>
+                    <span>Submit Landmark</span>
                 </a>
-            </form>
-        </header>
+                {% endif %}
+            </div>
 
-        <!-- Masonry Grid -->
-        <div class="masonry-grid pt-4">
-            {% for dest in destinations %}
+            <!-- Category Filter Pills & Search Bar -->
+            <div class="mt-10 pt-8 border-t border-slate-200/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
                 
-                <!-- Standard Destination Photo Item -->
-                <div class="masonry-item">
-                    <div class="premium-glow-card group">
-                        <div class="image-zoom-container relative aspect-[3/4]">
-                            {% if dest.main_image %}
-                            <img class="w-full h-full object-cover" src="{{ dest.main_image.url }}" alt="{{ dest.title }}"/>
-                            {% else %}
-                            <div class="w-full h-full bg-slate-900 flex items-center justify-center"><i class="fas fa-image text-4xl text-white/10"></i></div>
-                            {% endif %}
-                            
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0e0e10] via-transparent to-transparent opacity-90"></div>
-                            <a href="{% url 'destination_detail' dest.slug %}" class="absolute inset-0 z-20"></a>
-                            
-                            <div class="absolute bottom-0 p-6 z-10 pointer-events-none">
-                                <p class="font-eyebrow text-[10px] text-[#38bdf8] mb-2 drop-shadow-md">{{ dest.category }}</p>
-                                <h3 class="font-headline text-3xl text-white leading-tight drop-shadow-lg">{{ dest.title }}</h3>
-                                <div class="flex items-center gap-2 mt-3 text-white/60 font-body-relaxed text-sm">
-                                    <span class="material-symbols-outlined text-[16px]">location_on</span>
-                                    <span>{{ dest.location_name }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interleaved Feature Cards -->
-                {% if forloop.counter == 2 %}
-                <!-- Quote Card -->
-                <div class="masonry-item">
-                    <div class="premium-glow-card p-8 bg-gradient-to-br from-[#353436] to-[#1f1f21] h-full flex flex-col justify-center min-h-[350px]">
-                        <span class="material-symbols-outlined text-[#38bdf8] mb-6 block text-5xl" data-icon="format_quote">format_quote</span>
-                        <p class="font-quote text-[22px] text-white mb-8 italic drop-shadow-sm">"The coast doesn't just offer views; it whispers stories of seafaring empires and ancient spice routes."</p>
-                        <div class="flex items-center gap-4 mt-auto">
-                            <div class="w-12 h-12 rounded-full bg-[#38bdf8]/20 flex items-center justify-center text-[#38bdf8]">
-                                <span class="material-symbols-outlined" data-icon="person">person</span>
-                            </div>
-                            <div>
-                                <p class="font-eyebrow text-[12px] text-white tracking-widest">Aniket Desai</p>
-                                <p class="font-eyebrow text-[8px] text-white/50">HERITAGE CURATOR</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if forloop.counter == 4 %}
-                <!-- Ambient Filler Card -->
-                <div class="masonry-item">
-                    <div class="premium-glow-card h-[280px] bg-gradient-to-tr from-purple-600 via-pink-500 to-rose-500 opacity-90 flex items-center justify-center relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
-                        <div class="relative z-10 text-center p-8 transform group-hover:scale-110 transition-transform duration-700">
-                            <span class="material-symbols-outlined text-6xl text-white opacity-60 mb-4" data-icon="auto_awesome">auto_awesome</span>
-                            <p class="font-eyebrow text-white text-[12px] tracking-[0.4em] drop-shadow-md">CINEMATIC JOURNEYS</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if forloop.counter == 6 %}
-                <!-- Typography Feature -->
-                <div class="masonry-item">
-                    <div class="premium-glow-card p-10 bg-[#353436]/50 flex flex-col justify-between aspect-[3/2] min-h-[300px]">
-                        <div class="flex justify-between items-start">
-                            <h4 class="font-display-xl text-6xl text-[#38bdf8] opacity-90">01</h4>
-                            <span class="material-symbols-outlined text-white/40 text-4xl" data-icon="explore">explore</span>
-                        </div>
-                        <div class="mt-auto">
-                            <h3 class="font-headline text-3xl text-white mb-3">Discover the Unseen</h3>
-                            <p class="text-white/60 font-body-relaxed text-sm">Venture beyond the maps into the heart of the Konkan heritage.</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-            {% empty %}
-                <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-32 bg-white/5 border border-white/10 rounded-3xl w-full">
-                    <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 text-white/20 text-5xl">
-                        <span class="material-symbols-outlined">search_off</span>
-                    </div>
-                    <h3 class="font-headline text-3xl text-white mb-4">No destinations matched.</h3>
-                    <p class="text-white/50 font-body-relaxed mb-8">Try adjusting your search criteria to discover hidden gems.</p>
-                    <a href="{% url 'destination_list' %}" class="inline-flex items-center gap-2 bg-[#38bdf8] text-slate-900 px-8 py-3 rounded-full font-eyebrow text-[12px] hover:bg-white transition-all shadow-lg hover:shadow-cyan-500/30">
-                        Reset Filters
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{% url 'destination_list' %}" 
+                       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 {% if not category %}bg-ocean-mid text-white shadow-sm{% else %}bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs{% endif %}">
+                        All Places
+                    </a>
+                    <a href="{% url 'destination_list' %}?category=Fort" 
+                       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 {% if category == 'Fort' %}bg-ocean-mid text-white shadow-sm{% else %}bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs{% endif %}">
+                        🏰 Sea Forts
+                    </a>
+                    <a href="{% url 'destination_list' %}?category=Beach" 
+                       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 {% if category == 'Beach' %}bg-ocean-mid text-white shadow-sm{% else %}bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs{% endif %}">
+                        🏖️ Beaches
+                    </a>
+                    <a href="{% url 'destination_list' %}?category=Temple" 
+                       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 {% if category == 'Temple' %}bg-ocean-mid text-white shadow-sm{% else %}bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs{% endif %}">
+                        🛕 Temples
+                    </a>
+                    <a href="{% url 'destination_list' %}?category=Waterfall" 
+                       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 {% if category == 'Waterfall' %}bg-ocean-mid text-white shadow-sm{% else %}bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs{% endif %}">
+                        🌊 Waterfalls
+                    </a>
+                    <a href="{% url 'destination_list' %}?category=Nature" 
+                       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 {% if category == 'Nature' %}bg-ocean-mid text-white shadow-sm{% else %}bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs{% endif %}">
+                        🌿 Nature
                     </a>
                 </div>
+
+                <!-- Search Input In Filter Bar -->
+                <form action="{% url 'destination_list' %}" method="get" class="w-full lg:w-auto flex items-center gap-2">
+                    {% if category %}
+                    <input type="hidden" name="category" value="{{ category }}" />
+                    {% endif %}
+                    <div class="relative w-full lg:w-64">
+                        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Filter by name..." 
+                               class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pl-9 text-slate-900 text-xs outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all placeholder:text-slate-400 shadow-xs" />
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    </div>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-ocean-mid hover:bg-ocean-dark text-white text-xs font-bold uppercase tracking-wider transition-colors flex-shrink-0 shadow-xs">
+                        Filter
+                    </button>
+                    {% if query or category %}
+                    <a href="{% url 'destination_list' %}" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-colors" title="Clear Filters">
+                        <i class="fas fa-times"></i>
+                    </a>
+                    {% endif %}
+                </form>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Destination Cards Grid -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12">
+        
+        <!-- Results Counter -->
+        <div class="flex items-center justify-between mb-8 text-xs text-slate-500 font-bold uppercase tracking-wider">
+            <span>
+                Showing <strong class="text-slate-900">{{ destinations.count }}</strong> destination{{ destinations.count|pluralize }}
+                {% if category %}in <span class="text-ocean-mid">{{ category }}</span>{% endif %}
+                {% if query %}matching "<span class="text-slate-900">{{ query }}</span>"{% endif %}
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for dest in destinations %}
+            <article class="group rounded-3xl overflow-hidden bg-white border border-slate-200/90 hover:border-ocean-mid/40 hover:shadow-card-hover transition-all duration-300 shadow-card flex flex-col">
+                <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                    {% if dest.main_image %}
+                    <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100">
+                        <i class="fas fa-image text-4xl"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-70"></div>
+                    
+                    <!-- Category Badge -->
+                    <div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+                        <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest text-ocean-dark border border-slate-200/60 shadow-xs">
+                            {{ dest.category }}
+                        </span>
+                        {% if dest.is_verified %}
+                        <span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shadow-md" title="Verified Destination">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 text-slate-500 text-xs font-semibold mb-2.5">
+                            <i class="fas fa-location-dot text-ocean-mid"></i>
+                            <span>{{ dest.location_name }}</span>
+                        </div>
+                        <h2 class="font-display font-black text-2xl text-slate-900 group-hover:text-ocean-mid transition-colors mb-3 leading-snug">
+                            <a href="{% url 'destination_detail' dest.slug %}">{{ dest.title }}</a>
+                        </h2>
+                        <p class="text-slate-600 text-xs leading-relaxed line-clamp-3 mb-6">
+                            {{ dest.description|striptags }}
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                            <i class="fas fa-calendar-check text-amber-500"></i> {{ dest.best_time_to_visit|default:"Oct - Mar" }}
+                        </span>
+                        <a href="{% url 'destination_detail' dest.slug %}" class="text-xs font-bold text-ocean-mid hover:text-ocean-dark flex items-center gap-1.5 transition-colors">
+                            Explore Landmark <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Interleaved Quote Card -->
+            {% if forloop.counter == 3 %}
+            <aside class="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-50/80 via-white to-sky-50/50 border border-amber-200/70 flex flex-col justify-between shadow-card">
+                <div>
+                    <span class="text-amber-500 text-3xl font-serif mb-3 block">“</span>
+                    <p class="font-editorial italic text-lg sm:text-xl text-slate-800 leading-relaxed mb-6">
+                        The coast doesn't just offer views; it whispers stories of ancient seafaring empires and spicy spice routes.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 pt-4 border-t border-amber-200/60">
+                    <div class="w-8 h-8 rounded-full bg-ocean-mid/10 flex items-center justify-center text-ocean-mid text-xs font-bold">
+                        K
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-900 uppercase tracking-wider">Coastal Lore</p>
+                        <p class="text-[10px] font-semibold text-slate-500">Konkan Heritage Archive</p>
+                    </div>
+                </div>
+            </aside>
+            {% endif %}
+
+            {% empty %}
+            <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-20 bg-white border border-slate-200 rounded-3xl max-w-2xl mx-auto w-full shadow-card">
+                <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-400 text-3xl">
+                    <i class="fas fa-map-location-dot"></i>
+                </div>
+                <h3 class="font-display font-black text-2xl text-slate-900 mb-2">No destinations found</h3>
+                <p class="text-slate-600 text-sm max-w-md mx-auto mb-6">
+                    We couldn't find any verified places matching your search filter.
+                </p>
+                <a href="{% url 'destination_list' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-ocean-mid text-white text-xs font-bold uppercase tracking-wider hover:bg-ocean-dark transition-all shadow-tactile">
+                    Reset Filter
+                </a>
+            </div>
             {% endfor %}
         </div>
+
     </main>
 </div>
 {% endblock %}

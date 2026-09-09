@@ -16,7 +16,7 @@ class Destination(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, db_index=True)
     location_name = models.CharField(max_length=200)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
@@ -25,17 +25,22 @@ class Destination(models.Model):
     travel_tips = models.TextField(blank=True)
     entry_fees = models.CharField(max_length=200, blank=True, default='Free')
     timings = models.CharField(max_length=200, blank=True)
-    is_verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False, db_index=True)
     submitted_by = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            # Ensure slug is unique if possible, simply slugifying title might duplicate
-            # For now, let's keep it simple as per original, but append something if needed could be better
-            self.slug = slugify(self.title)
+            base_slug = slugify(self.title) or 'destination'
+            slug = base_slug
+            counter = 1
+            while Destination.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.title

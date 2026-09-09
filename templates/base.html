@@ -1,36 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 {% load static %}
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-    content="Explore the beautiful Konkan region - Forts, Beaches, Temples, and authentic Food." />
-  <title>
-    {% block title %}Konkan Guide | Discover the Jewel of Ratnagiri{% endblock %}
-  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="{% block meta_description %}Explore the untouched Konkan coastline — legendary sea forts, pristine beaches, ancient temples, secret waterfalls, and authentic coastal cuisine.{% endblock %}" />
+  <meta property="og:title" content="{% block og_title %}Konkan Guide | Discover the Jewel of Maharashtra's Coastline{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}Discover secret spots, cultural landmarks, pristine beaches, and culinary gems across the Konkan coast.{% endblock %}" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>{% block title %}Konkan Guide | The Living Coastal Journal{% endblock %}</title>
 
-  <!-- Preload fonts to reduce CLS -->
+  <!-- PWA Manifest & Theme Color -->
+  <link rel="manifest" href="{% static 'manifest.json' %}" />
+  <meta name="theme-color" content="#0284c7" />
+
+  <!-- Preconnect & Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800;900&family=Be+Vietnam+Pro:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
   <!-- CSS Dependencies -->
-  <!-- Preserved Bootstrap for backward compatibility of inner pages -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Custom Modular CSS & Tailwind -->
+  <!-- Custom Modular CSS -->
   <link rel="stylesheet" href="{% static 'css/base.css' %}" />
   <link rel="stylesheet" href="{% static 'css/components.css' %}" />
   <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
   <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
-  <!-- Mobile-First Responsive System -->
   <link rel="stylesheet" href="{% static 'css/mobile.css' %}" />
 
-  <!-- Development Tailwind CDN (Temporary for immediate rendering during migration) -->
+  <!-- Runtime Tailwind Engine with 2026 Light Coastal Design System -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
@@ -39,155 +42,222 @@
       theme: {
         extend: {
           colors: {
-            // Legacy colors
-            ocean: { deep: "#0a3d62", mid: "#0077b6", light: "#48cae4" },
-            aqua: { mist: "#caf0f8" },
-            sand: { warm: "#fdf0d5" },
-            foam: "#f8fafc",
-            navy: { dark: "#1b263b" },
-            
-            // New UI colors
-            "surface": "#131315",
-            "on-surface": "#e4e2e4",
-            "on-surface-variant": "#c6c6cd",
-            "on-primary": "#283044",
-            "outline": "#909097",
-            "ocean-cyan": "#38bdf8",
-            "sunset-gold": "#fbbf24",
-            "sunset-coral": "#f43f5e",
-            "background": "#131315",
-            "surface-variant": "#353436",
-            "surface-tint": "#bec6e0",
-            "inverse-on-surface": "#303032",
-            "on-error": "#690005",
-            "on-primary-container": "#798098",
-            "tertiary": "#7bd0ff",
-            "inverse-surface": "#e4e2e4",
-            "primary-container": "#0f172a",
-            "cosmic-konkan-start": "#9333ea",
-            "cosmic-konkan-mid": "#ec4899",
-            "cosmic-konkan-end": "#f43f5e",
-            "primary": "#bec6e0",
-            "surface-container": "#1f1f21",
-            "surface-container-lowest": "#0e0e10",
-            "surface-container-low": "#1b1b1d",
-            "surface-container-high": "#2a2a2b",
-            "surface-container-highest": "#353436",
-            "surface-bright": "#39393b",
-            "outline-variant": "#45464d",
+            ocean: {
+              deep: "#0a3d62",
+              navy: "#0f172a",
+              card: "#ffffff",
+              cardHover: "#f8fafc",
+              mid: "#0284c7",
+              light: "#0ea5e9",
+              sky: "#38bdf8",
+              mist: "#f0f9ff",
+              surface: "#f8fafc",
+            },
+            sand: {
+              warm: "#fef3c7",
+              gold: "#d97706",
+              coral: "#ea580c",
+              subtle: "#fffbeb",
+            },
+            coastal: {
+              emerald: "#059669",
+              mint: "#10b981",
+              subtle: "#ecfdf5",
+            },
+            surface: {
+              light: "#ffffff",
+              lightAlt: "#f8fafc",
+              lightMuted: "#f1f5f9",
+              border: "#e2e8f0",
+            },
           },
           fontFamily: {
-            // Legacy
-            sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
-            display: ["Playfair Display", "ui-serif", "Georgia", "serif"],
-            // New
-            "quote": ["Plus Jakarta Sans", "sans-serif"],
-            "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"],
-            "body-relaxed": ["Be Vietnam Pro", "sans-serif"],
-            "eyebrow": ["Be Vietnam Pro", "sans-serif"],
-            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
-            "display-xl": ["Plus Jakarta Sans", "sans-serif"]
+            sans: ["'Plus Jakarta Sans'", "system-ui", "-apple-system", "sans-serif"],
+            display: ["'Plus Jakarta Sans'", "sans-serif"],
+            editorial: ["'Playfair Display'", "Georgia", "serif"],
           },
-          fontSize: {
-            "quote": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
-            "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "800" }],
-            "body-relaxed": ["18px", { "lineHeight": "1.7", "fontWeight": "500" }],
-            "eyebrow": ["10px", { "lineHeight": "1.0", "letterSpacing": "0.3em", "fontWeight": "700" }],
-            "headline-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
-            "display-xl": ["clamp(48px, 8vw, 96px)", { "lineHeight": "1.0", "letterSpacing": "-0.04em", "fontWeight": "900" }]
+          boxShadow: {
+            editorial: "0 20px 40px -15px rgba(15, 23, 42, 0.08)",
+            tactile: "0 10px 25px -5px rgba(2, 132, 199, 0.25)",
+            card: "0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02)",
+            "card-hover": "0 20px 35px -10px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.04)",
           },
           borderRadius: {
-            "DEFAULT": "1rem",
-            "lg": "2rem",
-            "xl": "3rem",
-            "full": "9999px"
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "4xl": "2rem",
           },
-          spacing: {
-            "container-max": "1440px",
-            "margin-mobile": "1rem",
-            "gutter": "1.5rem",
-            "bento-row-height-tablet": "240px",
-            "margin-desktop": "1.5rem",
-            "bento-row-height": "300px"
-          }
         }
       }
     }
   </script>
+
   <style>
+    :root {
+      --nav-height: 76px;
+    }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
-    .glow-border { position: relative; }
-    .glow-border::before { content: ''; position: absolute; inset: -1px; background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), transparent, rgba(56, 189, 248, 0.2)); z-index: -1; border-radius: inherit; }
-    .glow-border:hover { box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); }
-    .masonry-grid { column-count: 1; column-gap: 1.5rem; }
-    @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
-    @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-    @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
-    .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
-    .ambient-orb { position: absolute; filter: blur(100px); opacity: 0.3; z-index: 0; pointer-events: none; }
+    
+    /* Modern Glassmorphism for Light Mode */
+    .glass-surface-light {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    
+    .card-light-clean {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-light-clean:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-3px);
+      box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.1);
+    }
+
+    /* Tactile Buttons */
+    .btn-tactile {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-tactile:hover {
+      transform: translateY(-2px);
+    }
+    .btn-tactile:active {
+      transform: translateY(0);
+    }
+
+    /* Clean Image Transitions */
+    .image-zoom-trigger {
+      overflow: hidden;
+    }
+    .image-zoom-trigger img {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .image-zoom-trigger:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Light Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0284c7; }
   </style>
 
   {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-surface text-on-surface font-body-relaxed selection:bg-ocean-cyan/30 overflow-x-hidden antialiased" style="min-width:320px">
+<body class="bg-[#f8fafc] text-slate-900 font-sans selection:bg-ocean-light/20 selection:text-ocean-deep overflow-x-hidden antialiased min-h-screen flex flex-col" style="min-width:320px;">
   <!-- Accessibility Skip Link -->
-  <a href="#main-content"
-    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-ocean-mid text-white px-4 py-2 rounded z-50">Skip
-    to content</a>
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-ocean-mid text-white px-5 py-2.5 rounded-full z-[100] font-semibold text-sm shadow-xl focus:outline-none focus:ring-2 focus:ring-ocean-light">
+    Skip to main content
+  </a>
 
-  <!-- Premium Dribbble-Style Navigation (Included Component) -->
+  <!-- Top Floating Navigation -->
   {% include 'includes/navbar.html' %}
 
-  <!-- Main Content -->
-  <main id="main-content" class="min-h-[60vh]" style="padding-top:var(--nav-height, 72px)">{% block content %}{% endblock %}</main>
+  <!-- Main Content Canvas -->
+  <main id="main-content" class="flex-grow focus:outline-none" style="padding-top: var(--nav-height, 76px);">
+    {% block content %}{% endblock %}
+  </main>
 
-  <!-- Footer (Tailwind Converted) -->
-  <footer class="w-full relative mt-20 border-t border-outline-variant/30 bg-surface-container-lowest">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-20 max-w-container-max mx-auto">
-      <div class="md:col-span-1">
-        <span class="font-display-xl text-headline-lg text-on-surface block mb-6">KONKAN</span>
-        <p class="text-on-surface-variant font-body-relaxed text-sm mb-8">A cinematic digital journal capturing the soul of the coast. Curated for the modern wanderer.</p>
-        <div class="flex gap-4">
-          <span class="material-symbols-outlined text-on-surface-variant hover:text-ocean-cyan cursor-pointer" data-icon="language">language</span>
-          <span class="material-symbols-outlined text-on-surface-variant hover:text-ocean-cyan cursor-pointer" data-icon="rss_feed">rss_feed</span>
+  <!-- 2026 Coastal Light Editorial Footer -->
+  <footer class="w-full relative mt-24 border-t border-slate-200 bg-white text-slate-600">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 lg:py-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+        
+        <!-- Brand & Mission Column -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-ocean-mid to-ocean-light flex items-center justify-center text-white font-black text-lg shadow-sm">
+              K
+            </span>
+            <span class="font-display font-black text-2xl tracking-tight text-slate-900">KONKAN<span class="text-ocean-mid">.</span>GUIDE</span>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed max-w-md font-normal">
+            A next-generation digital journal and explorer collective capturing the raw beauty, sea forts, sacred shrines, and coastal flavors of Maharashtra's Konkan belt.
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <a href="https://github.com" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-ocean-mid/10 hover:text-ocean-mid border border-slate-200 flex items-center justify-center transition-all duration-300 text-slate-600" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-ocean-mid/10 hover:text-ocean-mid border border-slate-200 flex items-center justify-center transition-all duration-300 text-slate-600" aria-label="Twitter">
+              <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-ocean-mid/10 hover:text-ocean-mid border border-slate-200 flex items-center justify-center transition-all duration-300 text-slate-600" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Destinations Column -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-[0.2em] mb-5">Destinations</h4>
+          <ul class="space-y-3 text-sm font-medium">
+            <li><a href="{% url 'destination_list' %}" class="hover:text-ocean-mid transition-colors">All Destinations</a></li>
+            <li><a href="{% url 'destination_list' %}?category=Fort" class="hover:text-ocean-mid transition-colors">Sea Forts & Citadels</a></li>
+            <li><a href="{% url 'destination_list' %}?category=Beach" class="hover:text-ocean-mid transition-colors">Virgin Beaches</a></li>
+            <li><a href="{% url 'destination_list' %}?category=Temple" class="hover:text-ocean-mid transition-colors">Sacred Temples</a></li>
+            <li><a href="{% url 'home_spots' %}" class="hover:text-ocean-mid transition-colors">Secret Spots & Trails</a></li>
+          </ul>
+        </div>
+
+        <!-- Experience & Culture Column -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-[0.2em] mb-5">Experience</h4>
+          <ul class="space-y-3 text-sm font-medium">
+            <li><a href="{% url 'food_home' %}" class="hover:text-ocean-mid transition-colors">Malvani Food & Cuisine</a></li>
+            <li><a href="{% url 'home_users' %}" class="hover:text-ocean-mid transition-colors">Explorer Community</a></li>
+            <li><a href="{% url 'create_destination' %}" class="hover:text-ocean-mid transition-colors">Submit a Destination</a></li>
+            <li><a href="{% url 'create_spot' %}" class="hover:text-ocean-mid transition-colors">Add a Secret Spot</a></li>
+            <li><a href="{% url 'create_food' %}" class="hover:text-ocean-mid transition-colors">Share Local Food</a></li>
+          </ul>
+        </div>
+
+        <!-- Dispatch Newsletter Column -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-[0.2em] mb-5">Coastal Dispatch</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Curated seasonal itineraries, tide forecasts, and secret discoveries delivered monthly.</p>
+          <form onsubmit="event.preventDefault(); this.querySelector('button').innerHTML='<i class=\'fas fa-check\'></i> Subscribed'; this.querySelector('button').classList.add('bg-coastal-emerald');" class="relative">
+            <div class="flex items-center rounded-xl bg-slate-50 border border-slate-200 p-1.5 focus-within:border-ocean-mid focus-within:ring-1 focus-within:ring-ocean-mid transition-all">
+              <input type="email" placeholder="Your email address..." required aria-label="Newsletter email" class="bg-transparent border-none text-slate-900 text-xs px-3 py-2 w-full outline-none placeholder:text-slate-400 focus:ring-0" />
+              <button type="submit" class="px-4 py-2 rounded-lg bg-ocean-mid hover:bg-ocean-deep text-white text-xs font-bold uppercase tracking-wider transition-colors flex-shrink-0 shadow-sm">
+                Join
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="mt-16 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-medium">
+        <p>© 2026 Konkan Guide. Curated with devotion for the Konkan Coastline.</p>
+        <div class="flex items-center gap-6">
+          <a href="{% url 'home' %}" class="hover:text-slate-800 transition-colors">Journal</a>
+          <a href="{% url 'destination_list' %}" class="hover:text-slate-800 transition-colors">Directory</a>
+          <a href="{% url 'admin:index' %}" class="hover:text-ocean-mid transition-colors flex items-center gap-1.5" title="Admin Portal">
+            <i class="fas fa-shield-halved text-[10px]"></i> Admin
+          </a>
         </div>
       </div>
-      <div class="space-y-4">
-        <h5 class="font-eyebrow text-eyebrow text-ocean-cyan uppercase tracking-widest mb-6">Explore</h5>
-        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="{% url 'destination_list' %}">Destinations</a>
-        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="{% url 'temples' %}">Culture & Temples</a>
-        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="{% url 'food_home' %}">Local Food</a>
-      </div>
-      <div class="space-y-4">
-        <h5 class="font-eyebrow text-eyebrow text-ocean-cyan uppercase tracking-widest mb-6">Contact</h5>
-        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="#">Contact Us</a>
-        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="#">Privacy Policy</a>
-        <a class="block text-on-surface-variant hover:text-on-surface font-body-relaxed hover:translate-x-1 transition-transform" href="#">Press</a>
-      </div>
-      <div>
-        <h5 class="font-eyebrow text-eyebrow text-ocean-cyan uppercase tracking-widest mb-6">Newsletter</h5>
-        <p class="text-xs text-on-surface-variant mb-4">Receive monthly cinematic dispatches.</p>
-        <div class="flex border-b border-white/20 pb-2">
-          <input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0 outline-none text-white placeholder-white/50" placeholder="email@journal.com" type="email" />
-          <button class="material-symbols-outlined text-ocean-cyan" data-icon="arrow_forward">arrow_forward</button>
-        </div>
-      </div>
-    </div>
-    <div class="py-8 px-4 text-center border-t border-white/5 relative flex justify-center items-center">
-      <p class="font-body-relaxed text-xs text-on-surface-variant">© 2026 Konkan Immersive. Cinematic Digital Journal.</p>
-      <a href="{% url 'admin:index' %}" title="Admin Portal" class="absolute right-4 text-ocean-cyan opacity-30 hover:opacity-100 transition-opacity text-sm"><i class="fas fa-fingerprint"></i></a>
     </div>
   </footer>
 
-  <!-- JS Dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{% static 'js/main.js' %}"></script>
-
-  <!-- Navbar Javascript is now handled internally by includes/navbar.html -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register("{% static 'sw.js' %}").catch(() => {});
+      });
+    }
+  </script>
 
   {% block extra_js %}{% endblock %}
 </body>
-
 </html>

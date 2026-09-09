@@ -49,14 +49,9 @@ def create_destination(request):
     
     return render(request, 'destinations/destination_form.html', {'form': form})
 
-@login_required
 def destination_detail(request, slug):
     destination = get_object_or_404(Destination, slug=slug)
-    # Optional: Check if verified or owner
-    # if not destination.is_verified and destination.submitted_by != request.user:
-    #    raise Http404 
-    
-    reviews = destination.reviews.all().order_by('-created_at')
+    reviews = destination.reviews.select_related('user').order_by('-created_at')
     
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -65,6 +60,10 @@ def destination_detail(request, slug):
             review.destination = destination
             if request.user.is_authenticated:
                 review.user = request.user
+                if not review.author_name:
+                    review.author_name = request.user.get_full_name() or request.user.username
+            elif not review.author_name:
+                review.author_name = 'Anonymous Explorer'
             review.save()
             return redirect('destination_detail', slug=slug)
     else:
@@ -76,3 +75,4 @@ def destination_detail(request, slug):
         'review_form': form,
     }
     return render(request, 'destinations/destination_detail.html', context)
+

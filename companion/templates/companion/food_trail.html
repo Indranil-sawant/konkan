@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Taste of Ratnagiri Food Trail 🍛 | Seafood, Modaks & Mangoes{% endblock %}
+
+{% block meta_description %}Experience the authentic culinary soul of Ratnagiri: crispy Surmai rawa fry, soothing Kokum Solkadhi, steaming hot Ukadiche Modak, and world-famous Alphonso mangoes.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-4 sm:pt-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+
+        <!-- Hero -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-700 via-amber-700 to-amber-900 text-white p-6 sm:p-10 shadow-editorial space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-black uppercase tracking-wider text-white">
+                <i class="fas fa-utensils text-amber-300"></i> Culinary & Food Trail
+            </div>
+            <h1 class="font-display font-black text-2xl sm:text-4xl lg:text-5xl text-white tracking-tight">
+                Taste the Flavours of Ratnagiri
+            </h1>
+            <p class="text-sm sm:text-base text-amber-100 max-w-2xl font-medium leading-relaxed">
+                From fresh catch brought in at sunrise at Mirya docks to steaming hot Ukadiche Modaks in quiet temple courtyards and world-famous Hapus mangoes.
+            </p>
+        </div>
+
+        <!-- Signature Dishes Grid -->
+        <div class="space-y-4">
+            <h2 class="font-display font-black text-2xl text-slate-900">Must-Try Konkani Delicacies</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for item in food_items %}
+                <div class="group rounded-3xl bg-white border border-slate-200 shadow-card hover:shadow-card-hover overflow-hidden transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 bg-slate-100 overflow-hidden">
+                            {% if item.photo %}
+                            <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                            {% else %}
+                            <div class="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+                                <i class="fas fa-bowl-food text-4xl"></i>
+                            </div>
+                            {% endif %}
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-xs font-black uppercase text-orange-600 shadow-xs">
+                                ★ {{ item.rating|floatformat:1 }}
+                            </span>
+                            <span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-slate-900 text-white text-xs font-bold shadow-xs">
+                                ₹{{ item.price|floatformat:0 }}
+                            </span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h3 class="font-display font-bold text-lg text-slate-900 group-hover:text-orange-600 transition-colors">
+                                {{ item.name }}
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                {{ item.description|default:"Authentic Konkani preparation using fresh local coconuts, kokum and spices." }}
+                            </p>
+                            {% if item.best_time_to_eat %}
+                            <p class="text-[11px] text-amber-800 font-semibold pt-1">
+                                <i class="fas fa-clock text-amber-500 mr-1"></i> Best enjoyed at: {{ item.best_time_to_eat }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 border-t border-slate-100 flex items-center justify-between">
+                        <a href="{% url 'details' pk=item.id %}" class="text-xs font-bold text-orange-600 hover:underline">
+                            Dish Details &rarr;
+                        </a>
+                        <button onclick="savePlaceToTrip('{{ item.id }}', '{{ item.name|escapejs }}', 'Food', '', this)" class="px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-600 hover:text-white text-orange-700 text-xs font-bold transition-all">
+                            <i class="fas fa-plus"></i> Add to Trail
+                        </button>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-500">
+                    No dishes found in the food catalog.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

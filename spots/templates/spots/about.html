@@ -1,39 +1,41 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}About - Konkan Guide{% endblock %}
+{% block title %}About Konkan Spots | Konkan Guide{% endblock %}
 
 {% block content %}
-<div class="relative bg-navy-dark pt-32 pb-32 overflow-hidden min-h-screen">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 left-0 w-[800px] h-[800px] bg-ocean-light/20 rounded-full blur-[120px] -translate-y-1/2 -translate-x-1/3"></div>
-        <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[100px] translate-y-1/2 translate-x-1/4"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-navy-dark"></div>
-    </div>
+<div class="min-h-screen bg-[#f8fafc] pb-24">
+    <header class="py-14 lg:py-18 bg-gradient-to-b from-amber-50/70 via-slate-50 to-[#f8fafc] border-b border-slate-200/80 text-center">
+        <div class="max-w-3xl mx-auto px-6">
+            <span class="text-xs font-black text-amber-600 uppercase tracking-[0.25em] block mb-2">Field Guide</span>
+            <h1 class="font-display font-black text-3xl sm:text-5xl text-slate-900 tracking-tight mb-3">
+                About Konkan Spots
+            </h1>
+            <p class="text-slate-600 text-sm max-w-xl mx-auto leading-relaxed">
+                An open explorer catalog indexing unique geographic points of interest across the coastal strip.
+            </p>
+        </div>
+    </header>
 
-    <div class="container mx-auto px-6 lg:px-10 relative z-10 w-full max-w-4xl text-center">
-        <p class="text-ocean-light font-bold tracking-[0.2em] uppercase mb-4 text-sm">Where to travel</p>
-        <h1 class="text-5xl md:text-6xl font-black text-white tracking-tight mb-6">About Konkan Guide</h1>
-        <p class="text-xl text-white/70 font-medium leading-relaxed mb-12">
-            Here you will find information about various travel spots in the Konkan region.
-        </p>
-
+    <main class="max-w-4xl mx-auto px-6 pt-12">
         {% if spots1 %}
-        <div class="bg-white/10 backdrop-blur-md rounded-[2rem] p-8 border border-white/20 text-left">
-            <h2 class="text-2xl font-bold text-white mb-6">Featured Spots</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-8 sm:p-10 rounded-3xl bg-white border border-slate-200/90 shadow-card">
+            <h2 class="font-display font-black text-xl text-slate-900 mb-6">Featured Spots in this Catalog</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {% for spot in spots1 %}
-                <a href="{% url 'details' spot.id %}" class="block p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl transition-all group">
+                <a href="{% url 'details' spot.id %}" class="p-4 rounded-2xl bg-slate-50 hover:bg-amber-50/60 border border-slate-200 hover:border-amber-300 flex items-center justify-between transition-all group">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-ocean-mid/20 flex items-center justify-center text-ocean-light group-hover:bg-ocean-mid group-hover:text-white transition-colors">
-                            <i class="fas fa-map-marker-alt"></i>
+                        <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-sm border border-amber-200">
+                            <i class="fas fa-compass"></i>
                         </div>
-                        <span class="text-white font-medium group-hover:text-ocean-light transition-colors">{{ spot.name }}</span>
+                        <span class="text-sm font-bold text-slate-900 group-hover:text-amber-800 transition-colors">{{ spot.name }}</span>
                     </div>
+                    <i class="fas fa-arrow-right text-xs text-slate-400 group-hover:text-amber-800 transition-colors"></i>
                 </a>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
-    </div>
+    </main>
 </div>
 {% endblock %}

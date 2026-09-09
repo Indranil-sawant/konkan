@@ -1,106 +1,115 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Authentic Konkan Cuisine & Food Guide | Konkan Guide{% endblock %}
+
 {% block content %}
-<!-- Premium Header Section -->
-<div class="relative bg-navy-dark pt-32 pb-40 overflow-hidden">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-sunset-coral/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-ocean-light/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-navy-dark"></div>
-    </div>
-
-    <div class="container mx-auto px-6 lg:px-10 relative z-10 text-center max-w-4xl">
-        <p class="text-sunset-gold font-bold tracking-[0.2em] uppercase mb-4 text-sm">Culinary Journey</p>
-        <h1 class="text-5xl md:text-6xl font-black text-white tracking-tight mb-6">Authentic Konkan Cuisine</h1>
-        <p class="text-xl text-white/70 font-medium leading-relaxed">
-            From coastal curries to traditional sweets of Ratnagiri.
-        </p>
-    </div>
-</div>
-
-<!-- Main Content Area -->
-<div class="relative z-20 bg-slate-50 min-h-screen pb-24 -mt-16">
-    <style>
-        @keyframes blur-focus-up {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(12px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        .animate-masonry {
-            opacity: 0;
-            animation: blur-focus-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-    </style>
+<div class="min-h-screen bg-[#f8fafc] pb-24">
     
-    <div class="container mx-auto px-6 lg:px-10">
-        <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 lg:gap-8 max-w-[1600px] mx-auto w-full pt-16">
+    <!-- Hero Header Section -->
+    <header class="py-14 lg:py-18 bg-gradient-to-b from-orange-50/70 via-slate-50 to-[#f8fafc] border-b border-slate-200/80 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <span class="text-xs font-black text-orange-600 uppercase tracking-[0.25em] block mb-2">Culinary Odyssey</span>
+            <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight mb-3">
+                Authentic Konkan Cuisine
+            </h1>
+            <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                From fragrant coconut curries and fresh catch surmai to tangy solkadhi and traditional coastal delicacies.
+            </p>
+            
+            {% if user.is_authenticated %}
+            <div class="mt-8">
+                <a href="{% url 'create_food' %}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-sand-coral hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-wider shadow-tactile transition-all">
+                    <i class="fas fa-plus"></i>
+                    <span>Share a Dish or Recipe</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Food Cards Grid -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for item in food_items %}
-            <div class="break-inside-avoid mb-6 lg:mb-8 animate-masonry" style="animation-delay: {% widthratio forloop.counter0 1 100 %}ms;">
-                <div class="group relative bg-navy-dark rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/10 flex flex-col">
-                    <div class="relative w-full overflow-hidden flex items-center justify-center bg-navy-dark">
-                        {% if item.photo %}
-                        <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="w-full h-auto min-h-[380px] object-cover transform group-hover:scale-105 transition-transform duration-700">
-                        {% else %}
-                        <div class="w-full h-[400px] flex flex-col items-center justify-center">
-                            <i class="fas fa-utensils text-white/10 text-5xl mb-3"></i>
-                            <span class="text-white/30 text-xs font-bold uppercase tracking-widest">No Image</span>
-                        </div>
-                        {% endif %}
-                        
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500 z-10 pointer-events-none"></div>
+            <article class="group rounded-3xl overflow-hidden bg-white border border-slate-200/90 hover:border-orange-400 hover:shadow-card-hover transition-all duration-300 shadow-card flex flex-col">
+                <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                    {% if item.photo %}
+                    <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-slate-400">
+                        <i class="fas fa-utensils text-4xl"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-70"></div>
 
-                        <div class="absolute top-4 sm:top-5 left-4 sm:left-5 right-4 sm:right-5 flex justify-between items-start z-20 pointer-events-none">
-                            <span class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-black text-navy-dark uppercase tracking-widest shadow-lg transform transition-transform group-hover:scale-105">
-                                ₹{{ item.price }}
-                            </span>
-                            <div class="flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-navy-dark/90 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-bold text-sunset-gold shadow-lg">
-                                <i class="fas fa-star"></i> {{ item.rating }}
-                            </div>
-                        </div>
-
-                        <div class="absolute inset-0 flex flex-col justify-end z-20 p-3 sm:p-5 pointer-events-auto">
-                            <div class="bg-white/10 group-hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-[1.5rem] p-4 sm:p-5 shadow-2xl transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                                <div class="flex items-center gap-1.5 sm:gap-2 text-sunset-gold text-[10px] sm:text-xs font-bold mb-1.5 drop-shadow-md uppercase tracking-wider">
-                                    <i class="fas fa-utensils"></i> {{ item.category.name }}
-                                </div>
-                                <h3 class="text-xl sm:text-2xl font-display font-black text-white leading-tight drop-shadow-lg mb-2 group-hover:text-ocean-light transition-colors">
-                                    {{ item.name }}
-                                </h3>
-                                
-                                <p class="text-white/80 text-xs sm:text-sm font-medium leading-relaxed line-clamp-2 mb-4 drop-shadow-sm">
-                                    {{ item.description|striptags }}
-                                </p>
-                                
-                                <div class="flex items-center gap-1.5 sm:gap-2 w-full opacity-90 group-hover:opacity-100 transition-opacity">
-                                    <a href="{% url 'details' item.id %}" class="flex-1 py-2.5 sm:py-3 bg-white hover:bg-ocean-light text-navy-dark hover:text-white rounded-xl font-bold text-center transition-colors shadow-lg text-[10px] sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2">
-                                        View Dish <i class="fas fa-arrow-right text-[10px]"></i>
-                                    </a>
-                                    {% if user.is_authenticated %}
-                                    <a href="{% url 'update_food' item.id %}" class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-xl transition-colors border border-white/20" title="Edit">
-                                        <i class="fas fa-edit text-[10px] sm:text-sm"></i>
-                                    </a>
-                                    {% endif %}
-                                    {% if item.recipe_link %}
-                                    <a href="{{ item.recipe_link }}" target="_blank" class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center bg-sunset-coral/20 hover:bg-sunset-coral/40 backdrop-blur-md text-sunset-coral hover:text-white rounded-xl transition-colors border border-sunset-coral/30" title="View Recipe">
-                                        <i class="fas fa-book-open text-[10px] sm:text-sm"></i>
-                                    </a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Category & Price Badges -->
+                    <div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+                        <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest text-slate-900 border border-slate-200/60 shadow-xs">
+                            {{ item.category.name|default:"Regional Dish" }}
+                        </span>
+                        <span class="px-3 py-1 rounded-full bg-sand-coral text-white text-xs font-bold shadow-md">
+                            ₹{{ item.price }}
+                        </span>
                     </div>
                 </div>
-            </div>
-            {% empty %}
-            <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-24 bg-white rounded-[3rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
-                <div class="w-32 h-32 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 text-slate-300 text-5xl">
-                    <i class="fas fa-utensils"></i>
+
+                <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-bold text-amber-600 flex items-center gap-1">
+                                <i class="fas fa-star text-[10px] text-amber-500"></i> {{ item.rating }}/5
+                            </span>
+                            <span class="text-[11px] text-slate-500 font-medium">
+                                <i class="fas fa-clock text-slate-400 mr-1"></i> {{ item.best_time_to_eat|default:"Lunch & Dinner" }}
+                            </span>
+                        </div>
+
+                        <h2 class="font-display font-black text-2xl text-slate-900 group-hover:text-sand-coral transition-colors mb-2.5">
+                            <a href="{% url 'details' item.id %}">{{ item.name }}</a>
+                        </h2>
+
+                        <p class="text-slate-600 text-xs leading-relaxed line-clamp-3 mb-6">
+                            {{ item.description|striptags }}
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <a href="{% url 'details' item.id %}" class="flex-1 py-2.5 rounded-xl bg-slate-50 hover:bg-sand-coral hover:text-white text-slate-800 text-center text-xs font-bold uppercase tracking-wider transition-all border border-slate-200 flex items-center justify-center gap-1.5">
+                            Dish Details <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+
+                        {% if user.is_authenticated and item.uploaded_by == user.profile %}
+                        <a href="{% url 'update_food' item.id %}" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors" title="Edit Dish">
+                            <i class="fas fa-pen text-xs"></i>
+                        </a>
+                        <a href="{% url 'delete_food' item.id %}" class="w-9 h-9 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 flex items-center justify-center text-red-600 transition-colors" title="Delete Dish">
+                            <i class="fas fa-trash text-xs"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if item.recipe_link %}
+                        <a href="{{ item.recipe_link }}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-orange-50 hover:bg-sand-coral text-orange-600 hover:text-white border border-orange-100 flex items-center justify-center transition-colors" title="View External Recipe">
+                            <i class="fas fa-book-open text-xs"></i>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
-                <h3 class="text-3xl font-black text-navy-dark mb-4">Exploring new flavors...</h3>
-                <p class="text-slate-500 font-medium max-w-md mx-auto">We're currently updating our menu. Check back soon for more delicious Konkan cuisine!</p>
+            </article>
+            {% empty %}
+            <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-card max-w-xl mx-auto w-full">
+                <i class="fas fa-utensils text-4xl text-slate-400 mb-3 block"></i>
+                <h3 class="font-display font-black text-xl text-slate-900 mb-1">No dishes added yet</h3>
+                <p class="text-slate-500 text-xs mb-6">Be the first to chronicle a traditional Konkani dish.</p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'create_food' %}" class="px-6 py-3 rounded-full bg-sand-coral text-white text-xs font-bold uppercase tracking-wider hover:bg-orange-600 transition-all shadow-tactile">
+                    Share First Dish
+                </a>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
-    </div>
+    </main>
 </div>
 {% endblock %}

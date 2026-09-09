@@ -1,60 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Explorers Community | Konkan Guide{% endblock %}
+
 {% block content %}
-<div class="bg-primary text-white py-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-light));">
-    <div class="container py-3">
-        <h1 class="display-5 fw-bold mb-2 text-center text-lg-start">Our Community</h1>
-        <p class="lead opacity-75 mb-0 text-center text-lg-start">Meet the explorers who contribute to our Konkan guide.</p>
-    </div>
-</div>
+<div class="min-h-screen bg-[#f8fafc] pb-24">
+    
+    <!-- Hero Header Section -->
+    <header class="py-14 lg:py-18 bg-gradient-to-b from-sky-50/70 via-slate-50 to-[#f8fafc] border-b border-slate-200/80 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <span class="text-xs font-black text-ocean-mid uppercase tracking-[0.25em] block mb-2">Community Collective</span>
+            <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight mb-3">
+                Explorers of the Coast
+            </h1>
+            <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                Meet the travelers, photographers, and locals documenting the hidden treasures of Konkan.
+            </p>
+        </div>
+    </header>
 
-<div class="container mb-5">
-    <div class="row g-4">
-        {% for profile in profiles %}
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-sm profile-card">
-                <div class="profile-img-wrapper">
-                    {% if profile.profile_image %}
-                    <img src="{{ profile.profile_image.url }}" alt="{{ profile.username }}" class="profile-img">
-                    {% else %}
-                    <img src="{% static 'images/user-default.png' %}" alt="Default" class="profile-img">
-                    {% endif %}
-                </div>
+    <!-- Explorers Grid -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for profile in profiles %}
+            <article class="group rounded-3xl p-8 bg-white border border-slate-200/90 hover:border-ocean-mid/40 hover:shadow-card-hover transition-all duration-300 shadow-card flex flex-col justify-between text-center items-center">
                 
-                <h4 class="fw-bold mb-1">{{ profile.name|default:profile.username|title }}</h4>
-                <p class="text-primary small mb-2">@{{ profile.username|lower }}</p>
-                <p class="text-muted small mb-3 px-3">
-                    {{ profile.short_intro|default:"Avid traveler exploring the Konkan coast." }}
-                </p>
+                <div class="flex flex-col items-center w-full">
+                    <!-- Avatar -->
+                    <div class="w-24 h-24 rounded-full p-1 border-2 border-ocean-mid/20 group-hover:border-ocean-mid transition-all mb-4 overflow-hidden bg-slate-100">
+                        {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url }}" alt="{{ profile.username }}" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-500" />
+                        {% else %}
+                        <div class="w-full h-full rounded-full bg-ocean-mid text-white flex items-center justify-center font-black text-2xl">
+                            {{ profile.username|make_list|first|upper }}
+                        </div>
+                        {% endif %}
+                    </div>
 
-                <div class="social-links mb-4">
-                    {% if profile.social_github %}
-                    <a href="{{ profile.social_github }}" title="GitHub"><i class="fab fa-github"></i></a>
-                    {% endif %}
-                    {% if profile.social_linkedin %}
-                    <a href="{{ profile.social_linkedin }}" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    {% endif %}
-                    {% if profile.social_twitter %}
-                    <a href="{{ profile.social_twitter }}" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    {% endif %}
-                    {% if profile.social_website %}
-                    <a href="{{ profile.social_website }}" title="Website"><i class="fas fa-globe"></i></a>
-                    {% endif %}
+                    <!-- Name & Handle -->
+                    <h2 class="font-display font-black text-xl text-slate-900 group-hover:text-ocean-mid transition-colors mb-1">
+                        {{ profile.name|default:profile.username|title }}
+                    </h2>
+                    <p class="text-xs font-bold text-ocean-mid uppercase tracking-wider mb-3">
+                        @{{ profile.username|lower }}
+                    </p>
+
+                    <!-- Intro / Bio -->
+                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-3 mb-6 font-normal">
+                        {{ profile.short_intro|default:"Avid traveler chronicling sea forts, hidden bays, and local cuisine across Konkan." }}
+                    </p>
                 </div>
 
-                <div class="mt-auto">
-                    <a href="{% url 'user_profile' profile.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
-                        View Journey
+                <div class="w-full pt-4 border-t border-slate-100 space-y-4">
+                    <!-- Social Links -->
+                    <div class="flex items-center justify-center gap-3 text-slate-500 text-sm">
+                        {% if profile.social_github %}
+                        <a href="{{ profile.social_github }}" target="_blank" rel="noopener" class="hover:text-slate-900 transition-colors" title="GitHub"><i class="fab fa-github"></i></a>
+                        {% endif %}
+                        {% if profile.social_linkedin %}
+                        <a href="{{ profile.social_linkedin }}" target="_blank" rel="noopener" class="hover:text-ocean-mid transition-colors" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        {% endif %}
+                        {% if profile.social_twitter %}
+                        <a href="{{ profile.social_twitter }}" target="_blank" rel="noopener" class="hover:text-sky-600 transition-colors" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        {% endif %}
+                        {% if profile.social_website %}
+                        <a href="{{ profile.social_website }}" target="_blank" rel="noopener" class="hover:text-amber-600 transition-colors" title="Website"><i class="fas fa-globe"></i></a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Journal CTA -->
+                    <a href="{% url 'user_profile' profile.id %}" class="w-full py-2.5 rounded-xl bg-slate-50 hover:bg-ocean-mid text-slate-800 hover:text-white text-xs font-bold uppercase tracking-wider transition-all border border-slate-200 block shadow-xs">
+                        View Journal
                     </a>
                 </div>
+
+            </article>
+            {% empty %}
+            <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-card max-w-xl mx-auto w-full">
+                <i class="fas fa-users text-4xl text-slate-400 mb-3 block"></i>
+                <h3 class="font-display font-black text-xl text-slate-900 mb-1">No explorers registered yet</h3>
+                <p class="text-slate-500 text-xs">Join now to be the first documented explorer on the platform.</p>
             </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="col-12 text-center py-5">
-            <h3 class="text-muted">No explorers joined yet.</h3>
-        </div>
-        {% endfor %}
-    </div>
+    </main>
 </div>
 {% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ partner.business_name }} | Ratnagiri Partner Concierge{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <a href="{% url 'companion_home' %}" class="hover:text-ocean-mid">Companion</a>
+            <i class="fas fa-chevron-right text-[10px] text-slate-400"></i>
+            <a href="{% url 'partner_directory' %}" class="hover:text-ocean-mid">Partners</a>
+            <i class="fas fa-chevron-right text-[10px] text-slate-400"></i>
+            <span class="text-slate-900 truncate">{{ partner.business_name }}</span>
+        </nav>
+
+        <!-- Partner Banner Card -->
+        <div class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-card space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-ocean-mist border border-ocean-sky/30 flex items-center justify-center text-3xl text-ocean-mid font-black shadow-xs">
+                        {% if partner.logo %}
+                        <img src="{{ partner.logo.url }}" alt="{{ partner.business_name }}" class="w-full h-full object-cover rounded-2xl">
+                        {% else %}
+                        <i class="fas fa-hotel"></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ partner.business_name }}</h1>
+                            <i class="fas fa-certificate text-emerald-500 text-sm" title="Verified Partner"></i>
+                        </div>
+                        <span class="text-xs text-slate-500 font-semibold">{{ partner.get_partner_type_display }} &bull; {{ partner.address }}</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    {% if partner.phone %}
+                    <a href="tel:{{ partner.phone }}" class="px-4 py-2 rounded-full bg-ocean-mid hover:bg-ocean-deep text-white text-xs font-bold shadow-xs">
+                        <i class="fas fa-phone mr-1"></i> Call Business
+                    </a>
+                    {% endif %}
+                    {% if partner.whatsapp %}
+                    <a href="https://wa.me/{{ partner.whatsapp|cut:' '|cut:'+' }}" target="_blank" class="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs">
+                        <i class="fab fa-whatsapp mr-1"></i> WhatsApp
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-2">
+                <h3 class="font-display font-bold text-base text-slate-900">About this Partner</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    {{ partner.description|default:partner.short_tagline }}
+                </p>
+            </div>
+
+            <!-- Smart NFC Features Enabled -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Smart NFC Guest Services Enabled
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Guests staying at or visiting this partner can tap room / counter NFC tags to unlock custom hotel concierge guides, express Wi-Fi details, and curated local itineraries.
+                </p>
+            </div>
+        </div>
+
+        <!-- Recommended Nearby Landmarks -->
+        <div class="space-y-4">
+            <h2 class="font-display font-black text-xl text-slate-900">Recommended Places Around Here</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {% for d in nearby_destinations %}
+                <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-card flex items-center justify-between gap-3">
+                    <div>
+                        <h4 class="font-display font-bold text-sm text-slate-900">{{ d.title }}</h4>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase">{{ d.category }} &bull; {{ d.location_name }}</span>
+                    </div>
+                    <a href="{% url 'destination_detail' slug=d.slug %}" class="text-xs font-bold text-ocean-mid hover:underline">
+                        View &rarr;
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

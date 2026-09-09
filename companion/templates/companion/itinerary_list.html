@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Curated Itineraries | Ratnagiri Tourist Companion{% endblock %}
+
+{% block meta_description %}Explore optimized Ratnagiri travel itineraries: 1-day express trips, 2-day weekend fort & beach trails, family vacations, romantic getaways, and budget explorer routes.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+        <!-- Header -->
+        <div class="space-y-2">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ocean-mist border border-ocean-sky/30 text-[11px] font-bold text-ocean-deep uppercase tracking-wider">
+                <i class="fas fa-route text-ocean-mid"></i> Step-by-Step Plans
+            </div>
+            <h1 class="font-display font-black text-3xl sm:text-4xl text-slate-900 tracking-tight">Curated Ratnagiri Itineraries</h1>
+            <p class="text-sm text-slate-500 max-w-2xl">
+                Precision step-by-step day guides crafted with realistic travel times, recommended meal stops, sunrise-to-sunset sequencing, and turn-by-turn navigation.
+            </p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="rounded-3xl bg-white border border-slate-200 p-4 sm:p-5 shadow-card space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                
+                <!-- Duration Tabs -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1">Duration:</span>
+                    <a href="?{% if selected_audience %}audience={{ selected_audience }}&{% endif %}" 
+                       class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all {% if not selected_duration %}bg-ocean-mid text-white shadow-xs{% else %}bg-slate-100 text-slate-700 hover:bg-slate-200{% endif %}">
+                        All Durations
+                    </a>
+                    <a href="?duration=1{% if selected_audience %}&audience={{ selected_audience }}{% endif %}" 
+                       class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all {% if selected_duration == '1' %}bg-ocean-mid text-white shadow-xs{% else %}bg-slate-100 text-slate-700 hover:bg-slate-200{% endif %}">
+                        ⚡ 1 Day (Express)
+                    </a>
+                    <a href="?duration=2{% if selected_audience %}&audience={{ selected_audience }}{% endif %}" 
+                       class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all {% if selected_duration == '2' %}bg-ocean-mid text-white shadow-xs{% else %}bg-slate-100 text-slate-700 hover:bg-slate-200{% endif %}">
+                        🏖️ 2 Days (Weekend)
+                    </a>
+                    <a href="?duration=3+{% if selected_audience %}&audience={{ selected_audience }}{% endif %}" 
+                       class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all {% if selected_duration == '3+' %}bg-ocean-mid text-white shadow-xs{% else %}bg-slate-100 text-slate-700 hover:bg-slate-200{% endif %}">
+                        🌴 3+ Days (Immersive)
+                    </a>
+                </div>
+
+                <!-- Audience Filter -->
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1">Audience:</span>
+                    {% for aud_code, aud_label in audience_choices %}
+                    <a href="?audience={{ aud_code }}{% if selected_duration %}&duration={{ selected_duration }}{% endif %}" 
+                       class="px-3 py-1 rounded-xl text-xs font-semibold transition-all {% if selected_audience == aud_code %}bg-slate-900 text-white font-bold{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
+                        {{ aud_label }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Itineraries Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for itin in itineraries %}
+            <div class="group rounded-3xl bg-white border border-slate-200 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between overflow-hidden">
+                <div>
+                    <!-- Image Banner -->
+                    <div class="relative h-48 bg-slate-200 overflow-hidden">
+                        {% if itin.cover_image %}
+                        <img src="{{ itin.cover_image.url }}" alt="{{ itin.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        {% else %}
+                        <div class="w-full h-full bg-gradient-to-br from-ocean-deep via-ocean-mid to-slate-800 flex items-center justify-center text-white/40">
+                            <i class="fas fa-map-location-dot text-5xl"></i>
+                        </div>
+                        {% endif %}
+                        <div class="absolute top-3 left-3 flex items-center gap-1.5">
+                            <span class="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-slate-900 text-xs font-black uppercase tracking-wider shadow-sm">
+                                {{ itin.duration_days }} Day{% if itin.duration_days > 1 %}s{% endif %}
+                            </span>
+                            <span class="px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase">
+                                {{ itin.get_audience_display }}
+                            </span>
+                        </div>
+                        <span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[11px] font-bold shadow-xs">
+                            {{ itin.estimated_cost_inr }}
+                        </span>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center gap-2 text-[11px] font-bold text-slate-400">
+                            <span><i class="fas fa-gauge-simple mr-1"></i> {{ itin.get_difficulty_display }}</span>
+                            <span>&bull;</span>
+                            <span><i class="fas fa-road mr-1"></i> ~{{ itin.total_distance_km|floatformat:0 }} km total</span>
+                        </div>
+
+                        <h2 class="font-display font-bold text-xl text-slate-900 group-hover:text-ocean-mid transition-colors leading-snug">
+                            {{ itin.title }}
+                        </h2>
+                        
+                        <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                            {{ itin.tagline|default:itin.description }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between mt-2">
+                    <div class="text-xs text-slate-500 font-semibold">
+                        <span class="font-bold text-slate-800">{{ itin.days.count }}</span> Days Planned
+                    </div>
+                    <a href="{% url 'itinerary_detail' slug=itin.slug %}" class="px-5 py-2.5 rounded-full bg-ocean-mid hover:bg-ocean-deep text-white text-xs font-bold uppercase tracking-wider transition-all shadow-xs">
+                        View Route &rarr;
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-slate-200 space-y-3">
+                <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-2xl mx-auto">
+                    <i class="fas fa-route"></i>
+                </div>
+                <h3 class="font-display font-bold text-lg text-slate-800">No matching itineraries found</h3>
+                <p class="text-xs text-slate-500 max-w-sm mx-auto">Try clearing your duration or audience filter to explore all available Konkan trails.</p>
+                <a href="{% url 'itinerary_list' %}" class="inline-block px-5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs">
+                    Clear Filters
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

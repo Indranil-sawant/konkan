@@ -1,5 +1,6 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from .models import Spots
 from .forms import SpotsForm
@@ -18,7 +19,8 @@ def create_spot(request):
         spots_form = SpotsForm(request.POST, request.FILES)
         if spots_form.is_valid():
             spot = spots_form.save(commit=False)
-            spot.uploaded_by = request.user.profile
+            if hasattr(request.user, 'profile'):
+                spot.uploaded_by = request.user.profile
             spot.save()
             return redirect('home_spots')
     return render(request, 'spots/spot_form.html', {'spots_form': spots_form})
@@ -26,10 +28,14 @@ def create_spot(request):
 
 @login_required
 def update_spot(request, pk):
-    spots = get_object_or_404(Spots, id=pk)
-    spots_form = SpotsForm(instance=spots)
+    spot = get_object_or_404(Spots, id=pk)
+    user_profile = getattr(request.user, 'profile', None)
+    if spot.uploaded_by != user_profile and not request.user.is_staff:
+        return HttpResponseForbidden("You do not have permission to edit this spot.")
+
+    spots_form = SpotsForm(instance=spot)
     if request.method == 'POST':
-        spots_form = SpotsForm(request.POST, request.FILES, instance=spots)
+        spots_form = SpotsForm(request.POST, request.FILES, instance=spot)
         if spots_form.is_valid():
             spots_form.save()
             return redirect('home_spots')
@@ -38,14 +44,18 @@ def update_spot(request, pk):
 
 @login_required
 def delete_spot(request, pk):
-    spots = get_object_or_404(Spots, id=pk)
+    spot = get_object_or_404(Spots, id=pk)
+    user_profile = getattr(request.user, 'profile', None)
+    if spot.uploaded_by != user_profile and not request.user.is_staff:
+        return HttpResponseForbidden("You do not have permission to delete this spot.")
+
     if request.method == 'POST':
-        spots.delete()
+        spot.delete()
         return redirect('home_spots')
-    return render(request, 'spots/delete.html', {'spots': spots})
+    return render(request, 'spots/delete.html', {'spots': spot})
 
 
 def home3(request, pk):
-    spots = get_object_or_404(Spots, id=pk)
-    context = {'spots': spots}
+    spot = get_object_or_404(Spots, id=pk)
+    context = {'spots': spot}
     return render(request, 'spots/details.html', context)

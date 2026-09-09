@@ -1,146 +1,111 @@
-/* Konkan Guide - Coastal Premium Design System */
+/* ========================================================= */
+/* KONKAN GUIDE — 2026 LIGHT COASTAL EDITORIAL DESIGN SYSTEM  */
+/* ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap");
 
 :root {
-  /* 🌊 Coastal Palette */
+  /* 🌊 Light Coastal Palette */
   --ocean-deep: #0a3d62;
-  --ocean-mid: #0077b6;
-  --ocean-light: #48cae4;
-  --aqua-mist: #caf0f8;
-  --sand-warm: #fdf0d5;
-  --sunset-coral: #ff7b54;
-  --sunset-gold: #ffb703;
-  --white-foam: #f8fafc;
-  --navy-dark: #1b263b;
+  --ocean-navy: #0f172a;
+  --ocean-card: #ffffff;
+  --ocean-card-hover: #f8fafc;
+  --ocean-mid: #0284c7;
+  --ocean-light: #0ea5e9;
+  --ocean-sky: #38bdf8;
+  --aqua-mist: #f0f9ff;
 
-  /* Functional Colors */
-  --primary: var(--ocean-mid);
-  --primary-hover: #023e8a;
-  --accent: var(--sunset-coral);
-  --highlight: var(--sunset-gold);
-  --text-main: var(--navy-dark);
-  --text-muted: #5c677d;
-  --bg-body: linear-gradient(to bottom, #f8fafc, #edf6f9);
-  --bg-card: rgba(255, 255, 255, 0.8);
+  --sand-warm: #fef3c7;
+  --sand-gold: #d97706;
+  --sand-coral: #ea580c;
+  
+  --coastal-emerald: #059669;
+  --coastal-mint: #10b981;
 
-  /* UI */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 28px;
-  --shadow-sm: 0 4px 12px rgba(0, 119, 182, 0.08);
-  --shadow-md: 0 12px 30px rgba(0, 119, 182, 0.15);
-  --transition: all 0.35s ease;
+  /* Surfaces & Canvas */
+  --bg-canvas: #f8fafc;
+  --bg-card: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-subtle: #e2e8f0;
+
+  /* Elevation */
+  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  --shadow-card-hover: 0 20px 35px -10px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+  --shadow-tactile: 0 10px 25px -5px rgba(2, 132, 199, 0.25);
+  --radius-card: 1.5rem;
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Reset */
-* {
+/* Reset & Base Elements */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-/* Body */
-body {
-  font-family: "Manrope", sans-serif;
-  background: var(--bg-body);
-  color: var(--text-main);
-  line-height: 1.7;
-  overflow-x: hidden;
+html {
   scroll-behavior: smooth;
+  color-scheme: light;
 }
 
-/* Headings */
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Playfair Display", serif;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: var(--ocean-deep);
-  margin-bottom: 1rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
 }
 
-/* Links */
 a {
-  color: var(--primary);
+  color: inherit;
   text-decoration: none;
-  position: relative;
-  transition: var(--transition);
+  transition: var(--transition-smooth);
 }
 
-a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0%;
-  height: 2px;
-  background: var(--accent);
-  transition: var(--transition);
+/* Smooth Focus Rings */
+:focus-visible {
+  outline: 2px solid var(--ocean-light);
+  outline-offset: 2px;
 }
 
-a:hover {
-  color: var(--accent);
-}
-
-a:hover::after {
-  width: 100%;
-}
-
-/* Buttons (Beach Style) */
-.btn-primary {
-  background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-light));
-  color: white;
-  padding: 12px 28px;
-  border-radius: var(--radius-md);
-  border: none;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-}
-
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Card Style */
-.card {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  padding: 24px;
-  transition: var(--transition);
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Gradient Heading Text */
-.text-gradient {
-  background: linear-gradient(135deg, var(--ocean-mid), var(--sunset-coral));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Section Spacing */
-.section-padding {
-  padding: 100px 0;
-}
-
-@media (max-width: 768px) {
-  .section-padding {
-    padding: 60px 0;
-  }
-}
-
-/* Scrollbar (Soft Aqua) */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, var(--ocean-light), var(--aqua-mist));
-  border-radius: 20px;
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ocean-mid);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

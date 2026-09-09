@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Emergency & Safety Center 🚨 | Ratnagiri Tourist Companion{% endblock %}
+
+{% block meta_description %}Immediate access to Ratnagiri 24x7 hospitals, police control room, coastal marine rescue, emergency ambulance, and tourist safety helplines.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-4 sm:pt-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+        <!-- Header SOS Banner -->
+        <div class="rounded-3xl bg-gradient-to-r from-red-700 via-red-600 to-rose-700 text-white p-6 sm:p-8 shadow-editorial space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-black uppercase tracking-wider text-white">
+                <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+                24x7 Tourist Emergency Assistance
+            </div>
+            <h1 class="font-display font-black text-2xl sm:text-4xl text-white tracking-tight">
+                Ratnagiri Safety & Emergency Hub
+            </h1>
+            <p class="text-sm text-red-100 max-w-2xl font-medium">
+                Tap any contact card below to immediately connect with local police, 24-hour civil hospitals, marine rescue, or tourist emergency services.
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+                <a href="tel:112" class="px-6 py-3 rounded-full bg-white text-red-700 hover:bg-red-50 font-black text-xs uppercase tracking-wider shadow-sm active:scale-95 transition-all">
+                    <i class="fas fa-phone-volume mr-1.5"></i> Dial 112 (National Emergency)
+                </a>
+                <a href="tel:108" class="px-6 py-3 rounded-full bg-red-950/40 hover:bg-red-950/60 text-white border border-white/30 font-bold text-xs uppercase tracking-wider active:scale-95 transition-all">
+                    <i class="fas fa-truck-medical mr-1.5 text-red-300"></i> Dial 108 (Ambulance)
+                </a>
+            </div>
+        </div>
+
+        <!-- Emergency Categories Grid -->
+        <div class="space-y-6">
+            
+            <!-- 1. Hospitals (24x7) -->
+            <div class="space-y-3">
+                <h3 class="font-display font-bold text-lg text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">
+                        <i class="fas fa-hospital"></i>
+                    </span>
+                    24x7 Hospitals & Medical Centers
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {% for h in hospitals %}
+                    <div class="rounded-2xl bg-white border border-slate-200 p-5 shadow-card flex flex-col justify-between space-y-3 hover:border-red-300 transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="font-display font-bold text-base text-slate-900">{{ h.name }}</h4>
+                                {% if h.is_24x7 %}
+                                <span class="px-2 py-0.5 rounded bg-red-50 text-red-700 text-[10px] font-black uppercase">24x7 Open</span>
+                                {% endif %}
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">{{ h.address }}</p>
+                        </div>
+                        <a href="tel:{{ h.phone_number }}" class="w-full py-2.5 px-4 rounded-xl bg-red-50 hover:bg-red-600 hover:text-white text-red-700 font-bold text-xs flex items-center justify-center gap-2 border border-red-200/80 transition-all">
+                            <i class="fas fa-phone-flip"></i> Call {{ h.phone_number }}
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 2. Police & Coastal Security -->
+            <div class="space-y-3">
+                <h3 class="font-display font-bold text-lg text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-blue-100 text-ocean-mid flex items-center justify-center text-xs font-bold">
+                        <i class="fas fa-shield-halved"></i>
+                    </span>
+                    Police & Marine Security
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {% for p in police %}
+                    <div class="rounded-2xl bg-white border border-slate-200 p-5 shadow-card flex flex-col justify-between space-y-3 hover:border-ocean-mid transition-colors">
+                        <div>
+                            <h4 class="font-display font-bold text-base text-slate-900">{{ p.name }}</h4>
+                            <p class="text-xs text-slate-500 mt-1">{{ p.address|default:"Ratnagiri District Jurisdiction" }}</p>
+                        </div>
+                        <a href="tel:{{ p.phone_number }}" class="w-full py-2.5 px-4 rounded-xl bg-ocean-mist hover:bg-ocean-mid hover:text-white text-ocean-deep font-bold text-xs flex items-center justify-center gap-2 border border-ocean-sky/40 transition-all">
+                            <i class="fas fa-phone-flip"></i> Call {{ p.phone_number }}
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 3. Tourist Helpline & Breakdown Support -->
+            <div class="space-y-3">
+                <h3 class="font-display font-bold text-lg text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold">
+                        <i class="fas fa-headset"></i>
+                    </span>
+                    Tourist Helpline & Roadside Support
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {% for hl in helplines %}
+                    <div class="rounded-2xl bg-white border border-slate-200 p-5 shadow-card flex flex-col justify-between space-y-3">
+                        <div>
+                            <h4 class="font-display font-bold text-base text-slate-900">{{ hl.name }}</h4>
+                            <p class="text-xs text-slate-500 mt-1">{{ hl.address|default:"Maharashtra Tourism Support" }}</p>
+                        </div>
+                        <a href="tel:{{ hl.phone_number }}" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                            <i class="fas fa-phone-flip text-ocean-mid"></i> Call {{ hl.phone_number }}
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 4. Konkan Safety Tips -->
+            <div class="rounded-3xl bg-amber-50 border border-amber-200 p-6 space-y-3">
+                <h3 class="font-display font-bold text-base text-amber-950 flex items-center gap-2">
+                    <i class="fas fa-circle-exclamation text-amber-600"></i> Coastal & Ghat Travel Advisory
+                </h3>
+                <ul class="text-xs text-amber-900 space-y-2 leading-relaxed">
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-water text-amber-600 mt-0.5"></i>
+                        <span><strong>Sea Swimming Caution:</strong> High tides during monsoon (June – September) can create strong rip currents. Avoid swimming at unmanned beaches without local lifeguard supervision.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-mountain text-amber-600 mt-0.5"></i>
+                        <span><strong>Ghat Driving:</strong> Keep headlights on during fog on Kumbharli / Amba Ghat roads and maintain safe braking distance on wet laterite curves.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-signal text-amber-600 mt-0.5"></i>
+                        <span><strong>Offline Data:</strong> Save your essential itinerary stops to "My Trip" before entering remote forest valleys where network reception can be intermittent.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

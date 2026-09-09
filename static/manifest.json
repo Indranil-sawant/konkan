@@ -1,0 +1,22 @@
+{
+  "name": "Ratnagiri Tourist Companion",
+  "short_name": "Ratnagiri NFC",
+  "description": "Your digital travel companion for Ratnagiri and the Konkan coast. NFC powered itineraries, radar, and emergency safety.",
+  "start_url": "/companion/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0284c7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

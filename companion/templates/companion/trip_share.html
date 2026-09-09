@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shared Ratnagiri Trip Itinerary 🌴{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-6">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+        <div class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="space-y-1">
+                <span class="px-3 py-1 rounded-full bg-ocean-mist border border-ocean-sky/30 text-[11px] font-bold text-ocean-deep uppercase tracking-wider inline-block">
+                    <i class="fas fa-paper-plane mr-1 text-ocean-mid"></i> Shared Traveler Itinerary
+                </span>
+                <h1 class="font-display font-black text-2xl sm:text-3xl text-slate-900">Custom Ratnagiri Trip</h1>
+                <p class="text-xs text-slate-500">
+                    A fellow explorer shared this curated journey with you.
+                </p>
+            </div>
+
+            {% if decoded_trip %}
+            <button onclick="importTrip()" class="px-6 py-3 rounded-full bg-ocean-mid hover:bg-ocean-deep text-white font-bold text-xs uppercase tracking-wider shadow-tactile active:scale-95 transition-all flex items-center gap-2">
+                <i class="fas fa-download"></i> Import to My Trip
+            </button>
+            {% endif %}
+        </div>
+
+        {% if decoded_trip %}
+        <div class="space-y-3">
+            {% for item in decoded_trip %}
+            <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-card flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-full bg-ocean-mist text-ocean-deep font-black text-xs flex items-center justify-center">
+                        {{ forloop.counter }}
+                    </span>
+                    <div>
+                        <h4 class="font-display font-bold text-sm text-slate-900">{{ item.title }}</h4>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase">{{ item.category|default:"Landmark" }}</span>
+                    </div>
+                </div>
+                {% if item.slug %}
+                <a href="{% url 'destination_detail' slug=item.slug %}" class="text-xs font-bold text-ocean-mid hover:underline">
+                    View Guide &rarr;
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="rounded-3xl bg-white border border-slate-200 p-12 text-center space-y-3 shadow-card">
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-2xl mx-auto">
+                <i class="fas fa-triangle-exclamation text-amber-500"></i>
+            </div>
+            <h3 class="font-display font-bold text-lg text-slate-800">Invalid or Expired Trip Link</h3>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto">
+                We couldn't decode this trip data. You can start creating your own custom trip anytime.
+            </p>
+            <a href="{% url 'companion_home' %}" class="inline-block px-5 py-2.5 rounded-full bg-ocean-mid text-white text-xs font-bold uppercase tracking-wider">
+                Go to Companion Home
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+function importTrip() {
+    let trip = JSON.parse('{{ decoded_trip|safe|escapejs }}' || '[]');
+    localStorage.setItem('konkan_saved_trip', JSON.stringify(trip));
+    showToast('Trip imported into your Pocket Guide!');
+    setTimeout(() => {
+        window.location.href = "{% url 'my_trip' %}";
+    }, 1000);
+}
+</script>
+{% endblock %}

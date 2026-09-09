@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.urls import reverse
@@ -16,7 +16,7 @@ def build_profile_context(profile):
     destination_qs = Destination.objects.filter(submitted_by=user) if user else Destination.objects.none()
     spot_qs = Spots.objects.filter(uploaded_by=profile)
     food_qs = FoodItem.objects.filter(uploaded_by=profile)
-    review_qs = Review.objects.filter(user=user) if user else Review.objects.none()
+    review_qs = Review.objects.filter(user=user).select_related('destination') if user else Review.objects.none()
 
     destination_count = destination_qs.count()
     spot_count = spot_qs.count()
@@ -99,14 +99,15 @@ def build_profile_context(profile):
             'photo_url': food.photo.url if food.photo else None,
         })
     for review in recent_reviews:
+        dest = review.destination
         recent_activity.append({
             'timestamp': review.created_at,
-            'url': review.destination.get_absolute_url(),
-            'title': review.destination.title,
+            'url': dest.get_absolute_url() if dest else '#',
+            'title': dest.title if dest else 'Destination',
             'subtitle': review.comment[:100],
             'label': 'Review Written',
             'icon': 'fa-star',
-            'photo_url': review.destination.main_image.url if review.destination.main_image else None,
+            'photo_url': dest.main_image.url if (dest and dest.main_image) else None,
         })
     recent_activity = sorted(recent_activity, key=lambda item: item['timestamp'], reverse=True)[:5]
 
@@ -127,27 +128,42 @@ def build_profile_context(profile):
         'latest_contribution': latest_contribution,
     }
 
-@login_required
 def users(request):
     profiles = Profile.objects.all() 
-    return render(request, 'users/users.html',{'profiles':profiles})
+    return render(request, 'users/users.html', {'profiles': profiles})
 
 
 @login_required
 def create_users(request):
-    users_form = Profileform()  
-    if request.method == 'POST':
-        users_form= Profileform(request.POST , request.FILES)
-        if users_form.is_valid():
-            users_form.save()
-            return redirect('home')
-    return render(request, 'users/users_form.html', {"users_form":users_form})
+    return redirect('edit_profile')
+
 
 @login_required
+def edit_profile(request):
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile.objects.create(
+            user=request.user,
+            username=request.user.username,
+            name=request.user.first_name or request.user.username,
+            email=request.user.email
+        )
+    if request.method == 'POST':
+        users_form = Profileform(request.POST, request.FILES, instance=profile)
+        if users_form.is_valid():
+            users_form.save()
+            return redirect('my_profile')
+    else:
+        users_form = Profileform(instance=profile)
+    return render(request, 'users/users_form.html', {"users_form": users_form, "is_edit": True})
+
+
 def user_page(request, pk):
-    profile = Profile.objects.get(id=pk)
+    profile = get_object_or_404(Profile, id=pk)
     context = build_profile_context(profile)
     return render(request, 'users/user_profile.html', context)
+
 
 @login_required
 def my_profile(request):
@@ -157,13 +173,8 @@ def my_profile(request):
         profile = Profile.objects.create(
             user=request.user,
             username=request.user.username,
-            name=request.user.first_name,
+            name=request.user.first_name or request.user.username,
             email=request.user.email
         )
     context = build_profile_context(profile)
     return render(request, 'users/user_profile.html', context)
-
-@login_required(login_url='login')
-def inbox(request):
-    
-    return render(request, 'users/inbox.html')

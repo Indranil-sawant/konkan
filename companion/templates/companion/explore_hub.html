@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore Hub 🧭 | Beaches, Sea Forts & Sacred Temples{% endblock %}
+
+{% block meta_description %}Discover iconic attractions across Ratnagiri: monumental sea forts, tranquil silver sand beaches, historic rock-cut temples, and lush Western Ghat waterfalls.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+
+        <!-- Header -->
+        <div class="space-y-2">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ocean-mist border border-ocean-sky/30 text-[11px] font-bold text-ocean-deep uppercase tracking-wider">
+                <i class="fas fa-compass text-ocean-mid"></i> Discover by Category
+            </div>
+            <h1 class="font-display font-black text-3xl sm:text-4xl text-slate-900 tracking-tight">Explore Ratnagiri's Coast</h1>
+            <p class="text-sm text-slate-500 max-w-2xl">
+                Filter through Maharashtra’s majestic sea fortresses, secluded tropical beaches, ancient swaying coconut groves, and sacred cliffside shrines.
+            </p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <a href="{% url 'explore_hub' %}" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if not selected_category %}bg-slate-900 text-white{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                All Places
+            </a>
+            <a href="?cat=Fort" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if selected_category == 'Fort' %}bg-ocean-mid text-white shadow-xs{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                🏰 Historic Forts
+            </a>
+            <a href="?cat=Beach" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if selected_category == 'Beach' %}bg-ocean-mid text-white shadow-xs{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                🏖️ Coastal Beaches
+            </a>
+            <a href="?cat=Temple" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if selected_category == 'Temple' %}bg-ocean-mid text-white shadow-xs{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                🛕 Sacred Temples
+            </a>
+            <a href="?cat=Waterfall" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if selected_category == 'Waterfall' %}bg-ocean-mid text-white shadow-xs{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                🌊 Waterfalls & Nature
+            </a>
+            <a href="?cat=Food" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if selected_category == 'Food' %}bg-ocean-mid text-white shadow-xs{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                🍛 Culinary Highlights
+            </a>
+        </div>
+
+        <!-- Destination Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            {% for dest in destinations %}
+            <div class="group rounded-3xl bg-white border border-slate-200 shadow-card hover:shadow-card-hover overflow-hidden transition-all flex flex-col justify-between">
+                <div>
+                    <div class="relative h-44 bg-slate-100 overflow-hidden">
+                        {% if dest.main_image %}
+                        <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        {% else %}
+                        <div class="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+                            <i class="fas fa-image text-4xl"></i>
+                        </div>
+                        {% endif %}
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[11px] font-black uppercase text-slate-800 shadow-xs">
+                            {{ dest.category }}
+                        </span>
+                    </div>
+
+                    <div class="p-5 space-y-1.5">
+                        <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 group-hover:text-ocean-mid transition-colors line-clamp-1">
+                            {{ dest.title }}
+                        </h3>
+                        <p class="text-xs text-slate-500 line-clamp-1">
+                            <i class="fas fa-location-dot text-slate-400 mr-1"></i> {{ dest.location_name }}
+                        </p>
+                        <p class="text-xs text-slate-600 line-clamp-2 pt-1 leading-relaxed">
+                            {{ dest.description }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="p-5 pt-0 border-t border-slate-100 flex items-center justify-between">
+                    <a href="{% url 'destination_detail' slug=dest.slug %}" class="text-xs font-bold text-ocean-mid hover:underline">
+                        Explore &rarr;
+                    </a>
+                    <button onclick="savePlaceToTrip('{{ dest.id }}', '{{ dest.title|escapejs }}', '{{ dest.category }}', '{{ dest.slug }}', this)" 
+                            class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-ocean-mist text-slate-700 hover:text-ocean-mid text-xs font-bold transition-all" 
+                            title="Add to My Trip">
+                        <i class="fas fa-plus mr-1"></i> Save
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-slate-200 text-slate-500">
+                No destinations listed in this category.
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

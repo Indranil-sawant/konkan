@@ -24,6 +24,7 @@ urlpatterns = [
 
     # HTML views (existing)
     path('', include('core.urls')),
+    path('', include('companion.urls')),
     path('spots/', include('spots.urls')),
     path('destinations/', include('destinations.urls')),
     path('accounts/', include('accounts.urls')),

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Local Tourism Partners & Hospitality | Ratnagiri Tourist Companion{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50/60 pb-24 lg:pb-16 pt-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+
+        <!-- Header -->
+        <div class="space-y-2">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
+                <i class="fas fa-handshake text-emerald-600"></i> Verified Local Network
+            </div>
+            <h1 class="font-display font-black text-3xl sm:text-4xl text-slate-900 tracking-tight">Verified Ratnagiri Partners</h1>
+            <p class="text-sm text-slate-500 max-w-2xl">
+                Certified hotels, boutique homestays, authentic Malvani seafood kitchens, and accredited Konkan tour guides equipped with smart NFC tourist tags.
+            </p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <a href="{% url 'partner_directory' %}" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if not selected_type %}bg-slate-900 text-white{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                All Partners
+            </a>
+            {% for code, label in partner_types %}
+            <a href="?type={{ code }}" class="px-4 py-2 rounded-2xl text-xs font-bold shrink-0 transition-all {% if selected_type == code %}bg-ocean-mid text-white shadow-xs{% else %}bg-white text-slate-700 border border-slate-200 hover:bg-slate-100{% endif %}">
+                {{ label }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Partners Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for p in partners %}
+            <div class="group rounded-3xl bg-white border border-slate-200 shadow-card hover:shadow-card-hover overflow-hidden transition-all flex flex-col justify-between">
+                <div class="p-6 space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl text-ocean-mid font-bold shrink-0">
+                            {% if p.logo %}
+                            <img src="{{ p.logo.url }}" alt="{{ p.business_name }}" class="w-full h-full object-cover rounded-2xl">
+                            {% else %}
+                            <i class="fas fa-hotel text-slate-600"></i>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-700">
+                                {{ p.get_partner_type_display }}
+                            </span>
+                            <h3 class="font-display font-bold text-lg text-slate-900 group-hover:text-ocean-mid transition-colors mt-1">
+                                {{ p.business_name }}
+                            </h3>
+                            {% if p.address %}
+                            <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                                <i class="fas fa-location-dot text-slate-400 mr-1"></i> {{ p.address }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if p.short_tagline or p.description %}
+                    <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                        {{ p.short_tagline|default:p.description }}
+                    </p>
+                    {% endif %}
+                </div>
+
+                <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-2">
+                    <a href="{% url 'partner_detail' slug=p.slug %}" class="text-xs font-bold text-ocean-mid hover:underline">
+                        Guest Concierge &rarr;
+                    </a>
+                    {% if p.phone %}
+                    <a href="tel:{{ p.phone }}" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition-colors">
+                        <i class="fas fa-phone text-ocean-mid"></i> Contact
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-slate-200 text-slate-500">
+                No partners found in this category.
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Ratnagiri | Smart NFC Gateway{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center bg-slate-50/60 px-4 py-12">
+    <div class="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-card text-center space-y-5">
+        <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto shadow-xs">
+            <span class="material-symbols-outlined text-[36px]">sensors</span>
+        </div>
+        
+        <div class="space-y-1.5">
+            <h2 class="font-display font-black text-2xl text-slate-900">Welcome, Traveller!</h2>
+            <p class="text-xs text-slate-500 leading-relaxed">
+                NFC Tag Identifier: <code class="px-2 py-0.5 rounded bg-slate-100 font-mono text-[11px] text-slate-700 font-bold">{{ tag_uid }}</code>
+            </p>
+            <p class="text-sm text-slate-600 pt-1 font-medium">
+                You’ve unlocked the Ratnagiri Digital Companion. Choose your journey below to begin exploring.
+            </p>
+        </div>
+
+        <div class="space-y-2.5 pt-2">
+            <a href="{% url 'companion_home' %}" class="w-full py-3.5 px-4 rounded-2xl bg-ocean-mid hover:bg-ocean-deep text-white font-bold text-xs uppercase tracking-wider transition-all block shadow-sm">
+                <i class="fas fa-compass mr-1.5"></i> Launch Companion Hub
+            </a>
+            <a href="{% url 'itinerary_list' %}" class="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all block">
+                <i class="fas fa-route mr-1.5 text-ocean-mid"></i> View Curated Itineraries
+            </a>
+            <a href="{% url 'near_me' %}" class="w-full py-3 px-4 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/60 font-bold text-xs uppercase tracking-wider transition-all block">
+                <i class="fas fa-location-crosshairs mr-1.5 text-amber-600"></i> What's Near Me
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

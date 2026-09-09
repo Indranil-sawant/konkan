@@ -1,220 +1,203 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Search Results for "{{ query }}" | Konkan Guide{% endblock %}
+
 {% block content %}
-<!-- Premium Header Section -->
-<div class="relative bg-navy-dark overflow-hidden" style="padding-top: calc(var(--nav-height, 72px) + 2rem); padding-bottom: 3.5rem;">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-ocean-light/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-sunset-coral/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-navy-dark"></div>
-    </div>
-
-    <div class="container mx-auto px-6 lg:px-10 relative z-10 text-center max-w-4xl">
-        <p class="text-ocean-light font-bold tracking-[0.2em] uppercase mb-4 text-sm">Explore</p>
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight mb-6 text-balance">Search Results</h1>
-        
-        {% if query %}
-            <p class="text-xl text-white/70 font-medium leading-relaxed">
-                Showing results for: <strong class="text-white">"{{ query }}"</strong>
+<div class="min-h-screen bg-[#f8fafc] pb-24">
+    
+    <!-- Search Header Banner -->
+    <header class="py-14 lg:py-18 bg-gradient-to-b from-sky-50/70 via-slate-50 to-[#f8fafc] border-b border-slate-200/80">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <span class="text-xs font-black text-ocean-mid uppercase tracking-[0.25em] block mb-2">Atlas Search</span>
+            <h1 class="font-display font-black text-3xl sm:text-5xl text-slate-900 tracking-tight mb-3">
+                Search Results
+            </h1>
+            
+            {% if query %}
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Showing discoveries matching <span class="text-slate-900 font-bold bg-white border border-slate-200 px-3 py-1 rounded-lg shadow-xs">"{{ query }}"</span>
             </p>
-        {% else %}
-            <p class="text-xl text-white/70 font-medium leading-relaxed">Start typing to explore Konkan 🌊</p>
-        {% endif %}
-    </div>
-</div>
+            {% else %}
+            <p class="text-slate-600 text-sm">Enter a search keyword to explore places, dishes, and spots.</p>
+            {% endif %}
 
-<div class="bg-slate-50 relative pb-16 lg:pb-32 pt-10 lg:pt-16 min-h-screen">
-    <style>
-        @keyframes blur-focus-up {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(12px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        .animate-masonry {
-            opacity: 0;
-            animation: blur-focus-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-    </style>
-    
-    <div class="container mx-auto px-6 lg:px-10">
-        <!-- Destinations -->
+            <!-- Inline Search Form -->
+            <form action="{% url 'search' %}" method="get" class="max-w-xl mx-auto mt-6">
+                <div class="flex items-center rounded-2xl bg-white border border-slate-200 shadow-card p-1.5 focus-within:border-ocean-mid focus-within:ring-2 focus-within:ring-ocean-mid/20 transition-all">
+                    <input type="search" name="q" value="{{ query|default:'' }}" placeholder="Search forts, beaches, temples, dishes..." required
+                           class="w-full bg-transparent border-none text-slate-900 text-sm px-4 py-2.5 outline-none placeholder:text-slate-400 font-medium focus:ring-0" />
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-ocean-mid hover:bg-ocean-dark text-white text-xs font-bold uppercase tracking-wider transition-colors flex-shrink-0 shadow-xs">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 space-y-16">
+        
+        <!-- 01. Destinations Results -->
         {% if destination_results %}
-        <div class="mb-20">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 text-xl">
-                    <i class="fas fa-tree"></i>
+        <section>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-xl bg-sky-50 text-ocean-mid flex items-center justify-center text-lg border border-sky-100">
+                    <i class="fas fa-map-location-dot"></i>
                 </div>
-                <h2 class="text-3xl font-black text-navy-dark">Destinations</h2>
+                <div>
+                    <h2 class="font-display font-black text-2xl text-slate-900">Destinations</h2>
+                    <span class="text-xs text-slate-500 font-medium">{{ destination_results.count }} landmark{{ destination_results.count|pluralize }} found</span>
+                </div>
             </div>
 
-            <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 lg:gap-8 max-w-[1600px] mx-auto w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for dest in destination_results %}
-                <div class="break-inside-avoid mb-6 lg:mb-8 animate-masonry" style="animation-delay: {% widthratio forloop.counter0 1 100 %}ms;">
-                    <div class="group relative bg-navy-dark rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/10 flex flex-col">
-                        <div class="relative w-full overflow-hidden flex items-center justify-center bg-navy-dark">
-                            {% if dest.photo %}
-                            <img src="{{ dest.photo.url }}" alt="{{ dest.name }}" class="w-full h-auto min-h-[380px] object-cover transform group-hover:scale-105 transition-transform duration-700">
-                            {% else %}
-                            <div class="w-full h-[400px] flex flex-col items-center justify-center">
-                                <i class="fas fa-image text-white/10 text-5xl mb-3"></i>
-                                <span class="text-white/30 text-xs font-bold uppercase tracking-widest">No Image</span>
-                            </div>
-                            {% endif %}
-                            
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500 z-10 pointer-events-none"></div>
-            
-                            <div class="absolute top-4 sm:top-5 left-4 sm:left-5 right-4 sm:right-5 flex justify-between items-start z-20 pointer-events-none">
-                                <span class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-black text-navy-dark uppercase tracking-widest shadow-lg transform transition-transform group-hover:scale-105">
-                                    Destination
-                                </span>
-                            </div>
-            
-                            <div class="absolute inset-0 flex flex-col justify-end z-20 p-3 sm:p-5 pointer-events-auto">
-                                <div class="bg-white/10 group-hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-[1.5rem] p-4 sm:p-5 shadow-2xl transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                                    <h3 class="text-xl sm:text-2xl font-display font-black text-white leading-tight drop-shadow-lg mb-2 group-hover:text-ocean-light transition-colors">
-                                        {{ dest.name }}
-                                    </h3>
-                                    <p class="text-white/80 text-xs sm:text-sm font-medium leading-relaxed line-clamp-2 mb-4 drop-shadow-sm">
-                                        {{ dest.description|striptags }}
-                                    </p>
-                                    <div class="flex items-center gap-2 sm:gap-3 w-full opacity-90 group-hover:opacity-100 transition-opacity">
-                                        <a href="{% url 'destination_detail' dest.id %}" class="flex-1 py-2.5 sm:py-3 bg-white hover:bg-ocean-light text-navy-dark hover:text-white rounded-xl font-bold text-center transition-colors shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2">
-                                            Explore <i class="fas fa-arrow-right text-[10px] sm:text-xs"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                <article class="group rounded-3xl overflow-hidden bg-white border border-slate-200/90 hover:border-ocean-mid/40 hover:shadow-card-hover transition-all duration-300 shadow-card flex flex-col">
+                    <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                        {% if dest.main_image %}
+                        <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-slate-400"><i class="fas fa-image text-3xl"></i></div>
+                        {% endif %}
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest text-slate-900 border border-slate-200/60 shadow-xs">
+                                {{ dest.category }}
+                            </span>
                         </div>
                     </div>
-                </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold mb-2">
+                                <i class="fas fa-location-dot text-ocean-mid"></i>
+                                <span>{{ dest.location_name }}</span>
+                            </div>
+                            <h3 class="font-display font-black text-xl text-slate-900 group-hover:text-ocean-mid transition-colors mb-2">
+                                <a href="{% url 'destination_detail' dest.slug %}">{{ dest.title }}</a>
+                            </h3>
+                            <p class="text-slate-600 text-xs line-clamp-2 mb-4">{{ dest.description|striptags }}</p>
+                        </div>
+                        <a href="{% url 'destination_detail' dest.slug %}" class="text-xs font-bold text-ocean-mid hover:text-ocean-dark flex items-center gap-1.5 pt-4 border-t border-slate-100 transition-colors">
+                            Explore Landmark <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </article>
                 {% endfor %}
             </div>
-        </div>
+        </section>
         {% endif %}
 
-        <!-- Spots -->
+        <!-- 02. Spots Results -->
         {% if spot_results %}
-        <div class="mb-20">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 text-xl">
-                    <i class="fas fa-map-marked-alt"></i>
+        <section>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg border border-amber-100">
+                    <i class="fas fa-compass"></i>
                 </div>
-                <h2 class="text-3xl font-black text-navy-dark">Hidden Spots</h2>
+                <div>
+                    <h2 class="font-display font-black text-2xl text-slate-900">Hidden Spots</h2>
+                    <span class="text-xs text-slate-500 font-medium">{{ spot_results.count }} secret spot{{ spot_results.count|pluralize }} found</span>
+                </div>
             </div>
 
-            <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 lg:gap-8 max-w-[1600px] mx-auto w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for spot in spot_results %}
-                <div class="break-inside-avoid mb-6 lg:mb-8 animate-masonry" style="animation-delay: {% widthratio forloop.counter0 1 100 %}ms;">
-                    <div class="group relative bg-navy-dark rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/10 flex flex-col">
-                        <div class="relative w-full overflow-hidden flex items-center justify-center bg-navy-dark">
-                            {% if spot.photo %}
-                            <img src="{{ spot.photo.url }}" class="w-full h-auto min-h-[380px] object-cover transform group-hover:scale-105 transition-transform duration-700" alt="{{ spot.name }}">
-                            {% else %}
-                            <div class="w-full h-[400px] flex flex-col items-center justify-center">
-                                <i class="fas fa-map-marked-alt text-white/10 text-5xl mb-3"></i>
-                                <span class="text-white/30 text-xs font-bold uppercase tracking-widest">No Image</span>
-                            </div>
-                            {% endif %}
-                            
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500 z-10 pointer-events-none"></div>
-    
-                            <div class="absolute top-4 sm:top-5 left-4 sm:left-5 right-4 sm:right-5 flex justify-between items-start z-20 pointer-events-none">
-                                <span class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-black text-navy-dark uppercase tracking-widest shadow-lg transform transition-transform group-hover:scale-105">
-                                    {{ spot.category.name|default:"Spot" }}
-                                </span>
-                            </div>
-    
-                            <div class="absolute inset-0 flex flex-col justify-end z-20 p-3 sm:p-5 pointer-events-auto">
-                                <div class="bg-white/10 group-hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-[1.5rem] p-4 sm:p-5 shadow-2xl transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                                    <h3 class="text-xl sm:text-2xl font-display font-black text-white leading-tight drop-shadow-lg mb-2 group-hover:text-ocean-light transition-colors">
-                                        {{ spot.name }}
-                                    </h3>
-                                    <p class="text-white/80 text-xs sm:text-sm font-medium leading-relaxed line-clamp-2 mb-4 drop-shadow-sm">
-                                        Explore this hidden gem.
-                                    </p>
-                                    <div class="flex items-center gap-2 sm:gap-3 w-full opacity-90 group-hover:opacity-100 transition-opacity">
-                                        <a href="{% url 'details_spots' spot.id %}" class="flex-1 py-2.5 sm:py-3 bg-white hover:bg-ocean-light text-navy-dark hover:text-white rounded-xl font-bold text-center transition-colors shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2">
-                                            Discover <i class="fas fa-arrow-right text-[10px] sm:text-xs"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                <article class="group rounded-3xl overflow-hidden bg-white border border-slate-200/90 hover:border-amber-400 hover:shadow-card-hover transition-all duration-300 shadow-card flex flex-col">
+                    <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                        {% if spot.photo %}
+                        <img src="{{ spot.photo.url }}" alt="{{ spot.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-slate-400"><i class="fas fa-compass text-3xl"></i></div>
+                        {% endif %}
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest text-slate-900 border border-slate-200/60 shadow-xs">
+                                {{ spot.category.name|default:"Spot" }}
+                            </span>
                         </div>
                     </div>
-                </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-display font-black text-xl text-slate-900 group-hover:text-amber-700 transition-colors mb-2">
+                                <a href="{% url 'details_spots' spot.id %}">{{ spot.name }}</a>
+                            </h3>
+                            <p class="text-slate-600 text-xs line-clamp-2 mb-4">{{ spot.description|striptags }}</p>
+                        </div>
+                        <a href="{% url 'details_spots' spot.id %}" class="text-xs font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1.5 pt-4 border-t border-slate-100 transition-colors">
+                            Spot Details <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </article>
                 {% endfor %}
             </div>
-        </div>
+        </section>
         {% endif %}
 
-        <!-- Food -->
+        <!-- 03. Food Results -->
         {% if food_results %}
-        <div class="mb-20">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-sunset-coral text-xl">
+        <section>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-lg border border-orange-100">
                     <i class="fas fa-utensils"></i>
                 </div>
-                <h2 class="text-3xl font-black text-navy-dark">Coastal Food</h2>
+                <div>
+                    <h2 class="font-display font-black text-2xl text-slate-900">Coastal Cuisine</h2>
+                    <span class="text-xs text-slate-500 font-medium">{{ food_results.count }} dish{{ food_results.count|pluralize:"es" }} found</span>
+                </div>
             </div>
 
-            <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 lg:gap-8 max-w-[1600px] mx-auto w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for food in food_results %}
-                <div class="break-inside-avoid mb-6 lg:mb-8 animate-masonry" style="animation-delay: {% widthratio forloop.counter0 1 100 %}ms;">
-                    <div class="group relative bg-navy-dark rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/10 flex flex-col">
-                        <div class="relative w-full overflow-hidden flex items-center justify-center bg-navy-dark">
-                            {% if food.photo %}
-                            <img src="{{ food.photo.url }}" alt="{{ food.name }}" class="w-full h-auto min-h-[380px] object-cover transform group-hover:scale-105 transition-transform duration-700">
-                            {% else %}
-                            <div class="w-full h-[400px] flex flex-col items-center justify-center">
-                                <i class="fas fa-utensils text-white/10 text-5xl mb-3"></i>
-                                <span class="text-white/30 text-xs font-bold uppercase tracking-widest">No Image</span>
-                            </div>
-                            {% endif %}
-                            
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500 z-10 pointer-events-none"></div>
-    
-                            <div class="absolute top-4 sm:top-5 left-4 sm:left-5 right-4 sm:right-5 flex justify-between items-start z-20 pointer-events-none">
-                                <span class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-black text-navy-dark uppercase tracking-widest shadow-lg transform transition-transform group-hover:scale-105">
-                                    {{ food.category.name|default:"Food" }}
-                                </span>
-                            </div>
-    
-                            <div class="absolute inset-0 flex flex-col justify-end z-20 p-3 sm:p-5 pointer-events-auto">
-                                <div class="bg-white/10 group-hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-[1.5rem] p-4 sm:p-5 shadow-2xl transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                                    <h3 class="text-xl sm:text-2xl font-display font-black text-white leading-tight drop-shadow-lg mb-2 group-hover:text-ocean-light transition-colors">
-                                        {{ food.name }}
-                                    </h3>
-                                    <p class="text-white/80 text-xs sm:text-sm font-medium leading-relaxed line-clamp-2 mb-4 drop-shadow-sm">
-                                        Discover authentic coastal flavors.
-                                    </p>
-                                    <div class="flex items-center gap-2 sm:gap-3 w-full opacity-90 group-hover:opacity-100 transition-opacity">
-                                        <a href="{% url 'food_detail' food.id %}" class="flex-1 py-2.5 sm:py-3 bg-white hover:bg-ocean-light text-navy-dark hover:text-white rounded-xl font-bold text-center transition-colors shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2">
-                                            Taste <i class="fas fa-arrow-right text-[10px] sm:text-xs"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                <article class="group rounded-3xl overflow-hidden bg-white border border-slate-200/90 hover:border-orange-400 hover:shadow-card-hover transition-all duration-300 shadow-card flex flex-col">
+                    <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                        {% if food.photo %}
+                        <img src="{{ food.photo.url }}" alt="{{ food.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-slate-400"><i class="fas fa-utensils text-3xl"></i></div>
+                        {% endif %}
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute top-4 left-4 right-4 flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest text-slate-900 border border-slate-200/60 shadow-xs">
+                                {{ food.category.name|default:"Dish" }}
+                            </span>
+                            <span class="px-2.5 py-1 rounded-full bg-sand-coral text-white text-xs font-bold">
+                                ₹{{ food.price }}
+                            </span>
                         </div>
                     </div>
-                </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-display font-black text-xl text-slate-900 group-hover:text-sand-coral transition-colors mb-2">
+                                <a href="{% url 'details' food.id %}">{{ food.name }}</a>
+                            </h3>
+                            <p class="text-slate-600 text-xs line-clamp-2 mb-4">{{ food.description|striptags }}</p>
+                        </div>
+                        <a href="{% url 'details' food.id %}" class="text-xs font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1.5 pt-4 border-t border-slate-100 transition-colors">
+                            Taste Story <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </article>
                 {% endfor %}
             </div>
-        </div>
+        </section>
         {% endif %}
 
         <!-- Empty State -->
         {% if not destination_results and not spot_results and not food_results %}
-            {% if query %}
-            <div class="text-center py-24 bg-white rounded-[3rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] max-w-3xl mx-auto">
-                <div class="w-32 h-32 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 text-slate-300 text-5xl">
-                    <i class="fas fa-search-minus"></i>
-                </div>
-                <h3 class="text-3xl font-black text-navy-dark mb-4">No results found 😔</h3>
-                <p class="text-slate-500 font-medium max-w-md mx-auto">We couldn't find anything matching your search. Try adjusting your keywords or explore our popular categories.</p>
+        <div class="text-center py-20 bg-white border border-slate-200 rounded-3xl max-w-xl mx-auto shadow-card">
+            <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 text-2xl mx-auto mb-4">
+                <i class="fas fa-search-minus"></i>
             </div>
-            {% endif %}
+            <h3 class="font-display font-black text-2xl text-slate-900 mb-2">No discoveries found</h3>
+            <p class="text-slate-500 text-xs max-w-sm mx-auto mb-6">
+                We couldn't find any destination, spot, or dish matching your search terms.
+            </p>
+            <a href="{% url 'destination_list' %}" class="px-6 py-3 rounded-full bg-ocean-mid text-white text-xs font-bold uppercase tracking-wider hover:bg-ocean-dark transition-all shadow-tactile">
+                Browse Full Atlas
+            </a>
+        </div>
         {% endif %}
 
-    </div>
+    </main>
 </div>
 {% endblock %}

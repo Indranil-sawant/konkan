@@ -1,198 +1,178 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}{{ profile.name|default:profile.username|title }}'s Explorer Journal | Konkan Guide{% endblock %}
+
 {% block content %}
+<div class="min-h-screen bg-[#f8fafc] pb-28">
+    
+    <!-- Hero Profile Header -->
+    <header class="relative py-16 lg:py-20 bg-gradient-to-b from-sky-50/80 via-slate-50 to-[#f8fafc] border-b border-slate-200/80 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+            <nav class="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">
+                <a href="{% url 'home' %}" class="hover:text-ocean-mid transition-colors">Home</a>
+                <span>/</span>
+                <a href="{% url 'home_users' %}" class="hover:text-ocean-mid transition-colors">Explorers</a>
+                <span>/</span>
+                <span class="text-ocean-mid font-black">{{ profile.name|default:profile.username|title }}</span>
+            </nav>
 
-<!-- HERO -->
-<div class="relative bg-cover bg-center h-[420px] flex items-end"
-  style="background-image: linear-gradient(rgba(10,61,98,0.3), rgba(10,61,98,0.9))">
-  <div class=" max-w-7xl mx-auto px-4 pb-10 text-white w-full">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                <!-- Avatar -->
+                <div class="w-32 h-32 md:w-36 md:h-36 rounded-3xl p-1.5 bg-gradient-to-tr from-ocean-mid to-sky-400 shadow-card overflow-hidden flex-shrink-0">
+                    {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="{{ profile.username }}" class="w-full h-full object-cover rounded-[1.25rem]" />
+                    {% else %}
+                    <div class="w-full h-full rounded-[1.25rem] bg-ocean-mid flex items-center justify-center text-white font-black text-4xl">
+                        {{ profile.username|make_list|first|upper }}
+                    </div>
+                    {% endif %}
+                </div>
 
-    <!-- BREADCRUMB -->
-    <div class="text-sm mb-3 text-white/70">
-      <a href="{% url 'home' %}" class="hover:underline">Home</a> /
-      <a href="{% url 'home_users' %}" class="hover:underline">Community</a> /
-      <span>{{ profile.name|default:profile.username|title }}</span>
-    </div>
+                <!-- Profile Info -->
+                <div class="flex-1 text-center md:text-left">
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
+                        <h1 class="font-display font-black text-3xl sm:text-4xl text-slate-900">
+                            {{ profile.name|default:profile.username|title }}
+                        </h1>
+                        <span class="px-3 py-1 rounded-full bg-sky-50 text-ocean-dark text-xs font-bold border border-sky-200">
+                            @{{ profile.username }}
+                        </span>
+                    </div>
 
-    <h1 class="text-4xl md:text-5xl font-bold mb-2">
-      {{ profile.name|default:profile.username|title }}
-    </h1>
+                    <p class="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed mb-4 font-normal">
+                        {{ profile.short_intro|default:"Documenting sea forts, hidden lagoons, and regional gastronomy across the Konkan coast." }}
+                    </p>
 
-    <p class="text-white/80 max-w-2xl">
-      {{ profile.short_intro|default:"Sharing coastal finds, local flavors, and hidden corners of Konkan." }}
-    </p>
-  </div>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-slate-500 font-semibold">
+                        <span>
+                            <i class="fas fa-calendar text-ocean-mid mr-1"></i> Member since 
+                            {% if profile.user %}{{ profile.user.date_joined|date:"M Y" }}{% else %}{{ profile.created|date:"M Y" }}{% endif %}
+                        </span>
+                        {% if latest_contribution %}
+                        <span>
+                            <i class="fas fa-bolt text-amber-500 mr-1"></i> Active {{ latest_contribution.timestamp|timesince }} ago
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                {% if user == profile.user %}
+                <div class="flex gap-3 flex-shrink-0">
+                    <a href="{% url 'edit_profile' %}" class="px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider border border-slate-200 shadow-xs transition-all">
+                        <i class="fas fa-pen mr-1.5"></i> Edit Profile
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-8 border-t border-slate-200">
+                <div class="p-5 rounded-2xl bg-white border border-slate-200 text-center shadow-card">
+                    <span class="font-display font-black text-3xl text-slate-900 block mb-0.5">{{ total_contributions }}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Total Finds</span>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-200 text-center shadow-card">
+                    <span class="font-display font-black text-3xl text-ocean-mid block mb-0.5">{{ destination_count }}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Destinations</span>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-200 text-center shadow-card">
+                    <span class="font-display font-black text-3xl text-amber-600 block mb-0.5">{{ spot_count|add:food_count }}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Spots & Food</span>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-200 text-center shadow-card">
+                    <span class="font-display font-black text-3xl text-emerald-600 block mb-0.5">
+                        {% if average_review_rating %}{{ average_review_rating }}{% else %}{{ review_count }}{% endif %}
+                    </span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        {% if average_review_rating %}Avg Rating{% else %}Reviews Written{% endif %}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Activity Canvas -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            
+            <!-- Left: Recent Timeline Activity (2 Cols) -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="p-8 sm:p-10 rounded-3xl bg-white border border-slate-200/90 shadow-card">
+                    <h3 class="font-display font-black text-xl sm:text-2xl text-slate-900 mb-6 flex items-center gap-2.5">
+                        <i class="fas fa-clock-rotate-left text-ocean-mid"></i>
+                        <span>Recent Journal Activity</span>
+                    </h3>
+
+                    <div class="space-y-4">
+                        {% for item in recent_activity %}
+                        <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4 hover:border-ocean-mid/40 transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-sky-50 text-ocean-mid flex items-center justify-center text-base flex-shrink-0 border border-sky-100">
+                                    <i class="fas {{ item.icon }}"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">{{ item.label }}</span>
+                                    <h4 class="font-bold text-sm text-slate-900 hover:text-ocean-mid transition-colors">
+                                        <a href="{{ item.url }}">{{ item.title }}</a>
+                                    </h4>
+                                    <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">{{ item.subtitle }}</p>
+                                </div>
+                            </div>
+                            <span class="text-[11px] text-slate-400 font-semibold flex-shrink-0">{{ item.timestamp|date:"M d, Y" }}</span>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-10 bg-slate-50 rounded-2xl border border-slate-200">
+                            <p class="text-slate-500 text-xs">No contributions recorded in the journal yet.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Bio & Social -->
+            <div class="space-y-6">
+                
+                <!-- About Bio -->
+                <div class="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-card">
+                    <h4 class="font-display font-black text-lg text-slate-900 mb-3">About the Explorer</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed font-normal">
+                        {{ profile.bio|default:"Exploring the untamed beauty of Konkan's coastlines, forts, and flavors." }}
+                    </p>
+                </div>
+
+                <!-- Connect Socials -->
+                <div class="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-card">
+                    <h4 class="font-display font-black text-lg text-slate-900 mb-4">Connect</h4>
+                    <div class="flex flex-wrap gap-3">
+                        {% if profile.social_github %}
+                        <a href="{{ profile.social_github }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-2 transition-colors">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        {% endif %}
+                        {% if profile.social_linkedin %}
+                        <a href="{{ profile.social_linkedin }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-2 transition-colors">
+                            <i class="fab fa-linkedin text-ocean-mid"></i> LinkedIn
+                        </a>
+                        {% endif %}
+                        {% if profile.social_twitter %}
+                        <a href="{{ profile.social_twitter }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-2 transition-colors">
+                            <i class="fab fa-x-twitter text-sky-600"></i> Twitter
+                        </a>
+                        {% endif %}
+                        {% if profile.social_website %}
+                        <a href="{{ profile.social_website }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-2 transition-colors">
+                            <i class="fas fa-globe text-amber-600"></i> Website
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
 </div>
-
-<!-- PROFILE CARD -->
-<div class="max-w-7xl mx-auto px-4 -mt-20 relative z-10">
-
-  <div class="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-
-    <div class="flex flex-col md:flex-row gap-6 items-center md:items-end">
-
-      <!-- AVATAR -->
-      {% if profile.profile_image %}
-      <img src="{{ profile.profile_image.url }}"
-        class="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg">
-      {% else %}
-      <img src="https://ui-avatars.com/api/?name={{ profile.name|default:profile.username|urlencode }}&background=0077b6&color=fff&size=256"
-        class="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg">
-      {% endif %}
-
-      <!-- INFO -->
-      <div class="flex-1 text-center md:text-left">
-
-        <div class="flex flex-wrap gap-2 justify-center md:justify-start mb-3">
-
-          <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-            @{{ profile.username }}
-          </span>
-
-          <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
-            Member since
-            {% if profile.user %}
-            {{ profile.user.date_joined|date:"F Y" }}
-            {% else %}
-            {{ profile.created|date:"F Y" }}
-            {% endif %}
-          </span>
-
-          {% if latest_contribution %}
-          <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-            Active {{ latest_contribution.timestamp|timesince }} ago
-          </span>
-          {% endif %}
-        </div>
-
-        <p class="text-gray-600 max-w-xl">
-          {{ profile.bio|default:"Explorer building their Konkan journey..." }}
-        </p>
-      </div>
-
-      <!-- ACTIONS -->
-      {% if user == profile.user %}
-      <div class="flex gap-2">
-        <a href="{% url 'create_users' %}"
-          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-          Edit Profile
-        </a>
-        <a href="{% url 'destination_list' %}"
-          class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition">
-          Explore
-        </a>
-      </div>
-      {% endif %}
-    </div>
-
-    <!-- STATS -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-
-      <div class="bg-blue-50 rounded-xl p-4 text-center">
-        <div class="text-2xl font-bold">{{ total_contributions }}</div>
-        <div class="text-sm text-gray-500">Total</div>
-      </div>
-
-      <div class="bg-blue-50 rounded-xl p-4 text-center">
-        <div class="text-2xl font-bold">{{ destination_count }}</div>
-        <div class="text-sm text-gray-500">Destinations</div>
-      </div>
-
-      <div class="bg-blue-50 rounded-xl p-4 text-center">
-        <div class="text-2xl font-bold">{{ spot_count|add:food_count }}</div>
-        <div class="text-sm text-gray-500">Finds</div>
-      </div>
-
-      <div class="bg-blue-50 rounded-xl p-4 text-center">
-        <div class="text-2xl font-bold">
-          {% if average_review_rating %}{{ average_review_rating }}{% else %}{{ review_count }}{% endif %}
-        </div>
-        <div class="text-sm text-gray-500">
-          {% if average_review_rating %}Rating{% else %}Reviews{% endif %}
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- MAIN GRID -->
-  <div class="grid lg:grid-cols-3 gap-6">
-
-    <!-- LEFT -->
-    <div class="lg:col-span-2 space-y-6">
-
-      <!-- ACTIVITY -->
-      <div class="bg-white rounded-xl shadow p-6">
-        <h3 class="text-xl font-bold mb-4">Recent Activity</h3>
-
-        {% for item in recent_activity %}
-        <div class="flex gap-4 mb-4">
-
-          <div class="w-14 h-14 rounded-lg bg-blue-500 flex items-center justify-center text-white">
-            <i class="fas {{ item.icon }}"></i>
-          </div>
-
-          <div class="flex-1">
-            <p class="text-sm text-gray-500">{{ item.label }}</p>
-            <h4 class="font-semibold">
-              <a href="{{ item.url }}">{{ item.title }}</a>
-            </h4>
-            <p class="text-gray-500 text-sm">{{ item.subtitle }}</p>
-          </div>
-
-          <div class="text-sm text-gray-400">
-            {{ item.timestamp|date:"M d, Y" }}
-          </div>
-        </div>
-        {% empty %}
-        <p class="text-gray-500">No activity yet</p>
-        {% endfor %}
-      </div>
-
-    </div>
-
-    <!-- RIGHT -->
-    <div class="space-y-6">
-
-      <!-- SNAPSHOT -->
-      <div class="bg-white rounded-xl shadow p-6">
-        <h4 class="font-bold mb-4">Snapshot</h4>
-
-        <div class="flex justify-between py-2 border-b">
-          <span>Destinations</span>
-          <span>{{ destination_count }}</span>
-        </div>
-
-        <div class="flex justify-between py-2 border-b">
-          <span>Spots</span>
-          <span>{{ spot_count }}</span>
-        </div>
-
-        <div class="flex justify-between py-2">
-          <span>Reviews</span>
-          <span>{{ review_count }}</span>
-        </div>
-      </div>
-
-      <!-- SOCIAL -->
-      <div class="bg-white rounded-xl shadow p-6">
-        <h4 class="font-bold mb-4">Connect</h4>
-
-        <div class="flex gap-3">
-          {% if profile.social_github %}
-          <a href="{{ profile.social_github }}" class="p-3 bg-gray-100 rounded-full"><i class="fab fa-github"></i></a>
-          {% endif %}
-          {% if profile.social_linkedin %}
-          <a href="{{ profile.social_linkedin }}" class="p-3 bg-gray-100 rounded-full"><i
-              class="fab fa-linkedin"></i></a>
-          {% endif %}
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
 {% endblock %}
