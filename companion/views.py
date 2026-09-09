@@ -87,6 +87,9 @@ def nfc_tap_entry(request, tag_uid):
     if tag.assigned_partner:
         request.session['nfc_partner_name'] = tag.assigned_partner.business_name
         request.session['nfc_partner_type'] = tag.assigned_partner.get_partner_type_display()
+    else:
+        request.session.pop('nfc_partner_name', None)
+        request.session.pop('nfc_partner_type', None)
 
     # 4. Route according to target experience
     if tag.target_experience == 'SPECIFIC_ITINERARY' and tag.assigned_itinerary:
