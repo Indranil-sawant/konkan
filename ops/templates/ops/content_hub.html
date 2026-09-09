@@ -1,20 +1,20 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6 max-w-7xl mx-auto pb-20 md:pb-0">
     
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Content & Safety CMS</h1>
+            <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900 tracking-tight">Content & Safety CMS</h1>
             <p class="text-xs text-slate-500 font-medium mt-0.5">Manage tourist FAQs, local travel tips, 24x7 SOS emergency contacts, and live broadcast advisories.</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{% url 'ops_announcement_create' %}" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
-                <i class="fas fa-bullhorn"></i>
+            <a href="{% url 'ops_announcement_create' %}" class="flex-1 sm:flex-none justify-center px-3.5 py-2.5 sm:py-2 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 min-h-[40px]">
+                <i class="fas fa-bullhorn text-xs"></i>
                 <span>Post Alert</span>
             </a>
-            <a href="{% url 'ops_faq_create' %}" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
-                <i class="fas fa-plus"></i>
+            <a href="{% url 'ops_faq_create' %}" class="flex-1 sm:flex-none justify-center px-3.5 py-2.5 sm:py-2 rounded-xl bg-sky-600 hover:bg-sky-700 active:scale-95 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 min-h-[40px]">
+                <i class="fas fa-plus text-xs"></i>
                 <span>Add FAQ</span>
             </a>
         </div>
@@ -26,17 +26,17 @@
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
                 <i class="fas fa-bullhorn text-amber-500"></i> Active Broadcast Announcements
             </span>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {% for ann in announcements %}
-                    <div class="p-4 rounded-2xl bg-white border {% if ann.urgency_level == 'CRITICAL' %}border-rose-300 bg-rose-50/30{% elif ann.urgency_level == 'WARNING' %}border-amber-300 bg-amber-50/30{% else %}border-sky-300 bg-sky-50/30{% endif %} shadow-xs flex items-start justify-between">
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2">
+                    <div class="p-4 rounded-2xl bg-white border {% if ann.urgency_level == 'CRITICAL' %}border-rose-300 bg-rose-50/30{% elif ann.urgency_level == 'WARNING' %}border-amber-300 bg-amber-50/30{% else %}border-sky-300 bg-sky-50/30{% endif %} shadow-xs flex items-start justify-between gap-3">
+                        <div class="space-y-1.5">
+                            <div class="flex items-center gap-2 flex-wrap">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold {% if ann.urgency_level == 'CRITICAL' %}bg-rose-100 text-rose-800{% elif ann.urgency_level == 'WARNING' %}bg-amber-100 text-amber-800{% else %}bg-sky-100 text-sky-800{% endif %}">
                                     {{ ann.get_urgency_level_display }}
                                 </span>
                                 <h4 class="font-bold text-xs text-slate-900">{{ ann.title }}</h4>
                             </div>
-                            <p class="text-xs text-slate-600">{{ ann.message }}</p>
+                            <p class="text-xs text-slate-600 leading-relaxed">{{ ann.message }}</p>
                         </div>
                     </div>
                 {% endfor %}
@@ -44,81 +44,108 @@
         </div>
     {% endif %}
 
+    <!-- Mobile Tab Switcher (Visible only on mobile) -->
+    <div class="flex lg:hidden overflow-x-auto no-scrollbar gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 text-xs font-bold">
+        <button type="button" onclick="switchCmsTab('faqs')" id="tabBtn-faqs" class="cms-tab-btn flex-1 py-2 px-3 rounded-xl bg-white text-slate-900 shadow-xs text-center whitespace-nowrap min-h-[40px] flex items-center justify-center gap-1.5 transition-all">
+            <i class="fas fa-circle-question text-sky-500"></i> FAQs ({{ faqs.count }})
+        </button>
+        <button type="button" onclick="switchCmsTab('emergency')" id="tabBtn-emergency" class="cms-tab-btn flex-1 py-2 px-3 rounded-xl text-slate-600 hover:text-slate-900 text-center whitespace-nowrap min-h-[40px] flex items-center justify-center gap-1.5 transition-all">
+            <i class="fas fa-phone-volume text-rose-500"></i> SOS ({{ emergency_contacts.count }})
+        </button>
+        <button type="button" onclick="switchCmsTab('tips')" id="tabBtn-tips" class="cms-tab-btn flex-1 py-2 px-3 rounded-xl text-slate-600 hover:text-slate-900 text-center whitespace-nowrap min-h-[40px] flex items-center justify-center gap-1.5 transition-all">
+            <i class="fas fa-lightbulb text-amber-500"></i> Tips ({{ tips.count }})
+        </button>
+    </div>
+
     <!-- 3-Column CMS Sections Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <!-- FAQs Column -->
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 space-y-4">
+        <div id="cms-panel-faqs" class="cms-panel bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
                     <i class="fas fa-circle-question text-sky-500"></i> Tourist FAQs
                 </h3>
-                <a href="{% url 'ops_faq_create' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700">+ Add</a>
+                <a href="{% url 'ops_faq_create' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700 min-h-[36px] flex items-center px-2 py-1 rounded-lg hover:bg-sky-50">
+                    + Add FAQ
+                </a>
             </div>
 
             <div class="divide-y divide-slate-100 max-h-[480px] overflow-y-auto pr-1">
                 {% for faq in faqs %}
-                    <div class="py-3 group">
-                        <div class="flex items-start justify-between gap-2">
-                            <span class="text-xs font-bold text-slate-900 group-hover:text-sky-600 block">{{ faq.question }}</span>
-                            <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <a href="{% url 'ops_faq_edit' faq.pk %}" class="p-1 text-slate-400 hover:text-sky-600"><i class="fas fa-pen text-[10px]"></i></a>
-                                <a href="{% url 'ops_faq_delete' faq.pk %}" class="p-1 text-slate-400 hover:text-rose-600"><i class="fas fa-trash text-[10px]"></i></a>
+                    <div class="py-3.5 group">
+                        <div class="flex items-start justify-between gap-3">
+                            <span class="text-xs font-bold text-slate-900 group-hover:text-sky-600 block flex-1">{{ faq.question }}</span>
+                            <!-- Always visible on mobile, reveal on hover for desktop -->
+                            <div class="flex items-center gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity shrink-0">
+                                <a href="{% url 'ops_faq_edit' faq.pk %}" class="w-8 h-8 rounded-lg bg-slate-50 hover:bg-sky-50 text-slate-500 hover:text-sky-600 flex items-center justify-center border border-slate-200" title="Edit">
+                                    <i class="fas fa-pen text-[11px]"></i>
+                                </a>
+                                <a href="{% url 'ops_faq_delete' faq.pk %}" class="w-8 h-8 rounded-lg bg-slate-50 hover:bg-rose-50 text-slate-500 hover:text-rose-600 flex items-center justify-center border border-slate-200" title="Delete">
+                                    <i class="fas fa-trash text-[11px]"></i>
+                                </a>
                             </div>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">{{ faq.answer }}</p>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase mt-1 block">{{ faq.get_category_display }}</span>
+                        <p class="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{{ faq.answer }}</p>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase mt-1.5 inline-block bg-slate-100 px-2 py-0.5 rounded">{{ faq.get_category_display }}</span>
                     </div>
                 {% empty %}
-                    <p class="text-xs text-slate-400 py-6 text-center">No FAQs registered.</p>
+                    <p class="text-xs text-slate-400 py-8 text-center">No FAQs registered.</p>
                 {% endfor %}
             </div>
         </div>
 
         <!-- 24x7 Emergency Hub Column -->
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 space-y-4">
+        <div id="cms-panel-emergency" class="cms-panel hidden lg:block bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
                     <i class="fas fa-phone-volume text-rose-500"></i> 24x7 Emergency SOS
                 </h3>
-                <a href="{% url 'ops_emergency_create' %}" class="text-xs font-bold text-rose-600 hover:text-rose-700">+ Add</a>
+                <a href="{% url 'ops_emergency_create' %}" class="text-xs font-bold text-rose-600 hover:text-rose-700 min-h-[36px] flex items-center px-2 py-1 rounded-lg hover:bg-rose-50">
+                    + Add SOS
+                </a>
             </div>
 
             <div class="divide-y divide-slate-100 max-h-[480px] overflow-y-auto pr-1">
                 {% for contact in emergency_contacts %}
-                    <div class="py-3">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-900">{{ contact.name }}</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 font-mono">{{ contact.phone_number }}</span>
+                    <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">{{ contact.name }}</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">{{ contact.get_category_display }} • {{ contact.address|truncatechars:35 }}</span>
                         </div>
-                        <span class="text-[10px] text-slate-400 block mt-0.5">{{ contact.get_category_display }} • {{ contact.address|truncatechars:40 }}</span>
+                        <a href="tel:{{ contact.phone_number }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-mono text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 shrink-0 w-fit">
+                            <i class="fas fa-phone text-[10px]"></i>
+                            <span>{{ contact.phone_number }}</span>
+                        </a>
                     </div>
                 {% empty %}
-                    <p class="text-xs text-slate-400 py-6 text-center">No emergency numbers added.</p>
+                    <p class="text-xs text-slate-400 py-8 text-center">No emergency numbers added.</p>
                 {% endfor %}
             </div>
         </div>
 
         <!-- Travel Tips Column -->
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 space-y-4">
+        <div id="cms-panel-tips" class="cms-panel hidden lg:block bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
                     <i class="fas fa-lightbulb text-amber-500"></i> Insider Travel Tips
                 </h3>
-                <a href="{% url 'ops_tip_create' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700">+ Add</a>
+                <a href="{% url 'ops_tip_create' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700 min-h-[36px] flex items-center px-2 py-1 rounded-lg hover:bg-sky-50">
+                    + Add Tip
+                </a>
             </div>
 
             <div class="divide-y divide-slate-100 max-h-[480px] overflow-y-auto pr-1">
                 {% for tip in tips %}
-                    <div class="py-3">
+                    <div class="py-3.5">
                         <h4 class="text-xs font-bold text-slate-900 flex items-center gap-2">
                             <i class="fas {{ tip.icon|default:'fa-lightbulb' }} text-amber-500 text-xs"></i>
                             <span>{{ tip.title }}</span>
                         </h4>
-                        <p class="text-[11px] text-slate-600 mt-1">{{ tip.content }}</p>
+                        <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">{{ tip.content }}</p>
                     </div>
                 {% empty %}
-                    <p class="text-xs text-slate-400 py-6 text-center">No travel tips created.</p>
+                    <p class="text-xs text-slate-400 py-8 text-center">No travel tips created.</p>
                 {% endfor %}
             </div>
         </div>
@@ -126,4 +153,27 @@
     </div>
 
 </div>
+
+<script>
+function switchCmsTab(tabName) {
+    // Only applies on mobile (where .cms-panel has conditional visibility)
+    if (window.innerWidth < 1024) {
+        document.querySelectorAll('.cms-panel').forEach(el => {
+            el.classList.add('hidden');
+        });
+        const activePanel = document.getElementById('cms-panel-' + tabName);
+        if (activePanel) activePanel.classList.remove('hidden');
+
+        document.querySelectorAll('.cms-tab-btn').forEach(btn => {
+            btn.classList.remove('bg-white', 'text-slate-900', 'shadow-xs');
+            btn.classList.add('text-slate-600');
+        });
+        const activeBtn = document.getElementById('tabBtn-' + tabName);
+        if (activeBtn) {
+            activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-xs');
+            activeBtn.classList.remove('text-slate-600');
+        }
+    }
+}
+</script>
 {% endblock %}

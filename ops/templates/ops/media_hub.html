@@ -1,25 +1,27 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6 max-w-7xl mx-auto pb-20 md:pb-0">
     
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Media & Cloudinary Asset Hub</h1>
+            <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900 tracking-tight">Media & Cloudinary Asset Hub</h1>
             <p class="text-xs text-slate-500 font-medium mt-0.5">Manage optimized images delivered globally via Cloudinary CDN.</p>
         </div>
-        <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 flex items-center gap-1.5">
+        <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 flex items-center gap-1.5 w-fit">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Cloudinary CDN Connected
         </span>
     </div>
 
     <!-- Upload Box -->
-    <div class="p-6 md:p-8 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <h3 class="font-display font-bold text-base text-slate-900 mb-3">Upload New Media Asset</h3>
-        <form method="post" enctype="multipart/form-data" class="flex flex-col sm:flex-row items-center gap-4">
+    <div class="p-5 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+        <h3 class="font-display font-bold text-base text-slate-900">Upload New Media Asset</h3>
+        <form method="post" enctype="multipart/form-data" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             {% csrf_token %}
-            <input type="file" name="file" required class="form-file-ops w-full sm:w-auto flex-1">
-            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2">
+            <div class="flex-1">
+                <input type="file" name="file" required class="block w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer border border-slate-200 rounded-2xl p-2 bg-slate-50">
+            </div>
+            <button type="submit" class="px-6 py-3 sm:py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 active:scale-95 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2 min-h-[44px]">
                 <i class="fas fa-cloud-arrow-up"></i>
                 <span>Upload to CDN</span>
             </button>
@@ -29,28 +31,39 @@
     <!-- Asset Galleries Grid -->
     <div class="space-y-4">
         <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
-            <i class="fas fa-images text-sky-500"></i> Active Destination & Itinerary Covers
+            <i class="fas fa-images text-sky-500"></i> Active Destination & Itinerary Covers ({{ destinations.count }})
         </h3>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
             {% for dest in destinations %}
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden group">
-                    <div class="h-32 bg-slate-100 relative overflow-hidden">
-                        <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden group flex flex-col justify-between">
+                    <div class="h-28 sm:h-32 bg-slate-100 relative overflow-hidden">
+                        <img src="{{ dest.main_image.url }}" alt="{{ dest.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                     </div>
-                    <div class="p-2.5 space-y-1">
+                    <div class="p-2.5 space-y-1.5 flex-1 flex flex-col justify-between">
                         <span class="font-bold text-xs text-slate-900 truncate block">{{ dest.title }}</span>
-                        <button type="button" onclick="navigator.clipboard.writeText('{{ dest.main_image.url }}'); alert('CDN Image URL Copied!');" 
-                                class="text-[10px] text-sky-600 font-bold hover:underline block">
-                            Copy CDN URL ??
+                        <button type="button" onclick="copyCdnUrl('{{ dest.main_image.url }}')" 
+                                class="w-full py-1.5 px-2 rounded-lg bg-sky-50 hover:bg-sky-100 active:scale-95 text-[10px] text-sky-700 font-bold border border-sky-100 flex items-center justify-center gap-1 transition-all min-h-[32px]">
+                            <i class="fas fa-copy text-[9px]"></i>
+                            <span>Copy CDN URL</span>
                         </button>
                     </div>
                 </div>
             {% empty %}
-                <p class="col-span-6 text-center text-slate-400 py-12">No media images uploaded yet.</p>
+                <p class="col-span-full text-center text-slate-400 py-12">No media images uploaded yet.</p>
             {% endfor %}
         </div>
     </div>
 
 </div>
+
+<script>
+function copyCdnUrl(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        showToast('CDN Image URL Copied to clipboard!');
+    }).catch(() => {
+        showToast('Copied: ' + url);
+    });
+}
+</script>
 {% endblock %}

@@ -17,25 +17,25 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 p-8">
+<body class="bg-slate-100 p-4 sm:p-8">
 
     <!-- Top Action Bar (hidden when printing) -->
-    <div class="no-print max-w-5xl mx-auto mb-8 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+    <div class="no-print max-w-5xl mx-auto mb-6 sm:mb-8 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="font-bold text-slate-900 text-base">Printable NFC & QR Stickers Sheet</h1>
             <p class="text-xs text-slate-500">Formatted for 65mm x 65mm adhesive sticker sheets and table tent stands.</p>
         </div>
-        <div class="flex items-center gap-3">
-            <a href="{% url 'ops_nfc_list' %}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Back</a>
-            <button onclick="window.print()" class="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm flex items-center gap-2">
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+            <a href="{% url 'ops_nfc_list' %}" class="flex-1 sm:flex-none text-center px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 border border-slate-200 sm:border-transparent min-h-[40px] flex items-center justify-center">Back</a>
+            <button onclick="window.print()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2 min-h-[40px]">
                 <i class="fas fa-print text-amber-400"></i>
-                <span>Print Sticker Sheet</span>
+                <span>Print Stickers</span>
             </button>
         </div>
     </div>
 
     <!-- Sticker Grid -->
-    <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-6">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         {% for tag in tags %}
             <div class="sheet-card bg-white p-5 rounded-2xl border-2 border-slate-900 text-center flex flex-col items-center justify-between space-y-3 shadow-xs">
                 
@@ -49,13 +49,13 @@
                 <div class="p-2 bg-slate-50 rounded-xl border border-slate-200">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ratnagiri-companion.local/t/{{ tag.tag_uid }}/qr/" 
                          alt="QR {{ tag.tag_uid }}" 
-                         class="w-32 h-32">
+                         class="w-32 h-32" loading="lazy">
                 </div>
 
                 <!-- Instructions & Token -->
                 <div class="space-y-1">
                     <span class="text-[11px] font-black uppercase text-slate-900 block tracking-wide">
-                        ?? Tap Phone or Scan QR
+                        📲 Tap Phone or Scan QR
                     </span>
                     <span class="text-[10px] text-slate-500 block">
                         {{ tag.assigned_partner.business_name|default:"Ratnagiri Digital Tourist Guide" }}
@@ -67,7 +67,7 @@
 
             </div>
         {% empty %}
-            <p class="col-span-3 text-center text-slate-400 py-12">No active tags found for this filter.</p>
+            <p class="col-span-full text-center text-slate-400 py-12">No active tags found for this filter.</p>
         {% endfor %}
     </div>
 

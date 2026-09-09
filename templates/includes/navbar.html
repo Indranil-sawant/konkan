@@ -270,7 +270,7 @@
 </div>
 
 <!-- Mobile Fixed Bottom Navigation Bar (NFC Companion Optimized) -->
-<nav class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-xl">
+<nav class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-xl pb-[env(safe-area-inset-bottom,0px)]">
     <div class="flex justify-around items-center h-16 px-1 max-w-md mx-auto">
         <a href="{% url 'companion_home' %}" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all active:scale-95 {% if request.resolver_match.url_name == 'companion_home' or request.resolver_match.url_name == 'home' %}text-ocean-mid font-bold{% else %}text-slate-500 hover:text-slate-900{% endif %}">
             <span class="material-symbols-outlined text-[22px]">explore</span>

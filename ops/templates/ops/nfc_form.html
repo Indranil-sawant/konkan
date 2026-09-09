@@ -1,32 +1,35 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto space-y-6">
+<div class="max-w-2xl mx-auto space-y-5 pb-20 md:pb-0">
     
-    <div>
-        <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1 mb-1">
-            <i class="fas fa-arrow-left text-[10px]"></i> Back to NFC Inventory
-        </a>
-        <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">{{ page_title }}</h1>
+    <div class="flex items-center justify-between">
+        <div>
+            <a href="{% url 'ops_nfc_list' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 hover:text-sky-700 min-h-[36px] py-1">
+                <i class="fas fa-arrow-left text-[11px]"></i> Back to NFC Inventory
+            </a>
+            <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900 tracking-tight">{{ page_title }}</h1>
+        </div>
     </div>
 
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 md:p-8">
-        <form method="post" class="space-y-5">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-8">
+        <form method="post" id="nfcForm" class="space-y-5">
             {% csrf_token %}
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Token UID *</label>
                     {{ form.tag_uid }}
-                    {% if form.tag_uid.errors %}<span class="text-xs text-rose-500">{{ form.tag_uid.errors.0 }}</span>{% endif %}
+                    {% if form.tag_uid.errors %}<span class="text-xs text-rose-500 font-medium mt-1 block">{{ form.tag_uid.errors.0 }}</span>{% endif %}
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Title / Location *</label>
                     {{ form.title }}
+                    {% if form.title.errors %}<span class="text-xs text-rose-500 font-medium mt-1 block">{{ form.title.errors.0 }}</span>{% endif %}
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Type</label>
                     {{ form.tag_type }}
@@ -37,8 +40,10 @@
                 </div>
             </div>
 
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-                <span class="text-xs font-bold text-slate-800 block">Experience Associations (Optional)</span>
+            <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                <span class="text-xs font-bold text-slate-800 block flex items-center gap-2">
+                    <i class="fas fa-link text-sky-500"></i> Experience Associations (Optional)
+                </span>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Assigned Partner / Hotel</label>
                     {{ form.assigned_partner }}
@@ -64,19 +69,34 @@
             </div>
 
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
-                    {{ form.is_active }} <span>Tag is Active ??</span>
+                <label class="flex items-center gap-3 cursor-pointer text-xs font-bold text-slate-800 min-h-[44px]">
+                    {{ form.is_active }} <span>Tag is Active & Broadcasting</span>
                 </label>
             </div>
 
-            <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
-                <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-slate-500 hover:text-slate-800">Cancel</a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all">
-                    Save NFC Tag
+            <div class="pt-5 border-t border-slate-200 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
+                <a href="{% url 'ops_nfc_list' %}" class="w-full sm:w-auto text-center py-3 sm:py-2 text-xs font-bold text-slate-500 hover:text-slate-800 border border-slate-200 sm:border-transparent rounded-xl">
+                    Cancel
+                </a>
+                <button type="submit" id="saveNfcBtn" class="w-full sm:w-auto px-6 py-3.5 sm:py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 active:scale-95 text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2 min-h-[44px]">
+                    <i class="fas fa-check"></i>
+                    <span>Save NFC Tag</span>
                 </button>
             </div>
         </form>
     </div>
 
 </div>
+
+<script>
+    const form = document.getElementById('nfcForm');
+    const btn = document.getElementById('saveNfcBtn');
+    if (form && btn) {
+        form.addEventListener('submit', function() {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.classList.add('opacity-75');
+        });
+    }
+</script>
 {% endblock %}

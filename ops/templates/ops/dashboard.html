@@ -1,20 +1,20 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="space-y-8 max-w-7xl mx-auto">
+<div class="space-y-6 sm:space-y-8 max-w-7xl mx-auto">
     
-    <!-- Welcome Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- Welcome Header & Quick Action Group -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="font-display font-black text-2xl md:text-3xl text-slate-900 tracking-tight">Operations Dashboard</h1>
-            <p class="text-xs md:text-sm text-slate-500 font-medium mt-1">Live monitoring for Ratnagiri NFC tags, curated journeys, partner concierge, and safety telemetry.</p>
+            <h1 class="font-display font-black text-xl sm:text-2xl md:text-3xl text-slate-900 tracking-tight">Operations Dashboard</h1>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Live telemetry for Ratnagiri NFC tags, curated journeys, partner concierge, and safety.</p>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="{% url 'ops_nfc_bulk_generate' %}" class="px-3.5 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-all flex items-center gap-1.5 shadow-sm">
+        <div class="flex items-center gap-2 sm:self-auto self-stretch">
+            <a href="{% url 'ops_nfc_bulk_generate' %}" class="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 active:scale-95 transition-all flex items-center justify-center gap-2 shadow-sm">
                 <i class="fas fa-layer-group text-amber-400"></i>
-                <span>Batch Generate Tags</span>
+                <span>Batch Tags</span>
             </a>
-            <a href="{% url 'ops_place_create' %}" class="px-3.5 py-2 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 transition-all flex items-center gap-1.5 shadow-sm">
+            <a href="{% url 'ops_place_create' %}" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 active:scale-95 transition-all flex items-center justify-center gap-2 shadow-sm">
                 <i class="fas fa-plus"></i>
                 <span>Add Place</span>
             </a>
@@ -29,9 +29,9 @@
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {% for item in stats.attention_items %}
-                    <div class="p-4 rounded-2xl bg-white border border-amber-200/80 shadow-xs flex flex-col justify-between">
+                    <div class="p-4 rounded-2xl bg-white border border-amber-200/90 shadow-xs flex flex-col justify-between space-y-3">
                         <div class="flex items-start gap-3">
-                            <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0 text-sm">
+                            <span class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0 text-sm">
                                 <i class="fas {{ item.icon }}"></i>
                             </span>
                             <div>
@@ -39,8 +39,8 @@
                                 <p class="text-[11px] text-slate-500 mt-0.5 leading-snug">{{ item.description }}</p>
                             </div>
                         </div>
-                        <div class="mt-3 pt-3 border-t border-slate-100 flex justify-end">
-                            <a href="{{ item.action_url }}" class="text-xs font-bold text-sky-600 hover:text-sky-700 inline-flex items-center gap-1">
+                        <div class="pt-2 border-t border-slate-100 flex justify-end">
+                            <a href="{{ item.action_url }}" class="text-xs font-bold text-sky-600 hover:text-sky-700 inline-flex items-center gap-1.5 p-1">
                                 <span>{{ item.action_label }}</span>
                                 <i class="fas fa-arrow-right text-[10px]"></i>
                             </a>
@@ -51,115 +51,115 @@
         </div>
     {% endif %}
 
-    <!-- KPI Summary Cards Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+    <!-- KPI Summary Cards Grid (Responsive 2-col on mobile, 3-col on tablet, 6-col on desktop) -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-3.5">
         
         <!-- Card 1: NFC Tags -->
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
-            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <a href="{% url 'ops_nfc_list' %}" class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 active:scale-95 transition-all block">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
                 <span class="font-bold uppercase tracking-wider text-[10px]">NFC Tags</span>
                 <i class="fas fa-nfc-symbol text-sky-500"></i>
             </div>
-            <div class="flex items-baseline gap-2">
-                <span class="font-display font-black text-2xl text-slate-900">{{ stats.total_tags }}</span>
-                <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">{{ stats.active_tags }} live</span>
+            <div class="flex flex-wrap items-baseline gap-1.5">
+                <span class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ stats.total_tags }}</span>
+                <span class="text-[9px] text-emerald-600 font-bold bg-emerald-50 px-1 py-0.5 rounded">{{ stats.active_tags }} live</span>
             </div>
-            <span class="text-[10px] text-slate-400 block mt-1">Physical tokens</span>
-        </div>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Physical tokens</span>
+        </a>
 
         <!-- Card 2: Taps Today -->
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
-            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
                 <span class="font-bold uppercase tracking-wider text-[10px]">Taps Today</span>
                 <i class="fas fa-bolt text-amber-500"></i>
             </div>
-            <div class="flex items-baseline gap-2">
-                <span class="font-display font-black text-2xl text-slate-900">{{ stats.taps_today }}</span>
+            <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ stats.taps_today }}</span>
                 <span class="text-[10px] text-slate-500 font-semibold">scans</span>
             </div>
-            <span class="text-[10px] text-slate-400 block mt-1">Real-time telemetry</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Real-time</span>
         </div>
 
-        <!-- Card 3: Taps This Month -->
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
-            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <!-- Card 3: 30-Day Taps -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
                 <span class="font-bold uppercase tracking-wider text-[10px]">30-Day Taps</span>
                 <i class="fas fa-chart-simple text-indigo-500"></i>
             </div>
-            <div class="flex items-baseline gap-2">
-                <span class="font-display font-black text-2xl text-slate-900">{{ stats.taps_month }}</span>
-                <span class="text-[10px] text-slate-400 font-mono">total {{ stats.total_taps }}</span>
+            <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ stats.taps_month }}</span>
+                <span class="text-[9px] text-slate-400 font-mono">/ {{ stats.total_taps }}</span>
             </div>
-            <span class="text-[10px] text-slate-400 block mt-1">Monthly interactions</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Interactions</span>
         </div>
 
         <!-- Card 4: Places & Sights -->
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
-            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <a href="{% url 'ops_places_list' %}" class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 active:scale-95 transition-all block">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
                 <span class="font-bold uppercase tracking-wider text-[10px]">Places</span>
                 <i class="fas fa-map-location-dot text-emerald-500"></i>
             </div>
-            <div class="flex items-baseline gap-2">
-                <span class="font-display font-black text-2xl text-slate-900">{{ stats.total_places }}</span>
-                <span class="text-[10px] text-emerald-600 font-bold">{{ stats.verified_places }} verified</span>
+            <div class="flex flex-wrap items-baseline gap-1.5">
+                <span class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ stats.total_places }}</span>
+                <span class="text-[9px] text-emerald-600 font-bold bg-emerald-50 px-1 py-0.5 rounded">{{ stats.verified_places }} verified</span>
             </div>
-            <span class="text-[10px] text-slate-400 block mt-1">Sights & beaches</span>
-        </div>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Sights & beaches</span>
+        </a>
 
         <!-- Card 5: Curated Itineraries -->
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
-            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <a href="{% url 'ops_itineraries_list' %}" class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 active:scale-95 transition-all block">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
                 <span class="font-bold uppercase tracking-wider text-[10px]">Itineraries</span>
                 <i class="fas fa-route text-purple-500"></i>
             </div>
-            <div class="flex items-baseline gap-2">
-                <span class="font-display font-black text-2xl text-slate-900">{{ stats.published_itineraries }}</span>
-                <span class="text-[10px] text-purple-600 font-bold bg-purple-50 px-1.5 py-0.5 rounded">active</span>
+            <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ stats.published_itineraries }}</span>
+                <span class="text-[9px] text-purple-600 font-bold bg-purple-50 px-1 py-0.5 rounded">active</span>
             </div>
-            <span class="text-[10px] text-slate-400 block mt-1">Multi-day trails</span>
-        </div>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Multi-day trails</span>
+        </a>
 
         <!-- Card 6: Verified Partners -->
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 transition-all">
-            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+        <a href="{% url 'ops_partners_list' %}" class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-sky-300 active:scale-95 transition-all block">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
                 <span class="font-bold uppercase tracking-wider text-[10px]">Partners</span>
                 <i class="fas fa-handshake-angle text-rose-500"></i>
             </div>
-            <div class="flex items-baseline gap-2">
-                <span class="font-display font-black text-2xl text-slate-900">{{ stats.active_partners }}</span>
-                <span class="text-[10px] text-slate-500 font-semibold">businesses</span>
+            <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ stats.active_partners }}</span>
+                <span class="text-[10px] text-slate-500 font-semibold">active</span>
             </div>
-            <span class="text-[10px] text-slate-400 block mt-1">Hotels & guides</span>
-        </div>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Hotels & guides</span>
+        </a>
 
     </div>
 
     <!-- Charts Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         
         <!-- NFC Tap Trends Chart (2 Columns) -->
-        <div class="lg:col-span-2 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div class="lg:col-span-2 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="font-display font-bold text-base text-slate-900">Physical NFC Tap Volume (Last 14 Days)</h3>
+                    <h3 class="font-display font-bold text-sm sm:text-base text-slate-900">Physical NFC Tap Volume (Last 14 Days)</h3>
                     <p class="text-xs text-slate-400 font-medium">Daily scan activity across all deployed hotel, beach, and transport tags.</p>
                 </div>
-                <span class="px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 text-xs font-bold border border-sky-200">
+                <span class="hidden sm:inline-block px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 text-xs font-bold border border-sky-200">
                     Live Telemetry
                 </span>
             </div>
-            <div class="h-64 relative">
+            <div class="h-56 sm:h-64 relative">
                 <canvas id="tapTrendsChart"></canvas>
             </div>
         </div>
 
         <!-- Device Breakdown Doughnut Chart -->
-        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4 flex flex-col justify-between">
             <div>
-                <h3 class="font-display font-bold text-base text-slate-900">Visitor Devices</h3>
+                <h3 class="font-display font-bold text-sm sm:text-base text-slate-900">Visitor Devices</h3>
                 <p class="text-xs text-slate-400 font-medium">Device operating system distribution</p>
             </div>
-            <div class="h-56 relative flex items-center justify-center">
+            <div class="h-48 sm:h-52 relative flex items-center justify-center">
                 <canvas id="deviceChart"></canvas>
             </div>
             <div class="pt-2 border-t border-slate-100 flex justify-around text-center text-xs">
@@ -177,31 +177,31 @@
     </div>
 
     <!-- Top NFC Tags & Top Sights Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
         
         <!-- Top Performing NFC Tags -->
-        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
             <div class="flex items-center justify-between">
-                <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
+                <h3 class="font-display font-bold text-sm sm:text-base text-slate-900 flex items-center gap-2">
                     <i class="fas fa-trophy text-amber-500"></i> Top Scanned NFC Tags
                 </h3>
-                <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700">View All ?</a>
+                <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700 p-1">View All &rarr;</a>
             </div>
             <div class="divide-y divide-slate-100">
                 {% for tag in charts.top_tags %}
-                    <div class="py-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <span class="w-8 h-8 rounded-xl bg-slate-100 font-mono text-xs font-bold flex items-center justify-center text-slate-700">
+                    <div class="py-3 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 truncate">
+                            <span class="w-8 h-8 rounded-xl bg-slate-100 font-mono text-xs font-bold flex items-center justify-center text-slate-700 flex-shrink-0">
                                 #{{ forloop.counter }}
                             </span>
-                            <div>
-                                <a href="{% url 'ops_nfc_detail' tag.pk %}" class="text-xs font-bold text-slate-900 hover:text-sky-600 block">
+                            <div class="truncate">
+                                <a href="{% url 'ops_nfc_detail' tag.pk %}" class="text-xs font-bold text-slate-900 hover:text-sky-600 block truncate">
                                     {{ tag.title }}
                                 </a>
-                                <span class="text-[10px] font-mono text-slate-400 uppercase">[{{ tag.tag_uid }}] • {{ tag.get_target_experience_display }}</span>
+                                <span class="text-[10px] font-mono text-slate-400 uppercase truncate block">[{{ tag.tag_uid }}] • {{ tag.get_target_experience_display }}</span>
                             </div>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right flex-shrink-0">
                             <span class="text-xs font-bold text-slate-900 font-mono">{{ tag.tap_count }} taps</span>
                             <span class="text-[10px] text-emerald-600 block font-semibold">{{ tag.unique_visitor_count }} visitors</span>
                         </div>
@@ -213,18 +213,18 @@
         </div>
 
         <!-- Recent Audit Trail Feed -->
-        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
             <div class="flex items-center justify-between">
-                <h3 class="font-display font-bold text-base text-slate-900 flex items-center gap-2">
+                <h3 class="font-display font-bold text-sm sm:text-base text-slate-900 flex items-center gap-2">
                     <i class="fas fa-history text-slate-500"></i> Recent Admin Audit Activity
                 </h3>
-                <a href="{% url 'ops_system_hub' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700">Full Audit Log ?</a>
+                <a href="{% url 'ops_system_hub' %}" class="text-xs font-bold text-sky-600 hover:text-sky-700 p-1">Full Log &rarr;</a>
             </div>
             <div class="divide-y divide-slate-100">
                 {% for log in recent_logs %}
-                    <div class="py-2.5 flex items-center justify-between text-xs">
+                    <div class="py-2.5 flex items-center justify-between text-xs gap-2">
                         <div class="flex items-center gap-2.5 truncate pr-2">
-                            <span class="w-6 h-6 rounded-lg {% if log.action == 'CREATE' %}bg-emerald-50 text-emerald-600{% elif log.action == 'DELETE' %}bg-rose-50 text-rose-600{% elif log.action == 'BULK_ACTION' %}bg-amber-50 text-amber-600{% else %}bg-sky-50 text-sky-600{% endif %} flex items-center justify-center text-[10px] flex-shrink-0">
+                            <span class="w-7 h-7 rounded-lg {% if log.action == 'CREATE' %}bg-emerald-50 text-emerald-600{% elif log.action == 'DELETE' %}bg-rose-50 text-rose-600{% elif log.action == 'BULK_ACTION' %}bg-amber-50 text-amber-600{% else %}bg-sky-50 text-sky-600{% endif %} flex items-center justify-center text-[10px] flex-shrink-0">
                                 <i class="fas {% if log.action == 'CREATE' %}fa-plus{% elif log.action == 'DELETE' %}fa-trash{% elif log.action == 'BULK_ACTION' %}fa-layer-group{% else %}fa-pen{% endif %}"></i>
                             </span>
                             <div class="truncate">
@@ -233,7 +233,7 @@
                                 <span class="font-medium text-slate-900 truncate">"{{ log.resource_name }}"</span>
                             </div>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-400 whitespace-nowrap">{{ log.timestamp|timesince }} ago</span>
+                        <span class="text-[10px] font-mono text-slate-400 whitespace-nowrap flex-shrink-0">{{ log.timestamp|timesince }} ago</span>
                     </div>
                 {% empty %}
                     <p class="text-xs text-slate-400 py-4 text-center">No administrative actions logged yet.</p>
@@ -263,7 +263,7 @@
                 tension: 0.35,
                 borderWidth: 2.5,
                 pointBackgroundColor: '#0284c7',
-                pointRadius: 4,
+                pointRadius: 3.5,
                 pointHoverRadius: 6,
             }]
         },
@@ -272,8 +272,8 @@
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                x: { grid: { display: false } },
-                y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1 } }
+                x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+                y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, font: { size: 10 } } }
             }
         }
     });

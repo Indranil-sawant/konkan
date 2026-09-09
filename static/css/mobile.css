@@ -639,3 +639,119 @@ a, button, [role="button"] {
 .safe-bottom {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
+/* ── 32. OPERATIONS (/OPS) MOBILE ARCHITECTURE ───────────── */
+
+/* Form inputs: strictly 16px minimum to prevent iOS Safari auto-zoom */
+.form-input-ops,
+.form-select-ops,
+.form-textarea-ops,
+.custom-auth-field input {
+  font-size: 16px !important; /* Prevents iOS auto-zoom */
+  min-height: var(--touch-min);
+  border-radius: 0.75rem;
+  padding: 0.625rem 0.875rem;
+}
+
+/* Mobile Operations Bottom Bar */
+.ops-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(51, 65, 85, 0.8);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.ops-bottom-link {
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.ops-bottom-link.active,
+.ops-bottom-link:hover {
+  color: #38bdf8;
+}
+
+/* Mobile Quick Action FAB */
+.ops-fab {
+  position: fixed;
+  bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+  right: 1.25rem;
+  z-index: 45;
+  width: 52px;
+  height: 52px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.4), 0 8px 10px -6px rgba(2, 132, 199, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+}
+
+.ops-fab:active {
+  transform: scale(0.92);
+}
+
+/* Operations Horizontal Tab Scroller */
+.ops-tab-scroller {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ops-tab-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sticky Action Bar for Long Forms */
+.ops-sticky-save-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid #e2e8f0;
+  padding: 0.875rem 1.25rem;
+  padding-bottom: max(0.875rem, env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 16px -2px rgba(15, 23, 42, 0.05);
+}
+
+/* Touch Action Buttons for Operations */
+.ops-action-btn {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+/* Save State Feedbacks */
+.saving-state {
+  pointer-events: none;
+  opacity: 0.8;
+}
+

@@ -152,11 +152,11 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Explorer Name</label>
-                                    <input type="text" name="author_name" value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}" placeholder="Your name or alias" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-xs outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all placeholder:text-slate-400 font-medium" />
+                                    <input type="text" name="author_name" value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}" placeholder="Your name or alias" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-base sm:text-sm outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all placeholder:text-slate-400 font-medium" />
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Rating (1 to 5 Stars)</label>
-                                    <select name="rating" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-xs outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all font-medium">
+                                    <select name="rating" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-base sm:text-sm outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all font-medium">
                                         <option value="5" selected>⭐⭐⭐⭐⭐ (5 - Exceptional)</option>
                                         <option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
                                         <option value="3">⭐⭐⭐ (3 - Average)</option>
@@ -166,10 +166,10 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Your Story & Insights</label>
-                                    <textarea name="comment" rows="4" placeholder="How was your visit? Mention tides, road condition, local food stalls, or crowd tips..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-xs outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all placeholder:text-slate-400 font-medium"></textarea>
+                                    <textarea name="comment" rows="4" placeholder="How was your visit? Mention tides, road condition, local food stalls, or crowd tips..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-base sm:text-sm outline-none focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/20 transition-all placeholder:text-slate-400 font-medium"></textarea>
                                 </div>
                             </div>
-                            <button type="submit" class="px-8 py-3.5 rounded-full bg-ocean-mid hover:bg-ocean-dark text-white text-xs font-bold uppercase tracking-wider shadow-tactile transition-all">
+                            <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-ocean-mid hover:bg-ocean-dark active:scale-95 text-white text-xs font-bold uppercase tracking-wider shadow-tactile transition-all min-h-[44px]">
                                 Submit Review
                             </button>
                         </form>
@@ -309,6 +309,25 @@
             </div>
 
         </div>
+    </div>
+</div>
+
+<!-- Mobile Sticky Quick Actions Dock (visible only on small screens) -->
+<div class="block lg:hidden fixed bottom-16 inset-x-0 z-30 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl safe-area-pb">
+    <div class="max-w-md mx-auto flex items-center gap-2">
+        <button onclick="savePlaceToTrip('{{ destination.id }}', '{{ destination.title|escapejs }}', '{{ destination.category }}', '{{ destination.slug }}', this)" 
+                class="flex-1 py-3 px-4 rounded-xl bg-ocean-mist hover:bg-ocean-mid hover:text-white text-ocean-deep border border-ocean-sky/40 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs min-h-[44px]">
+            <i class="fas fa-bookmark text-ocean-mid"></i>
+            <span>Save to Trip</span>
+        </button>
+        {% if destination.latitude and destination.longitude %}
+        <a href="https://www.google.com/maps/dir/?api=1&destination={{ destination.latitude }},{{ destination.longitude }}" 
+           target="_blank" rel="noopener"
+           class="flex-1 py-3 px-4 rounded-xl bg-ocean-mid hover:bg-ocean-dark text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-tactile min-h-[44px]">
+            <i class="fas fa-location-arrow"></i>
+            <span>Directions</span>
+        </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

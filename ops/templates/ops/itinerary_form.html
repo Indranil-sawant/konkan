@@ -1,22 +1,23 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="max-w-3xl mx-auto space-y-5 sm:space-y-6">
     
     <div>
-        <a href="{% url 'ops_itineraries_list' %}" class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1 mb-1">
+        <a href="{% url 'ops_itineraries_list' %}" class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1.5 mb-1 p-0.5">
             <i class="fas fa-arrow-left text-[10px]"></i> Back to Itineraries
         </a>
-        <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">{{ page_title }}</h1>
+        <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900 tracking-tight">{{ page_title }}</h1>
     </div>
 
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 md:p-8">
-        <form method="post" enctype="multipart/form-data" class="space-y-5">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-6 md:p-8">
+        <form id="itinerary-create-form" method="post" enctype="multipart/form-data" class="space-y-4 sm:space-y-5">
             {% csrf_token %}
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Itinerary Title *</label>
                 {{ form.title }}
+                {% if form.title.errors %}<span class="text-xs text-rose-500 font-semibold block mt-1">{{ form.title.errors.0 }}</span>{% endif %}
             </div>
 
             <div>
@@ -24,7 +25,7 @@
                 {{ form.tagline }}
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Duration (Days) *</label>
                     {{ form.duration_days }}
@@ -39,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Pacing / Difficulty</label>
                     {{ form.difficulty }}
@@ -60,7 +61,7 @@
                 {{ form.cover_image }}
             </div>
 
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-6">
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center gap-4 sm:gap-6">
                 <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
                     {{ form.is_featured }} <span>Feature on Home</span>
                 </label>
@@ -69,14 +70,22 @@
                 </label>
             </div>
 
-            <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
-                <a href="{% url 'ops_itineraries_list' %}" class="text-xs font-bold text-slate-500 hover:text-slate-800">Cancel</a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all">
-                    Continue to Journey Studio ?
+            <div class="pt-5 border-t border-slate-200 flex items-center justify-between gap-4">
+                <a href="{% url 'ops_itineraries_list' %}" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors">Cancel</a>
+                <button type="submit" id="save-itinerary-btn" class="px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm active:scale-95 transition-all">
+                    Continue to Journey Studio &rarr;
                 </button>
             </div>
         </form>
     </div>
 
 </div>
+
+<script>
+document.getElementById('itinerary-create-form').addEventListener('submit', function() {
+    const btn = document.getElementById('save-itinerary-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Initializing...';
+});
+</script>
 {% endblock %}

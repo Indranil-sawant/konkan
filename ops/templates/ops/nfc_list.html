@@ -1,24 +1,24 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 sm:space-y-6 max-w-7xl mx-auto">
     
     <!-- Header & Action Buttons -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-            <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Physical NFC Tag Operations</h1>
+            <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900 tracking-tight">Physical NFC Tag Operations</h1>
             <p class="text-xs text-slate-500 font-medium mt-0.5">Manage deployed NFC tokens, campaign assignments, partner concierges, and tap telemetry.</p>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="{% url 'ops_nfc_export_csv' %}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 shadow-2xs transition-all flex items-center gap-1.5">
+        <div class="flex flex-wrap items-center gap-2 sm:self-auto self-stretch">
+            <a href="{% url 'ops_nfc_export_csv' %}" class="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 shadow-2xs transition-all flex items-center justify-center gap-1.5">
                 <i class="fas fa-file-csv text-emerald-600"></i>
                 <span>Export CSV</span>
             </a>
-            <a href="{% url 'ops_nfc_bulk_generate' %}" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
+            <a href="{% url 'ops_nfc_bulk_generate' %}" class="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
                 <i class="fas fa-layer-group text-amber-400"></i>
-                <span>Bulk Generator</span>
+                <span>Bulk Gen</span>
             </a>
-            <a href="{% url 'ops_nfc_create' %}" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
+            <a href="{% url 'ops_nfc_create' %}" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
                 <i class="fas fa-plus"></i>
                 <span>Create Tag</span>
             </a>
@@ -26,37 +26,104 @@
     </div>
 
     <!-- Filter & Search Toolbar -->
-    <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
-        <div class="flex flex-wrap items-center gap-1.5">
+    <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <a href="{% url 'ops_nfc_list' %}" 
-               class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {% if not current_status and not current_type %}bg-slate-900 text-white{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
-                All Tags
+               class="px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all {% if not current_status and not current_type %}bg-slate-900 text-white{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
+                All Tags ({{ tags.count }})
             </a>
             <a href="{% url 'ops_nfc_list' %}?status=active" 
-               class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {% if current_status == 'active' %}bg-emerald-500 text-white font-bold{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
-                ?? Active
+               class="px-3.5 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition-all {% if current_status == 'active' %}bg-emerald-500 text-white font-bold{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
+                ✓ Active
             </a>
             <a href="{% url 'ops_nfc_list' %}?status=inactive" 
-               class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all {% if current_status == 'inactive' %}bg-amber-500 text-white font-bold{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
-                ?? Paused / Inactive
+               class="px-3.5 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition-all {% if current_status == 'inactive' %}bg-amber-500 text-white font-bold{% else %}bg-slate-100 text-slate-600 hover:bg-slate-200{% endif %}">
+                ⏸ Paused
             </a>
             <a href="{% url 'ops_nfc_print_sheet' %}" target="_blank" 
-               class="px-3 py-1.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 transition-all flex items-center gap-1">
+               class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 shrink-0 transition-all flex items-center gap-1">
                 <i class="fas fa-print"></i> Printable Sheets
             </a>
         </div>
 
         <form method="get" class="flex items-center gap-2">
-            <input type="search" name="q" value="{{ search_q }}" placeholder="Search Tag UID or Title..." 
-                   class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 outline-none focus:border-sky-500 w-48 sm:w-64">
-            <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
-                Filter
+            {% if current_status %}<input type="hidden" name="status" value="{{ current_status }}">{% endif %}
+            <input type="search" name="q" value="{{ search_q }}" placeholder="Search Tag UID or Location..." 
+                   class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 outline-none focus:border-sky-500 focus:bg-white">
+            <button type="submit" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shrink-0 active:scale-95 transition-all">
+                Search
             </button>
         </form>
     </div>
 
-    <!-- Tags Inventory Table -->
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+    <!-- ========================================== -->
+    <!-- MOBILE CARD VIEW (<768px)                  -->
+    <!-- ========================================== -->
+    <div class="md:hidden space-y-3.5">
+        {% for tag in tags %}
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-sm flex-shrink-0">
+                            <i class="fas fa-nfc-symbol"></i>
+                        </span>
+                        <div>
+                            <a href="{% url 'ops_nfc_detail' tag.pk %}" class="font-mono font-black text-sm text-slate-900 hover:text-sky-600 block leading-none">
+                                {{ tag.tag_uid }}
+                            </a>
+                            <span class="text-[11px] text-slate-500 font-medium mt-1 block truncate max-w-[180px]">{{ tag.title }}</span>
+                        </div>
+                    </div>
+                    <form action="{% url 'ops_nfc_toggle_status' tag.pk %}" method="post" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition-all {% if tag.is_active %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-amber-50 text-amber-700 border border-amber-200{% endif %}">
+                            {% if tag.is_active %}✓ Active{% else %}⏸ Paused{% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-[11px] p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <div>
+                        <span class="text-slate-400 block text-[9px] uppercase font-bold">Target Route</span>
+                        <span class="font-bold text-slate-800 block truncate">{{ tag.get_target_experience_display }}</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block text-[9px] uppercase font-bold">Engagement</span>
+                        <span class="font-mono font-bold text-slate-900">{{ tag.tap_count }} taps</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold block">{{ tag.unique_visitor_count }} unique</span>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button type="button" onclick="navigator.clipboard.writeText(window.location.origin + '/t/{{ tag.tag_uid }}/'); showOpsToast('Copied: /t/{{ tag.tag_uid }}/');" 
+                            class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1 p-1">
+                        <i class="fas fa-copy text-[10px]"></i> Copy Tap URL
+                    </button>
+                    <div class="flex items-center gap-1.5">
+                        <a href="{% url 'nfc_tap_entry' tag.tag_uid %}" target="_blank" class="p-2 rounded-xl bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-600 transition-colors" title="Simulate Tap">
+                            <i class="fas fa-bolt text-xs"></i>
+                        </a>
+                        <a href="{% url 'nfc_qr_view' tag.tag_uid %}" target="_blank" class="p-2 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 transition-colors" title="QR Code">
+                            <i class="fas fa-qrcode text-xs"></i>
+                        </a>
+                        <a href="{% url 'ops_nfc_detail' tag.pk %}" class="px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold transition-colors">
+                            Manage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-400">
+                <i class="fas fa-nfc-symbol text-3xl block mb-2 opacity-40"></i>
+                <p class="text-xs font-semibold text-slate-600">No NFC tags match your search filter.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- ========================================== -->
+    <!-- DESKTOP TABLE VIEW (>=768px)               -->
+    <!-- ========================================== -->
+    <div class="hidden md:block bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -117,9 +184,9 @@
                                     {% csrf_token %}
                                     <button type="submit" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition-all {% if tag.is_active %}bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100{% else %}bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100{% endif %}" title="Toggle active/pause">
                                         {% if tag.is_active %}
-                                            ?? Active
+                                            ✓ Active
                                         {% else %}
-                                            ?? Paused
+                                            ⏸ Paused
                                         {% endif %}
                                     </button>
                                 </form>

@@ -1,25 +1,25 @@
 {% extends 'ops/base_ops.html' %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="max-w-3xl mx-auto space-y-5 pb-20 md:pb-0">
     
     <div>
-        <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1 mb-1">
-            <i class="fas fa-arrow-left text-[10px]"></i> Back to NFC Tag Inventory
+        <a href="{% url 'ops_nfc_list' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 hover:text-sky-700 min-h-[36px] py-1">
+            <i class="fas fa-arrow-left text-[11px]"></i> Back to NFC Tag Inventory
         </a>
-        <h1 class="font-display font-black text-2xl text-slate-900 tracking-tight">Commercial Bulk NFC Tag Generator</h1>
-        <p class="text-xs text-slate-500 font-medium mt-0.5">Generate sequential batches of 10, 50, or 100 NFC tokens for hotel guest rooms, restaurant tables, or beach welcome kiosks.</p>
+        <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900 tracking-tight">Commercial Bulk NFC Tag Generator</h1>
+        <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">Generate sequential batches of 10, 50, or 100 NFC tokens for hotel guest rooms, restaurant tables, or beach welcome kiosks.</p>
     </div>
 
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 md:p-8">
-        <form method="post" class="space-y-6">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-8">
+        <form method="post" id="bulkNfcForm" class="space-y-5">
             {% csrf_token %}
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Prefix *</label>
                     {{ form.prefix }}
-                    <span class="text-[10px] text-slate-400 mt-1 block">e.g. HOTEL-OCEAN-</span>
+                    <span class="text-[10px] text-slate-400 mt-1 block font-mono">e.g. HOTEL-OCEAN-</span>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Starting Number</label>
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Tag Type</label>
                     {{ form.tag_type }}
@@ -48,8 +48,10 @@
                 <span class="text-[10px] text-slate-400 mt-1 block">Associates this batch with a specific verified hotel or business.</span>
             </div>
 
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-                <span class="text-xs font-bold text-slate-800 block">Personalized Welcome Greeting</span>
+            <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <span class="text-xs font-bold text-slate-800 block flex items-center gap-1.5">
+                    <i class="fas fa-comment-dots text-ocean-mid"></i> Personalized Welcome Greeting
+                </span>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-600 mb-1">Welcome Title</label>
                     {{ form.custom_welcome_title }}
@@ -60,9 +62,11 @@
                 </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
-                <a href="{% url 'ops_nfc_list' %}" class="text-xs font-bold text-slate-500 hover:text-slate-800">Cancel</a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-2">
+            <div class="pt-5 border-t border-slate-200 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
+                <a href="{% url 'ops_nfc_list' %}" class="w-full sm:w-auto text-center py-3 sm:py-2 text-xs font-bold text-slate-500 hover:text-slate-800 border border-slate-200 sm:border-transparent rounded-xl">
+                    Cancel
+                </a>
+                <button type="submit" id="generateBatchBtn" class="w-full sm:w-auto px-6 py-3.5 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2 min-h-[44px]">
                     <i class="fas fa-layer-group text-amber-400"></i>
                     <span>Generate Batch & Open Printable Sheet</span>
                 </button>
@@ -71,4 +75,16 @@
     </div>
 
 </div>
+
+<script>
+    const bForm = document.getElementById('bulkNfcForm');
+    const bBtn = document.getElementById('generateBatchBtn');
+    if (bForm && bBtn) {
+        bForm.addEventListener('submit', function() {
+            bBtn.disabled = true;
+            bBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Batch...';
+            bBtn.classList.add('opacity-75');
+        });
+    }
+</script>
 {% endblock %}
