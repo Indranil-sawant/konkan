@@ -38,6 +38,13 @@ ALLOWED_HOSTS = [
     '.onrender.com',
     'localhost',
     '127.0.0.1',
+    'testserver',
+    '*',
+] if DEBUG else [
+    'konkan.onrender.com',
+    '.onrender.com',
+    'localhost',
+    '127.0.0.1',
 ]
 
 if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
@@ -307,3 +314,17 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 LOGIN_URL = 'login'
+# ------------------------------------------------------------------------------
+# CACHING (In-Memory Fast Cache for Static Datasets & Telemetry)
+# ------------------------------------------------------------------------------
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'konkan-memory-cache',
+        'TIMEOUT': 300,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        }
+    }
+}

@@ -134,12 +134,18 @@ def companion_home(request):
     if tapped_uid:
         active_tag = NFCTag.objects.filter(tag_uid__iexact=tapped_uid).first()
 
-    itineraries = Itinerary.objects.filter(is_active=True).order_by('order', 'duration_days')[:6]
-    featured_destinations = Destination.objects.filter(is_verified=True).order_by('-created_at')[:8]
-    secret_spots = Spots.objects.all().order_by('-rating')[:6]
-    local_food = FoodItem.objects.all().order_by('-rating')[:6]
+    itineraries = Itinerary.objects.filter(is_active=True).annotate(
+        days_total=Count('days', distinct=True)
+    ).order_by('order', 'duration_days')[:6]
+    featured_destinations = Destination.objects.filter(is_verified=True).only(
+        'id', 'title', 'slug', 'category', 'location_name', 'main_image', 'created_at', 'best_time_to_visit'
+    ).order_by('-created_at')[:8]
+    secret_spots = Spots.objects.all().only('id', 'name', 'photo', 'rating', 'price').order_by('-rating')[:6]
+    local_food = FoodItem.objects.all().only('id', 'name', 'photo', 'rating', 'price').order_by('-rating')[:6]
     emergency_top = EmergencyContact.objects.filter(is_active=True).order_by('order')[:3]
-    partners = Partner.objects.filter(is_active=True, is_featured=True)[:4]
+    partners = Partner.objects.filter(is_active=True, is_featured=True).only(
+        'id', 'business_name', 'slug', 'partner_type', 'short_tagline', 'logo', 'cover_image'
+    )[:4]
 
     context = {
         'active_tag': active_tag,
@@ -156,12 +162,15 @@ def companion_home(request):
 def itinerary_list(request):
     """
     Explore curated itineraries with duration and audience filters.
+    Optimized with days_total annotation and prefetch_related to eliminate N+1 queries.
     """
     audience = request.GET.get('audience', '').strip()
     duration = request.GET.get('duration', '').strip()
     season = request.GET.get('season', '').strip()
 
-    itineraries = Itinerary.objects.filter(is_active=True)
+    itineraries = Itinerary.objects.filter(is_active=True).annotate(
+        days_total=Count('days', distinct=True)
+    ).prefetch_related('days__stops')
 
     if audience and audience != 'ALL':
         itineraries = itineraries.filter(audience=audience)
@@ -323,13 +332,14 @@ def trip_share_view(request):
 def emergency_hub_view(request):
     """
     1-Click SOS Safety Center & 24x7 Emergency Services for tourists.
+    Optimized in-memory filtering: 1 query instead of 5 separate queries.
     """
-    contacts = EmergencyContact.objects.filter(is_active=True).order_by('order')
+    contacts = list(EmergencyContact.objects.filter(is_active=True).order_by('order'))
     
-    hospitals = contacts.filter(category='HOSPITAL')
-    police = contacts.filter(category__in=['POLICE', 'COASTAL_POLICE'])
-    ambulance = contacts.filter(category__in=['AMBULANCE', 'FIRE'])
-    helplines = contacts.filter(category__in=['TOURIST_HELPLINE', 'TOWING'])
+    hospitals = [c for c in contacts if c.category == 'HOSPITAL']
+    police = [c for c in contacts if c.category in ('POLICE', 'COASTAL_POLICE')]
+    ambulance = [c for c in contacts if c.category in ('AMBULANCE', 'FIRE')]
+    helplines = [c for c in contacts if c.category in ('TOURIST_HELPLINE', 'TOWING')]
 
     context = {
         'contacts': contacts,

@@ -1,36 +1,80 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.urls import reverse
+from django.db.models import Q
 from destinations.models import Destination
 from spots.models import Spots
 from food.models import FoodItem
 
+
 def home(request):
-    featured_destinations = Destination.objects.filter(is_verified=True).order_by('-created_at')[:8]
-    categories = Destination.CATEGORY_CHOICES
-    
-    trending_forts = Destination.objects.filter(category='Fort', is_verified=True)[:4]
-    
-    featured_spots = Spots.objects.all().order_by('-rating')[:6]
+    featured_destinations = list(Destination.objects.filter(is_verified=True).order_by('-created_at')[:8])
+    categories = [c[0] for c in Destination.CATEGORY_CHOICES]
+    trending_forts = list(Destination.objects.filter(category='Fort', is_verified=True)[:4])
+    featured_spots = list(Spots.objects.all().order_by('-rating')[:6])
+    featured_food = list(FoodItem.objects.all().order_by('-rating')[:6])
 
     context = {
         'featured_destinations': featured_destinations,
-        'categories': [c[0] for c in categories],
+        'categories': categories,
         'trending_forts': trending_forts,
         'featured_spots': featured_spots,
-        'featured_food': FoodItem.objects.all().order_by('-rating')[:6],
+        'featured_food': featured_food,
     }
     return render(request, 'core/index.html', context)
 
 
-def search(request):        
+def search(request):
     query = request.GET.get('q', '').strip()
+    is_json = request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.GET.get('format') == 'json'
+
     if query:
-        destination_results = Destination.objects.filter(title__icontains=query, is_verified=True)
-        spot_results = Spots.objects.filter(name__icontains=query)
-        food_results = FoodItem.objects.filter(name__icontains=query)
+        destination_results = Destination.objects.filter(
+            Q(title__icontains=query) | Q(location_name__icontains=query),
+            is_verified=True
+        ).only('id', 'title', 'slug', 'category', 'location_name', 'main_image')[:10]
+
+        spot_results = Spots.objects.filter(name__icontains=query).only('id', 'name', 'photo', 'rating')[:6]
+        food_results = FoodItem.objects.filter(name__icontains=query).only('id', 'name', 'photo', 'rating')[:6]
     else:
         destination_results = Destination.objects.none()
         spot_results = Spots.objects.none()
         food_results = FoodItem.objects.none()
+
+    if is_json:
+        data = {
+            'query': query,
+            'destinations': [
+                {
+                    'id': d.id,
+                    'title': d.title,
+                    'url': reverse('destination_detail', kwargs={'slug': d.slug}),
+                    'category': d.category,
+                    'location': d.location_name,
+                    'image': d.main_image.url if d.main_image else '/static/images/default_destination.jpg'
+                }
+                for d in destination_results
+            ],
+            'spots': [
+                {
+                    'id': s.id,
+                    'title': s.name,
+                    'url': reverse('details_spots', kwargs={'pk': s.id}),
+                    'image': s.photo.url if s.photo else '/static/images/default_spot.jpg'
+                }
+                for s in spot_results
+            ],
+            'food': [
+                {
+                    'id': f.id,
+                    'title': f.name,
+                    'url': reverse('food_details', kwargs={'pk': f.id}),
+                    'image': f.photo.url if f.photo else '/static/images/default_food.jpg'
+                }
+                for f in food_results
+            ]
+        }
+        return JsonResponse(data)
 
     context = {
         'query': query,
@@ -39,4 +83,3 @@ def search(request):
         'food_results': food_results,
     }
     return render(request, 'core/search_results.html', context)
-                 

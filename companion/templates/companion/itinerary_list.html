@@ -106,7 +106,7 @@
                 <!-- Footer -->
                 <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between mt-2">
                     <div class="text-xs text-slate-500 font-semibold">
-                        <span class="font-bold text-slate-800">{{ itin.days.count }}</span> Days Planned
+                        <span class="font-bold text-slate-800">{{ itin.days_total|default:itin.duration_days }}</span> Days Planned
                     </div>
                     <a href="{% url 'itinerary_detail' slug=itin.slug %}" class="px-5 py-2.5 rounded-full bg-ocean-mid hover:bg-ocean-deep text-white text-xs font-bold uppercase tracking-wider transition-all shadow-xs">
                         View Route &rarr;

@@ -50,8 +50,11 @@ def create_destination(request):
     return render(request, 'destinations/destination_form.html', {'form': form})
 
 def destination_detail(request, slug):
-    destination = get_object_or_404(Destination, slug=slug)
-    reviews = destination.reviews.select_related('user').order_by('-created_at')
+    destination = get_object_or_404(
+        Destination.objects.select_related('submitted_by').prefetch_related('gallery', 'reviews__user'),
+        slug=slug
+    )
+    reviews = destination.reviews.all().order_by('-created_at')
     
     if request.method == 'POST':
         form = ReviewForm(request.POST)
