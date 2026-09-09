@@ -114,14 +114,67 @@
             </div>
 
             <!-- TAB 4: MEDIA & COVER IMAGE -->
-            <div id="tab-content-media" class="tab-content hidden space-y-5">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Main Cover Image (Uploaded to Cloudinary CDN)</label>
+            <div id="tab-content-media" class="tab-content hidden space-y-6">
+                <!-- Main Cover Image -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-xs font-bold text-slate-800">
+                            <i class="fas fa-image text-sky-500 mr-1.5"></i> Main Hero Cover Image (Primary Banner)
+                        </label>
+                        <span class="text-[10px] text-slate-400 font-semibold uppercase">1 Primary Picture</span>
+                    </div>
                     {{ form.main_image }}
+                    <span class="text-[11px] text-slate-400 block">Featured on search cards, companion lists, and hero banner background.</span>
                     {% if place.main_image %}
-                        <div class="mt-3 p-3 rounded-2xl bg-slate-50 border border-slate-200 inline-block">
-                            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Current Active Photo:</span>
-                            <img src="{{ place.main_image.url }}" alt="{{ place.title }}" class="h-36 rounded-xl object-cover border border-slate-200">
+                        <div class="mt-3 p-3 rounded-2xl bg-white border border-slate-200 inline-block shadow-2xs">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Active Hero Photo:</span>
+                            <img src="{{ place.main_image.url }}" alt="{{ place.title }}" class="h-36 max-w-full rounded-xl object-cover border border-slate-200">
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Multiple Gallery Moments -->
+                <div class="p-5 rounded-2xl bg-sky-50/40 border border-sky-100 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                                <i class="fas fa-images text-ocean-mid"></i>
+                                <span>Captured Moments Gallery (Upload Multiple Photos)</span>
+                            </label>
+                            <span class="text-[11px] text-slate-500 mt-0.5 block">Select 1, 5, or 10+ photos at once to build the traveler photo gallery.</span>
+                        </div>
+                        {% if gallery_photos %}
+                            <span class="px-2.5 py-1 rounded-full bg-sky-100 text-sky-800 text-[10px] font-bold">
+                                {{ gallery_photos.count }} photo{{ gallery_photos.count|pluralize }} saved
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Multi-file picker -->
+                    <div>
+                        <input type="file" name="gallery_images" multiple accept="image/*" class="form-file-ops">
+                        <span class="text-[10px] text-slate-400 mt-1 block font-mono">Tip: Hold Ctrl (Windows) or Cmd (Mac) to select multiple images simultaneously.</span>
+                    </div>
+
+                    <!-- Existing Gallery Photos Grid -->
+                    {% if gallery_photos %}
+                        <div class="pt-3 border-t border-sky-200/60 space-y-2">
+                            <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block">Saved Gallery Photos:</span>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                                {% for photo in gallery_photos %}
+                                    <div class="relative group rounded-xl overflow-hidden aspect-[4/3] bg-slate-100 border border-slate-200 shadow-2xs">
+                                        <img src="{{ photo.image.url }}" alt="Gallery photo" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
+                                            <a href="{% url 'ops_place_gallery_delete' place.pk photo.pk %}" 
+                                               onclick="return confirm('Remove this gallery photo?');"
+                                               class="px-2.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold shadow-sm flex items-center gap-1">
+                                                <i class="fas fa-trash text-[9px]"></i>
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endif %}
                 </div>

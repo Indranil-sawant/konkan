@@ -94,8 +94,14 @@ def place_create(request):
             place = form.save(commit=False)
             place.submitted_by = request.user
             place.save()
-            log_audit_action(request.user, 'CREATE', 'Place', place.title, {'slug': place.slug})
-            messages.success(request, f'Destination "{place.title}" successfully created!')
+
+            # Handle multiple gallery moments upload
+            gallery_files = request.FILES.getlist('gallery_images')
+            for f in gallery_files:
+                Gallery.objects.create(destination=place, image=f)
+
+            log_audit_action(request.user, 'CREATE', 'Place', place.title, {'slug': place.slug, 'gallery_count': len(gallery_files)})
+            messages.success(request, f'Destination "{place.title}" successfully created with {len(gallery_files)} gallery photos!')
             return redirect('ops_places_list')
     else:
         form = DestinationForm()
@@ -116,9 +122,15 @@ def place_edit(request, pk):
         form = DestinationForm(request.POST, request.FILES, instance=place)
         if form.is_valid():
             form.save()
-            log_audit_action(request.user, 'UPDATE', 'Place', place.title, {'id': place.pk})
+
+            # Handle multiple gallery moments upload
+            gallery_files = request.FILES.getlist('gallery_images')
+            for f in gallery_files:
+                Gallery.objects.create(destination=place, image=f)
+
+            log_audit_action(request.user, 'UPDATE', 'Place', place.title, {'id': place.pk, 'new_gallery_uploaded': len(gallery_files)})
             messages.success(request, f'Destination "{place.title}" updated successfully.')
-            return redirect('ops_places_list')
+            return redirect('ops_place_edit', pk=place.pk)
     else:
         form = DestinationForm(instance=place)
 
@@ -127,9 +139,19 @@ def place_edit(request, pk):
         'active_nav': 'places',
         'form': form,
         'place': place,
+        'gallery_photos': place.gallery.all(),
         'is_edit': True,
     }
     return render(request, 'ops/place_form.html', context)
+
+
+@staff_required
+def place_gallery_delete(request, place_pk, gallery_pk):
+    place = get_object_or_404(Destination, pk=place_pk)
+    gallery_item = get_object_or_404(Gallery, pk=gallery_pk, destination=place)
+    gallery_item.delete()
+    messages.success(request, 'Gallery photo removed successfully.')
+    return redirect('ops_place_edit', pk=place_pk)
 
 
 @staff_required
@@ -141,7 +163,7 @@ def place_toggle_verify(request, pk):
         request.user, 'VERIFY', 'Place', place.title,
         {'is_verified': place.is_verified}
     )
-    status_str = "Verified ??" if place.is_verified else "Unverified ?"
+    status_str = "Verified" if place.is_verified else "Unverified"
     messages.success(request, f'"{place.title}" is now marked as {status_str}.')
     return redirect('ops_places_list')
 

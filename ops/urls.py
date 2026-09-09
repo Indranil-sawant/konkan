@@ -9,6 +9,7 @@ urlpatterns = [
     path('places/', views.places_list, name='ops_places_list'),
     path('places/new/', views.place_create, name='ops_place_create'),
     path('places/<int:pk>/edit/', views.place_edit, name='ops_place_edit'),
+    path('places/<int:place_pk>/gallery/<int:gallery_pk>/delete/', views.place_gallery_delete, name='ops_place_gallery_delete'),
     path('places/<int:pk>/verify/', views.place_toggle_verify, name='ops_place_toggle_verify'),
     path('places/<int:pk>/delete/', views.place_delete, name='ops_place_delete'),
 
