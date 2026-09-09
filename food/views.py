@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .models import FoodItem 
 from .forms import FoodItemForm 
@@ -23,11 +24,14 @@ def create_food(request):
     if request.method == 'POST':
         food_item_form = FoodItemForm(request.POST, request.FILES)
         if food_item_form.is_valid():
-            food_item = food_item_form.save(commit=False)
-            if hasattr(request.user, 'profile'):
-                food_item.uploaded_by = request.user.profile
-            food_item.save()
-            return redirect('food_home')
+            try:
+                food_item = food_item_form.save(commit=False)
+                if hasattr(request.user, 'profile'):
+                    food_item.uploaded_by = request.user.profile
+                food_item.save()
+                return redirect('food_home')
+            except Exception as e:
+                messages.error(request, f"Error adding food item: {str(e)}")
     return render(request, 'food/food_form.html', {"food_items": food_items})
 
 
@@ -42,8 +46,11 @@ def update_food(request, pk):
     if request.method == 'POST':
         food_item = FoodItemForm(request.POST, request.FILES, instance=food)
         if food_item.is_valid():
-            food_item.save()
-            return redirect('food_home')
+            try:
+                food_item.save()
+                return redirect('food_home')
+            except Exception as e:
+                messages.error(request, f"Error updating food item: {str(e)}")
     return render(request, 'food/food_form.html', {'food_items': food_items})
 
 

@@ -8,7 +8,7 @@
 <section class="relative min-h-[50vh] lg:min-h-[60vh] flex items-end pb-16 pt-32 overflow-hidden bg-slate-900">
     <!-- Background Image with Ambient Zoom -->
     <div class="absolute inset-0 z-0">
-        {% if destination.main_image %}
+        {% if destination.main_image and destination.main_image.name %}
         <img src="{{ destination.main_image.url }}" alt="{{ destination.title }}" class="w-full h-full object-cover scale-105 motion-safe:animate-[pulse_20s_ease-in-out_infinite_alternate]" loading="eager" />
         {% else %}
         <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80" alt="Konkan Coastline" class="w-full h-full object-cover scale-105" />

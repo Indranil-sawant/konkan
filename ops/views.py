@@ -91,18 +91,28 @@ def place_create(request):
     if request.method == 'POST':
         form = DestinationForm(request.POST, request.FILES)
         if form.is_valid():
-            place = form.save(commit=False)
-            place.submitted_by = request.user
-            place.save()
+            try:
+                place = form.save(commit=False)
+                place.submitted_by = request.user
+                place.save()
 
-            # Handle multiple gallery moments upload
-            gallery_files = request.FILES.getlist('gallery_images')
-            for f in gallery_files:
-                Gallery.objects.create(destination=place, image=f)
+                # Handle multiple gallery moments upload
+                gallery_files = request.FILES.getlist('gallery_images')
+                gallery_errors = 0
+                for f in gallery_files:
+                    try:
+                        Gallery.objects.create(destination=place, image=f)
+                    except Exception as ge:
+                        gallery_errors += 1
 
-            log_audit_action(request.user, 'CREATE', 'Place', place.title, {'slug': place.slug, 'gallery_count': len(gallery_files)})
-            messages.success(request, f'Destination "{place.title}" successfully created with {len(gallery_files)} gallery photos!')
-            return redirect('ops_places_list')
+                log_audit_action(request.user, 'CREATE', 'Place', place.title, {'slug': place.slug, 'gallery_count': len(gallery_files)})
+                if gallery_errors > 0:
+                    messages.warning(request, f'Destination "{place.title}" created, but {gallery_errors} gallery photo(s) failed to save. Please check image format/storage.')
+                else:
+                    messages.success(request, f'Destination "{place.title}" successfully created with {len(gallery_files)} gallery photos!')
+                return redirect('ops_places_list')
+            except Exception as e:
+                messages.error(request, f'Error saving destination: {str(e)}')
     else:
         form = DestinationForm()
 
@@ -121,16 +131,26 @@ def place_edit(request, pk):
     if request.method == 'POST':
         form = DestinationForm(request.POST, request.FILES, instance=place)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
 
-            # Handle multiple gallery moments upload
-            gallery_files = request.FILES.getlist('gallery_images')
-            for f in gallery_files:
-                Gallery.objects.create(destination=place, image=f)
+                # Handle multiple gallery moments upload
+                gallery_files = request.FILES.getlist('gallery_images')
+                gallery_errors = 0
+                for f in gallery_files:
+                    try:
+                        Gallery.objects.create(destination=place, image=f)
+                    except Exception as ge:
+                        gallery_errors += 1
 
-            log_audit_action(request.user, 'UPDATE', 'Place', place.title, {'id': place.pk, 'new_gallery_uploaded': len(gallery_files)})
-            messages.success(request, f'Destination "{place.title}" updated successfully.')
-            return redirect('ops_place_edit', pk=place.pk)
+                log_audit_action(request.user, 'UPDATE', 'Place', place.title, {'id': place.pk, 'new_gallery_uploaded': len(gallery_files)})
+                if gallery_errors > 0:
+                    messages.warning(request, f'Destination "{place.title}" updated, but {gallery_errors} gallery photo(s) failed to save. Please check image format/storage.')
+                else:
+                    messages.success(request, f'Destination "{place.title}" updated successfully.')
+                return redirect('ops_place_edit', pk=place.pk)
+            except Exception as e:
+                messages.error(request, f'Error saving destination: {str(e)}')
     else:
         form = DestinationForm(instance=place)
 
@@ -200,16 +220,19 @@ def itinerary_create(request):
     if request.method == 'POST':
         form = ItineraryForm(request.POST, request.FILES)
         if form.is_valid():
-            itin = form.save()
-            # Create default Day 1
-            ItineraryDay.objects.create(
-                itinerary=itin,
-                day_number=1,
-                title=f"Day 1: Exploring {itin.title}"
-            )
-            log_audit_action(request.user, 'CREATE', 'Itinerary', itin.title, {'id': itin.pk})
-            messages.success(request, f'Itinerary "{itin.title}" created. Now build your days and stops!')
-            return redirect('ops_itinerary_builder', pk=itin.pk)
+            try:
+                itin = form.save()
+                # Create default Day 1
+                ItineraryDay.objects.create(
+                    itinerary=itin,
+                    day_number=1,
+                    title=f"Day 1: Exploring {itin.title}"
+                )
+                log_audit_action(request.user, 'CREATE', 'Itinerary', itin.title, {'id': itin.pk})
+                messages.success(request, f'Itinerary "{itin.title}" created. Now build your days and stops!')
+                return redirect('ops_itinerary_builder', pk=itin.pk)
+            except Exception as e:
+                messages.error(request, f'Error creating itinerary: {str(e)}')
     else:
         form = ItineraryForm()
 
@@ -482,10 +505,13 @@ def partner_create(request):
     if request.method == 'POST':
         form = PartnerForm(request.POST, request.FILES)
         if form.is_valid():
-            partner = form.save()
-            log_audit_action(request.user, 'CREATE', 'Partner', partner.business_name)
-            messages.success(request, f'Partner "{partner.business_name}" added.')
-            return redirect('ops_partners_list')
+            try:
+                partner = form.save()
+                log_audit_action(request.user, 'CREATE', 'Partner', partner.business_name)
+                messages.success(request, f'Partner "{partner.business_name}" added.')
+                return redirect('ops_partners_list')
+            except Exception as e:
+                messages.error(request, f'Error adding partner: {str(e)}')
     else:
         form = PartnerForm()
 
@@ -503,10 +529,13 @@ def partner_edit(request, pk):
     if request.method == 'POST':
         form = PartnerForm(request.POST, request.FILES, instance=partner)
         if form.is_valid():
-            form.save()
-            log_audit_action(request.user, 'UPDATE', 'Partner', partner.business_name)
-            messages.success(request, f'Partner "{partner.business_name}" updated.')
-            return redirect('ops_partners_list')
+            try:
+                form.save()
+                log_audit_action(request.user, 'UPDATE', 'Partner', partner.business_name)
+                messages.success(request, f'Partner "{partner.business_name}" updated.')
+                return redirect('ops_partners_list')
+            except Exception as e:
+                messages.error(request, f'Error updating partner: {str(e)}')
     else:
         form = PartnerForm(instance=partner)
 
@@ -644,10 +673,13 @@ def media_hub(request):
 
     if request.method == 'POST' and request.FILES.get('file'):
         uploaded_file = request.FILES['file']
-        file_path = default_storage.save(f'uploads/{uploaded_file.name}', uploaded_file)
-        file_url = default_storage.url(file_path)
-        log_audit_action(request.user, 'CREATE', 'Media Asset', uploaded_file.name, {'url': file_url})
-        messages.success(request, f'Image uploaded successfully to Cloud CDN: {file_url}')
+        try:
+            file_path = default_storage.save(f'uploads/{uploaded_file.name}', uploaded_file)
+            file_url = default_storage.url(file_path)
+            log_audit_action(request.user, 'CREATE', 'Media Asset', uploaded_file.name, {'url': file_url})
+            messages.success(request, f'Image uploaded successfully to Cloud CDN: {file_url}')
+        except Exception as e:
+            messages.error(request, f'Image upload failed: {str(e)}')
         return redirect('ops_media_hub')
 
     context = {

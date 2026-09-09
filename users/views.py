@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db.models import Avg
 from django.urls import reverse
 from .models import Profile
@@ -152,8 +153,11 @@ def edit_profile(request):
     if request.method == 'POST':
         users_form = Profileform(request.POST, request.FILES, instance=profile)
         if users_form.is_valid():
-            users_form.save()
-            return redirect('my_profile')
+            try:
+                users_form.save()
+                return redirect('my_profile')
+            except Exception as e:
+                messages.error(request, f"Error updating profile: {str(e)}")
     else:
         users_form = Profileform(instance=profile)
     return render(request, 'users/users_form.html', {"users_form": users_form, "is_edit": True})

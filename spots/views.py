@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Spots
 from .forms import SpotsForm
 
@@ -18,11 +19,14 @@ def create_spot(request):
     if request.method == 'POST':
         spots_form = SpotsForm(request.POST, request.FILES)
         if spots_form.is_valid():
-            spot = spots_form.save(commit=False)
-            if hasattr(request.user, 'profile'):
-                spot.uploaded_by = request.user.profile
-            spot.save()
-            return redirect('home_spots')
+            try:
+                spot = spots_form.save(commit=False)
+                if hasattr(request.user, 'profile'):
+                    spot.uploaded_by = request.user.profile
+                spot.save()
+                return redirect('home_spots')
+            except Exception as e:
+                messages.error(request, f"Error creating spot: {str(e)}")
     return render(request, 'spots/spot_form.html', {'spots_form': spots_form})
 
 
@@ -37,8 +41,11 @@ def update_spot(request, pk):
     if request.method == 'POST':
         spots_form = SpotsForm(request.POST, request.FILES, instance=spot)
         if spots_form.is_valid():
-            spots_form.save()
-            return redirect('home_spots')
+            try:
+                spots_form.save()
+                return redirect('home_spots')
+            except Exception as e:
+                messages.error(request, f"Error updating spot: {str(e)}")
     return render(request, 'spots/spot_form.html', {'spots_form': spots_form})
 
 

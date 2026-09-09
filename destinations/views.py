@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Destination
 from .forms import DestinationForm
 from reviews.models import Review
@@ -39,11 +40,14 @@ def create_destination(request):
     if request.method == 'POST':
         form = DestinationForm(request.POST, request.FILES)
         if form.is_valid():
-            destination = form.save(commit=False)
-            destination.submitted_by = request.user
-            destination.is_verified = False # Explicitly set to False
-            destination.save()
-            return render(request, 'destinations/submission_success.html') # Redirect to a success page or render a success message
+            try:
+                destination = form.save(commit=False)
+                destination.submitted_by = request.user
+                destination.is_verified = False # Explicitly set to False
+                destination.save()
+                return render(request, 'destinations/submission_success.html') # Redirect to a success page or render a success message
+            except Exception as e:
+                messages.error(request, f"Error saving destination: {str(e)}")
     else:
         form = DestinationForm()
     

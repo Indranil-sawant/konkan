@@ -268,21 +268,38 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # ------------------------------------------------------------------------------
 # MEDIA FILES
 # ------------------------------------------------------------------------------
+# MEDIA FILES
+# ------------------------------------------------------------------------------
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 # ------------------------------------------------------------------------------
 # STORAGE CONFIGURATION
 # ------------------------------------------------------------------------------
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
-}
+_cloudinary_cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '').strip()
+_cloudinary_api_key = os.environ.get('CLOUDINARY_API_KEY', '').strip()
+_cloudinary_api_secret = os.environ.get('CLOUDINARY_API_SECRET', '').strip()
+_cloudinary_url = os.environ.get('CLOUDINARY_URL', '').strip()
 
-if os.environ.get('CLOUDINARY_CLOUD_NAME') or os.environ.get('CLOUDINARY_URL'):
+if _cloudinary_url and not (_cloudinary_cloud_name and _cloudinary_api_key and _cloudinary_api_secret):
+    import re
+    _match = re.match(r'cloudinary:\/\/([^:]+):([^@]+)@(.+)', _cloudinary_url)
+    if _match:
+        _cloudinary_api_key = _match.group(1)
+        _cloudinary_api_secret = _match.group(2)
+        _cloudinary_cloud_name = _match.group(3)
+
+_has_cloudinary = bool(_cloudinary_url or (_cloudinary_cloud_name and _cloudinary_api_key and _cloudinary_api_secret))
+
+if _has_cloudinary:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': _cloudinary_cloud_name,
+        'API_KEY': _cloudinary_api_key,
+        'API_SECRET': _cloudinary_api_secret,
+    }
     DEFAULT_STORAGE_BACKEND = "cloudinary_storage.storage.MediaCloudinaryStorage"
 else:
     DEFAULT_STORAGE_BACKEND = "django.core.files.storage.FileSystemStorage"

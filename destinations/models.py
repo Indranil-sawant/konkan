@@ -20,7 +20,7 @@ class Destination(models.Model):
     location_name = models.CharField(max_length=200)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
-    main_image = models.ImageField(upload_to='destinations/main/')
+    main_image = models.ImageField(upload_to='destinations/main/', blank=True, null=True)
     best_time_to_visit = models.CharField(max_length=200, blank=True)
     travel_tips = models.TextField(blank=True)
     entry_fees = models.CharField(max_length=200, blank=True, default='Free')
@@ -46,11 +46,11 @@ class Destination(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('destination_detail', kwargs={'slug': self.slug})
+        return reverse('destination_detail', kwargs={'slug': self.slug}) if self.slug else '#'
 
 class Gallery(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='gallery')
-    image = models.ImageField(upload_to='destinations/gallery/')
+    image = models.ImageField(upload_to='destinations/gallery/', blank=True, null=True)
     caption = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
