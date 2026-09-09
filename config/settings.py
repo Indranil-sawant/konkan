@@ -45,7 +45,12 @@ if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
 
 CSRF_TRUSTED_ORIGINS = [
     'https://konkan.onrender.com',
+    'https://*.onrender.com',
 ]
+
+if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
+    ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}")
 
 # ------------------------------------------------------------------------------
 # PRODUCTION SECURITY
