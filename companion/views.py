@@ -115,17 +115,10 @@ def nfc_tap_entry(request, tag_uid):
 
 def nfc_qr_view(request, tag_uid):
     """
-    Dedicated QR Code view for camera scanning fallback when NFC is disabled.
+    Dedicated QR Code route: directly triggers the NFC tap processor
+    and redirects user to the configured experience page (no redundant QR screen).
     """
-    tag = NFCTag.objects.filter(tag_uid__iexact=tag_uid, is_active=True).first()
-    full_tap_url = request.build_absolute_uri(reverse('nfc_tap_entry', kwargs={'tag_uid': tag_uid}))
-    
-    context = {
-        'tag': tag,
-        'tag_uid': tag_uid,
-        'full_tap_url': full_tap_url,
-    }
-    return render(request, 'companion/qr_view.html', context)
+    return nfc_tap_entry(request, tag_uid)
 
 
 def companion_home(request):

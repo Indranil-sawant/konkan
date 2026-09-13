@@ -161,29 +161,44 @@ class BulkNFCTagForm(forms.Form):
 
 
 class PartnerForm(forms.ModelForm):
+    generate_nfc = forms.BooleanField(
+        required=False,
+        initial=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-checkbox-ops'}),
+        label="Auto-generate Smart NFC Tag & QR Code for this Partner"
+    )
+
     class Meta:
         model = Partner
         fields = [
             'business_name', 'partner_type', 'short_tagline', 'description',
             'logo', 'cover_image', 'address', 'phone', 'whatsapp',
             'email', 'website', 'google_maps_url', 'latitude', 'longitude',
+            'exclusive_offer', 'offer_code', 'amenities', 'operating_hours',
+            'price_range', 'instagram_handle',
             'is_verified', 'is_featured', 'is_active'
         ]
         widgets = {
             'business_name': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'e.g. Ocean Breeze Beach Resort'}),
             'partner_type': forms.Select(attrs={'class': 'form-select-ops'}),
             'short_tagline': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'e.g. Beachfront luxury stay in Ganpatipule'}),
-            'description': forms.Textarea(attrs={'class': 'form-textarea-ops', 'rows': 3}),
+            'description': forms.Textarea(attrs={'class': 'form-textarea-ops', 'rows': 3, 'placeholder': 'Detailed overview of hotel rooms, dining, hospitality & amenities...'}),
             'logo': forms.ClearableFileInput(attrs={'class': 'form-file-ops'}),
             'cover_image': forms.ClearableFileInput(attrs={'class': 'form-file-ops'}),
-            'address': forms.Textarea(attrs={'class': 'form-textarea-ops', 'rows': 2}),
+            'address': forms.Textarea(attrs={'class': 'form-textarea-ops', 'rows': 2, 'placeholder': 'Physical road address, landmark, village/city...'}),
             'phone': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': '+91 98765 43210'}),
             'whatsapp': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': '+91 98765 43210'}),
             'email': forms.EmailInput(attrs={'class': 'form-input-ops', 'placeholder': 'contact@oceanbreeze.in'}),
             'website': forms.URLInput(attrs={'class': 'form-input-ops', 'placeholder': 'https://oceanbreeze.in'}),
-            'google_maps_url': forms.URLInput(attrs={'class': 'form-input-ops', 'placeholder': 'https://maps.google.com/...'}),
-            'latitude': forms.NumberInput(attrs={'class': 'form-input-ops', 'step': 'any'}),
-            'longitude': forms.NumberInput(attrs={'class': 'form-input-ops', 'step': 'any'}),
+            'google_maps_url': forms.URLInput(attrs={'class': 'form-input-ops', 'placeholder': 'https://maps.app.goo.gl/... or Google Maps share link'}),
+            'latitude': forms.NumberInput(attrs={'class': 'form-input-ops', 'step': 'any', 'placeholder': 'Optional (e.g. 16.9856)'}),
+            'longitude': forms.NumberInput(attrs={'class': 'form-input-ops', 'step': 'any', 'placeholder': 'Optional (e.g. 73.2678)'}),
+            'exclusive_offer': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'e.g. 10% Off on Food / Complimentary Welcome Drink for Explorers'}),
+            'offer_code': forms.TextInput(attrs={'class': 'form-input-ops font-mono uppercase', 'placeholder': 'e.g. KONKAN10'}),
+            'amenities': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'Free Wi-Fi, Beach View, AC, Parking, Malvani Seafood, Swimming Pool'}),
+            'operating_hours': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'e.g. Check-in 12:00 PM / Check-out 10:00 AM'}),
+            'price_range': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'e.g. ?1,500 - ?3,500 / night or ?? Moderate'}),
+            'instagram_handle': forms.TextInput(attrs={'class': 'form-input-ops', 'placeholder': 'e.g. @oceanbreeze_konkan'}),
             'is_verified': forms.CheckboxInput(attrs={'class': 'form-checkbox-ops'}),
             'is_featured': forms.CheckboxInput(attrs={'class': 'form-checkbox-ops'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-checkbox-ops'}),

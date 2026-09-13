@@ -122,9 +122,10 @@ class CompanionModelsAndViewsTest(TestCase):
         self.assertContains(response, 'Welcome, Traveller!')
 
     def test_nfc_qr_view(self):
-        response = self.client.get(reverse('nfc_qr_view', kwargs={'tag_uid': 'TEST-HOTEL-01'}))
+        # QR route routes directly to the target experience page (no duplicate QR on browser)
+        response = self.client.get(reverse('nfc_qr_view', kwargs={'tag_uid': 'TEST-HOTEL-01'}), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'TEST-HOTEL-01')
+        self.assertContains(response, 'Hotel Sea Breeze Resort')
 
     def test_companion_home_view(self):
         response = self.client.get(reverse('companion_home'))

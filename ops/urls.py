@@ -39,6 +39,7 @@ urlpatterns = [
     path('partners/', views.partners_list, name='ops_partners_list'),
     path('partners/new/', views.partner_create, name='ops_partner_create'),
     path('partners/<int:pk>/edit/', views.partner_edit, name='ops_partner_edit'),
+    path('partners/<int:pk>/generate-nfc/', views.partner_generate_nfc, name='ops_partner_generate_nfc'),
     path('partners/<int:pk>/delete/', views.partner_delete, name='ops_partner_delete'),
 
     # Content & Safety CMS

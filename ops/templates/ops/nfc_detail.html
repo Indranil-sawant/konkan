@@ -41,11 +41,14 @@
             
             <!-- QR Studio Box -->
             <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 sm:p-6 text-center space-y-4">
-                <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Companion QR Code Fallback</span>
+                <div class="space-y-1">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Direct NFC & QR Code</span>
+                    <p class="text-[11px] text-slate-500">Scan with phone camera to open experience directly</p>
+                </div>
                 
                 <div class="flex justify-center">
                     <div class="p-3 bg-white rounded-2xl border border-slate-200 shadow-2xs inline-block">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ request.scheme }}://{{ request.get_host }}/t/{{ tag.tag_uid }}/qr/" 
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ request.scheme }}://{{ request.get_host }}/t/{{ tag.tag_uid }}/" 
                              alt="QR Code for {{ tag.tag_uid }}" 
                              class="w-40 h-40 rounded-lg">
                     </div>
@@ -58,10 +61,16 @@
                             Copy
                         </button>
                     </div>
-                    <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data={{ request.scheme }}://{{ request.get_host }}/t/{{ tag.tag_uid }}/qr/" download="{{ tag.tag_uid }}_qr.png" target="_blank" 
-                       class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all block">
-                        <i class="fas fa-download mr-1.5 text-slate-500"></i> Download High-Res QR
-                    </a>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="{% url 'nfc_tap_entry' tag.tag_uid %}" target="_blank" 
+                           class="py-2.5 px-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1">
+                            <i class="fas fa-arrow-up-right-from-square text-[10px]"></i> Open Page
+                        </a>
+                        <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data={{ request.scheme }}://{{ request.get_host }}/t/{{ tag.tag_uid }}/" download="{{ tag.tag_uid }}_qr.png" target="_blank" 
+                           class="py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center justify-center gap-1">
+                            <i class="fas fa-download text-[10px] text-slate-500"></i> Download QR
+                        </a>
+                    </div>
                 </div>
             </div>
 

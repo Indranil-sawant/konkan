@@ -47,7 +47,7 @@
 
                 <!-- QR Center -->
                 <div class="p-2 bg-slate-50 rounded-xl border border-slate-200">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ratnagiri-companion.local/t/{{ tag.tag_uid }}/qr/" 
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ request.scheme }}://{{ request.get_host }}/t/{{ tag.tag_uid }}/" 
                          alt="QR {{ tag.tag_uid }}" 
                          class="w-32 h-32" loading="lazy">
                 </div>

@@ -32,14 +32,39 @@ class Partner(models.Model):
     whatsapp = models.CharField(max_length=50, blank=True)
     email = models.EmailField(blank=True)
     website = models.URLField(blank=True)
-    google_maps_url = models.URLField(blank=True)
+    google_maps_url = models.URLField(blank=True, help_text="Google Maps share link or location URL")
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    exclusive_offer = models.CharField(max_length=250, blank=True, help_text="e.g. 10% Off on Dining or Welcome Drink for Konkan Guide Explorers")
+    offer_code = models.CharField(max_length=50, blank=True, help_text="e.g. KONKAN10")
+    amenities = models.CharField(max_length=255, blank=True, help_text="Comma-separated: Free Wi-Fi, Beach View, AC, Parking, Seafood, Pool")
+    operating_hours = models.CharField(max_length=150, blank=True, help_text="e.g. Check-in 12:00 PM / Check-out 10:00 AM")
+    price_range = models.CharField(max_length=100, blank=True, help_text="e.g. ?1,500 - ?3,500 / night or ?? Moderate")
+    instagram_handle = models.CharField(max_length=100, blank=True, help_text="e.g. @sawantvilla_konkan")
     is_verified = models.BooleanField(default=True, db_index=True)
     is_featured = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def get_map_url(self):
+        if self.google_maps_url:
+            return self.google_maps_url
+        if self.latitude and self.longitude:
+            return f"https://www.google.com/maps/search/?api=1&query={self.latitude},{self.longitude}"
+        if self.address:
+            import urllib.parse
+            q = f"{self.business_name} {self.address}"
+            return f"https://www.google.com/maps/search/?api=1&query={urllib.parse.quote_plus(q)}"
+        return None
+
+    def get_amenities_list(self):
+        if not self.amenities:
+            return []
+        return [a.strip() for a in self.amenities.split(',') if a.strip()]
+
+    def primary_nfc_tag(self):
+        return self.nfc_tags.filter(is_active=True).first() or self.nfc_tags.first()
 
     class Meta:
         ordering = ['-is_featured', 'business_name']

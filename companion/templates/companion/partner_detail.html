@@ -18,9 +18,9 @@
 
         <!-- Partner Banner Card -->
         <div class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-card space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-2xl bg-ocean-mist border border-ocean-sky/30 flex items-center justify-center text-3xl text-ocean-mid font-black shadow-xs">
+                    <div class="w-16 h-16 rounded-2xl bg-ocean-mist border border-ocean-sky/30 flex items-center justify-center text-3xl text-ocean-mid font-black shadow-xs flex-shrink-0">
                         {% if partner.logo %}
                         <img src="{{ partner.logo.url }}" alt="{{ partner.business_name }}" class="w-full h-full object-cover rounded-2xl">
                         {% else %}
@@ -30,25 +30,67 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="font-display font-black text-xl sm:text-2xl text-slate-900">{{ partner.business_name }}</h1>
+                            {% if partner.is_verified %}
                             <i class="fas fa-certificate text-emerald-500 text-sm" title="Verified Partner"></i>
+                            {% endif %}
                         </div>
-                        <span class="text-xs text-slate-500 font-semibold">{{ partner.get_partner_type_display }} &bull; {{ partner.address }}</span>
+                        <span class="text-xs text-slate-500 font-semibold">{{ partner.get_partner_type_display }}{% if partner.address %} &bull; {{ partner.address }}{% endif %}</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    {% if partner.get_map_url %}
+                    <a href="{{ partner.get_map_url }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition-transform hover:scale-105">
+                        <i class="fas fa-location-dot"></i> Google Maps
+                    </a>
+                    {% endif %}
                     {% if partner.phone %}
-                    <a href="tel:{{ partner.phone }}" class="px-4 py-2 rounded-full bg-ocean-mid hover:bg-ocean-deep text-white text-xs font-bold shadow-xs">
-                        <i class="fas fa-phone mr-1"></i> Call Business
+                    <a href="tel:{{ partner.phone }}" class="px-4 py-2 rounded-full bg-ocean-mid hover:bg-ocean-deep text-white text-xs font-bold shadow-xs flex items-center gap-1.5">
+                        <i class="fas fa-phone"></i> Call
                     </a>
                     {% endif %}
                     {% if partner.whatsapp %}
-                    <a href="https://wa.me/{{ partner.whatsapp|cut:' '|cut:'+' }}" target="_blank" class="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs">
-                        <i class="fab fa-whatsapp mr-1"></i> WhatsApp
+                    <a href="https://wa.me/{{ partner.whatsapp|cut:' '|cut:'+' }}" target="_blank" class="px-4 py-2 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold shadow-xs flex items-center gap-1.5">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    {% endif %}
+                    {% if partner.website %}
+                    <a href="{{ partner.website }}" target="_blank" rel="noopener" class="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold" title="Website">
+                        <i class="fas fa-globe"></i>
+                    </a>
+                    {% endif %}
+                    {% if partner.instagram_handle %}
+                    <a href="https://instagram.com/{{ partner.instagram_handle|cut:'@' }}" target="_blank" rel="noopener" class="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-pink-600 text-xs font-bold" title="Instagram">
+                        <i class="fab fa-instagram"></i>
                     </a>
                     {% endif %}
                 </div>
             </div>
+
+            <!-- Exclusive Companion Offer Banner -->
+            {% if partner.exclusive_offer %}
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black text-base shadow-xs flex-shrink-0">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-wider text-amber-800 block">Konkan Guide Explorer Perk</span>
+                        <p class="text-xs font-bold text-slate-900">{{ partner.exclusive_offer }}</p>
+                    </div>
+                </div>
+                {% if partner.offer_code %}
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                    <span class="px-3 py-1.5 rounded-xl bg-white border border-amber-300 font-mono font-black text-xs text-amber-900 shadow-2xs">
+                        {{ partner.offer_code }}
+                    </span>
+                    <button onclick="navigator.clipboard.writeText('{{ partner.offer_code }}'); window.showToast('Promo Code Copied!', 'success');" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all">
+                        Copy
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
 
             <!-- Description -->
             <div class="space-y-2">
@@ -58,14 +100,46 @@
                 </p>
             </div>
 
-            <!-- Smart NFC Features Enabled -->
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-                <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    Smart NFC Guest Services Enabled
+            <!-- Amenities & Highlights -->
+            {% if partner.get_amenities_list %}
+            <div class="space-y-2.5">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Amenities & Highlights</h4>
+                <div class="flex flex-wrap gap-2">
+                    {% for amenity in partner.get_amenities_list %}
+                    <span class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-semibold flex items-center gap-1.5 border border-slate-200">
+                        <i class="fas fa-check-circle text-emerald-500 text-xs"></i> {{ amenity }}
+                    </span>
+                    {% endfor %}
                 </div>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Guests staying at or visiting this partner can tap room / counter NFC tags to unlock custom hotel concierge guides, express Wi-Fi details, and curated local itineraries.
+            </div>
+            {% endif %}
+
+            <!-- Tariff & Operating Hours Specs -->
+            {% if partner.price_range or partner.operating_hours %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                {% if partner.price_range %}
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-0.5">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Tariff / Price Guide</span>
+                    <span class="font-bold text-slate-900 text-sm">{{ partner.price_range }}</span>
+                </div>
+                {% endif %}
+                {% if partner.operating_hours %}
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-0.5">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Operating Hours / Check-in</span>
+                    <span class="font-bold text-slate-900 text-sm">{{ partner.operating_hours }}</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Smart NFC Features Enabled -->
+            <div class="p-4 rounded-2xl bg-sky-50/60 border border-sky-200/80 space-y-2">
+                <div class="flex items-center gap-2 text-xs font-bold text-sky-900">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Smart NFC Guest Concierge Enabled
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Guests visiting this partner can tap room key cards or counter NFC tags with their smartphone to open their personalized digital guide and local recommendations instantly.
                 </p>
             </div>
         </div>
@@ -76,7 +150,7 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {% for d in nearby_destinations %}
-                <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-card flex items-center justify-between gap-3">
+                <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-card flex items-center justify-between gap-3 hover:border-ocean-mid transition-all">
                     <div>
                         <h4 class="font-display font-bold text-sm text-slate-900">{{ d.title }}</h4>
                         <span class="text-[10px] text-slate-500 font-semibold uppercase">{{ d.category }} &bull; {{ d.location_name }}</span>

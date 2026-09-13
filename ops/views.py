@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
+from django.utils.text import slugify
 
 from destinations.models import Destination, Gallery
 from companion.models import (
@@ -548,6 +549,40 @@ def nfc_export_csv(request):
 # 5. PARTNER DIRECTORY & CONCIERGE
 # ==============================================================================
 
+def _create_or_ensure_partner_nfc(partner, user=None):
+    """Ensure partner has an active NFC Tag & QR gateway configured."""
+    tag = partner.nfc_tags.filter(is_active=True).first()
+    if tag:
+        return tag, False
+
+    # Generate clean token UID
+    base_slug = slugify(partner.business_name)[:14].upper() if partner.business_name else "PARTNER"
+    base_token = f"PARTNER-{base_slug}"
+    token = base_token
+    counter = 1
+    while NFCTag.objects.filter(tag_uid__iexact=token).exists():
+        token = f"{base_token}-{counter:02d}"
+        counter += 1
+
+    tag_type = 'HOTEL' if partner.partner_type in ('HOTEL', 'HOMESTAY') else (
+        'RESTAURANT' if partner.partner_type == 'RESTAURANT' else 'GENERAL'
+    )
+
+    tag = NFCTag.objects.create(
+        tag_uid=token,
+        title=f"{partner.business_name} Guest Welcome NFC",
+        tag_type=tag_type,
+        target_experience='PARTNER_PAGE',
+        assigned_partner=partner,
+        custom_welcome_title=f"Welcome to {partner.business_name}!",
+        custom_welcome_message=f"We're glad to host you. Explore our local concierge, nearby attractions, and recommendations.",
+        is_active=True
+    )
+    if user:
+        log_audit_action(user, 'CREATE', 'NFC Tag', tag.tag_uid, {'partner': partner.business_name})
+    return tag, True
+
+
 @staff_required
 def partners_list(request):
     partners = Partner.objects.prefetch_related('nfc_tags').all().order_by('-is_featured', 'business_name')
@@ -566,12 +601,21 @@ def partner_create(request):
             try:
                 partner = form.save()
                 log_audit_action(request.user, 'CREATE', 'Partner', partner.business_name)
-                messages.success(request, f'Partner "{partner.business_name}" added.')
-                return redirect('ops_partners_list')
+
+                # Auto-generate NFC tag if requested
+                if form.cleaned_data.get('generate_nfc', True):
+                    tag, created = _create_or_ensure_partner_nfc(partner, request.user)
+                    if created:
+                        messages.success(request, f'Partner "{partner.business_name}" created & Smart NFC Tag [{tag.tag_uid}] generated!')
+                    else:
+                        messages.success(request, f'Partner "{partner.business_name}" added successfully.')
+                else:
+                    messages.success(request, f'Partner "{partner.business_name}" added.')
+                return redirect('ops_partner_edit', pk=partner.pk)
             except Exception as e:
                 messages.error(request, f'Error adding partner: {str(e)}')
     else:
-        form = PartnerForm()
+        form = PartnerForm(initial={'generate_nfc': True})
 
     return render(request, 'ops/partner_form.html', {
         'page_title': 'Add New Partner Business',
@@ -584,26 +628,50 @@ def partner_create(request):
 @staff_required
 def partner_edit(request, pk):
     partner = get_object_or_404(Partner, pk=pk)
+    nfc_tags = partner.nfc_tags.all()
+    primary_tag = partner.primary_nfc_tag()
+
     if request.method == 'POST':
         form = PartnerForm(request.POST, request.FILES, instance=partner)
         if form.is_valid():
             try:
                 form.save()
                 log_audit_action(request.user, 'UPDATE', 'Partner', partner.business_name)
-                messages.success(request, f'Partner "{partner.business_name}" updated.')
-                return redirect('ops_partners_list')
+
+                if form.cleaned_data.get('generate_nfc') and not primary_tag:
+                    tag, created = _create_or_ensure_partner_nfc(partner, request.user)
+                    if created:
+                        messages.success(request, f'Partner updated & Smart NFC Tag [{tag.tag_uid}] generated!')
+                else:
+                    messages.success(request, f'Partner "{partner.business_name}" updated successfully.')
+                return redirect('ops_partner_edit', pk=partner.pk)
             except Exception as e:
                 messages.error(request, f'Error updating partner: {str(e)}')
     else:
-        form = PartnerForm(instance=partner)
+        form = PartnerForm(instance=partner, initial={'generate_nfc': bool(primary_tag)})
 
     return render(request, 'ops/partner_form.html', {
         'page_title': f'Edit: {partner.business_name}',
         'active_nav': 'partners',
         'form': form,
         'partner': partner,
+        'nfc_tags': nfc_tags,
+        'primary_tag': primary_tag,
         'is_edit': True,
     })
+
+
+@staff_required
+def partner_generate_nfc(request, pk):
+    partner = get_object_or_404(Partner, pk=pk)
+    tag, created = _create_or_ensure_partner_nfc(partner, request.user)
+    if created:
+        messages.success(request, f'Generated new NFC Tag [{tag.tag_uid}] and QR Code for {partner.business_name}!')
+    else:
+        messages.info(request, f'Partner already has active NFC Tag [{tag.tag_uid}].')
+    
+    next_url = request.POST.get('next') or request.GET.get('next') or reverse('ops_partner_edit', kwargs={'pk': partner.pk})
+    return redirect(next_url)
 
 
 @staff_required
