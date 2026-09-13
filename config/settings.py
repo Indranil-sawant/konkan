@@ -33,45 +33,64 @@ if not SECRET_KEY:
         raise ImproperlyConfigured("The SECRET_KEY environment variable must be set when DEBUG is False.")
 
 
-ALLOWED_HOSTS = [
-    'konkan.onrender.com',
-    '.onrender.com',
-    'localhost',
-    '127.0.0.1',
-    'testserver',
-    '*',
-] if DEBUG else [
-    'konkan.onrender.com',
-    '.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
+_env_allowed_hosts = os.environ.get('ALLOWED_HOSTS')
+if _env_allowed_hosts:
+    ALLOWED_HOSTS = [h.strip() for h in _env_allowed_hosts.split(',') if h.strip()]
+elif DEBUG:
+    ALLOWED_HOSTS = [
+        'konkan.onrender.com',
+        '.onrender.com',
+        'localhost',
+        '127.0.0.1',
+        'testserver',
+        '*',
+    ]
+else:
+    ALLOWED_HOSTS = [
+        'konkan.onrender.com',
+        '.onrender.com',
+        'localhost',
+        '127.0.0.1',
+    ]
 
 if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
-    ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
+    render_host = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+    if render_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(render_host)
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://konkan.onrender.com',
-    'https://*.onrender.com',
-]
+_env_csrf = os.environ.get('CSRF_TRUSTED_ORIGINS')
+if _env_csrf:
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in _env_csrf.split(',') if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://konkan.onrender.com',
+        'https://*.onrender.com',
+        'http://localhost',
+        'http://127.0.0.1',
+    ]
 
 if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
-    ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
-    CSRF_TRUSTED_ORIGINS.append(f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}")
+    render_origin = f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"
+    if render_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(render_origin)
 
 # ------------------------------------------------------------------------------
-# PRODUCTION SECURITY
+# PRODUCTION SECURITY & REVERSE PROXY HEADERS
 # ------------------------------------------------------------------------------
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 
 if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
 
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'True') == 'True'
+    CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'True') == 'True'
 
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -207,10 +226,11 @@ if 'test' in sys.argv:
         }
     }
 elif DATABASE_URL:
+    db_ssl_require = os.environ.get('DB_SSL_REQUIRE', '').lower() == 'true' or 'sslmode=require' in DATABASE_URL.lower()
     db_config = dj_database_url.parse(
         DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True
+        conn_max_age=int(os.environ.get('DB_CONN_MAX_AGE', 600)),
+        ssl_require=db_ssl_require
     )
     db_config['CONN_HEALTH_CHECKS'] = True
     DATABASES = {
