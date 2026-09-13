@@ -43,6 +43,10 @@ class Partner(models.Model):
 
     class Meta:
         ordering = ['-is_featured', 'business_name']
+        indexes = [
+            models.Index(fields=['is_active', '-is_featured'], name='partner_active_feat_idx'),
+            models.Index(fields=['partner_type', 'is_active'], name='partner_type_active_idx'),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -106,6 +110,11 @@ class Itinerary(models.Model):
     class Meta:
         verbose_name_plural = "Itineraries"
         ordering = ['order', 'duration_days', 'title']
+        indexes = [
+            models.Index(fields=['is_active', 'order'], name='itin_active_order_idx'),
+            models.Index(fields=['is_active', 'duration_days'], name='itin_active_dur_idx'),
+            models.Index(fields=['is_active', 'audience'], name='itin_active_aud_idx'),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -256,6 +265,10 @@ class NFCTag(models.Model):
         verbose_name = "NFC Tag"
         verbose_name_plural = "NFC Tags"
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['is_active', '-tap_count'], name='nfc_active_taps_idx'),
+            models.Index(fields=['tag_type', 'is_active'], name='nfc_type_active_idx'),
+        ]
 
     def __str__(self):
         return f"[{self.tag_uid}] {self.title} ({self.get_tag_type_display()})"
@@ -281,6 +294,11 @@ class NFCTapEvent(models.Model):
 
     class Meta:
         ordering = ['-tapped_at']
+        indexes = [
+            models.Index(fields=['tag', 'session_hash'], name='tap_tag_session_idx'),
+            models.Index(fields=['tag', '-tapped_at'], name='tap_tag_tapped_idx'),
+            models.Index(fields=['-tapped_at'], name='tap_tapped_at_idx'),
+        ]
 
     def __str__(self):
         return f"Tap on {self.tag.tag_uid} at {self.tapped_at.strftime('%Y-%m-%d %H:%M')}"
@@ -313,6 +331,10 @@ class EmergencyContact(models.Model):
 
     class Meta:
         ordering = ['order', 'name']
+        indexes = [
+            models.Index(fields=['is_active', 'order'], name='emg_active_order_idx'),
+            models.Index(fields=['category', 'is_active'], name='emg_cat_active_idx'),
+        ]
 
     def __str__(self):
         return f"{self.name} ({self.get_category_display()}) - {self.phone_number}"
@@ -343,6 +365,10 @@ class FAQ(models.Model):
         verbose_name = "FAQ"
         verbose_name_plural = "FAQs"
         ordering = ['order', 'created_at']
+        indexes = [
+            models.Index(fields=['is_published', 'order'], name='faq_pub_order_idx'),
+            models.Index(fields=['category', 'is_published'], name='faq_cat_pub_idx'),
+        ]
 
     def __str__(self):
         return self.question
@@ -370,6 +396,9 @@ class TravelTip(models.Model):
 
     class Meta:
         ordering = ['order', '-created_at']
+        indexes = [
+            models.Index(fields=['is_active', 'order'], name='tip_active_order_idx'),
+        ]
 
     def __str__(self):
         return self.title
@@ -396,6 +425,9 @@ class Announcement(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['is_active', '-created_at'], name='ann_active_created_idx'),
+        ]
 
     def __str__(self):
         return f"[{self.get_urgency_level_display()}] {self.title}"

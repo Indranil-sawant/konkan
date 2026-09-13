@@ -16,6 +16,8 @@ urlpatterns = [
     # Itineraries & Builder
     path('itineraries/', views.itineraries_list, name='ops_itineraries_list'),
     path('itineraries/new/', views.itinerary_create, name='ops_itinerary_create'),
+    path('itineraries/<int:pk>/edit/', views.itinerary_edit, name='ops_itinerary_edit'),
+    path('itineraries/<int:pk>/delete/', views.itinerary_delete, name='ops_itinerary_delete'),
     path('itineraries/<int:pk>/builder/', views.itinerary_builder, name='ops_itinerary_builder'),
     path('itineraries/<int:pk>/days/add/', views.itinerary_add_day, name='ops_itinerary_add_day'),
     path('itineraries/<int:pk>/days/<int:day_id>/delete/', views.itinerary_delete_day, name='ops_itinerary_delete_day'),
@@ -27,6 +29,7 @@ urlpatterns = [
     path('nfc/', views.nfc_list, name='ops_nfc_list'),
     path('nfc/new/', views.nfc_create, name='ops_nfc_create'),
     path('nfc/<int:pk>/', views.nfc_detail, name='ops_nfc_detail'),
+    path('nfc/<int:pk>/delete/', views.nfc_delete, name='ops_nfc_delete'),
     path('nfc/<int:pk>/toggle/', views.nfc_toggle_status, name='ops_nfc_toggle_status'),
     path('nfc/bulk/', views.nfc_bulk_generate, name='ops_nfc_bulk_generate'),
     path('nfc/print/', views.nfc_print_sheet, name='ops_nfc_print_sheet'),
@@ -44,8 +47,14 @@ urlpatterns = [
     path('content/faqs/<int:pk>/edit/', views.faq_edit, name='ops_faq_edit'),
     path('content/faqs/<int:pk>/delete/', views.faq_delete, name='ops_faq_delete'),
     path('content/tips/new/', views.tip_create, name='ops_tip_create'),
+    path('content/tips/<int:pk>/edit/', views.tip_edit, name='ops_tip_edit'),
+    path('content/tips/<int:pk>/delete/', views.tip_delete, name='ops_tip_delete'),
     path('content/emergency/new/', views.emergency_create, name='ops_emergency_create'),
+    path('content/emergency/<int:pk>/edit/', views.emergency_edit, name='ops_emergency_edit'),
+    path('content/emergency/<int:pk>/delete/', views.emergency_delete, name='ops_emergency_delete'),
     path('content/announcements/new/', views.announcement_create, name='ops_announcement_create'),
+    path('content/announcements/<int:pk>/edit/', views.announcement_edit, name='ops_announcement_edit'),
+    path('content/announcements/<int:pk>/delete/', views.announcement_delete, name='ops_announcement_delete'),
 
     # Media Hub
     path('media/', views.media_hub, name='ops_media_hub'),

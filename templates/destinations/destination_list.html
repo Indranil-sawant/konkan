@@ -93,7 +93,7 @@
         <!-- Results Counter -->
         <div class="flex items-center justify-between mb-8 text-xs text-slate-500 font-bold uppercase tracking-wider">
             <span>
-                Showing <strong class="text-slate-900">{{ destinations.count }}</strong> destination{{ destinations.count|pluralize }}
+                Showing <strong class="text-slate-900">{{ destinations|length }}</strong> destination{{ destinations|length|pluralize }}
                 {% if category %}in <span class="text-ocean-mid">{{ category }}</span>{% endif %}
                 {% if query %}matching "<span class="text-slate-900">{{ query }}</span>"{% endif %}
             </span>

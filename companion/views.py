@@ -137,18 +137,34 @@ def companion_home(request):
     if tapped_uid:
         active_tag = NFCTag.objects.filter(tag_uid__iexact=tapped_uid).first()
 
-    itineraries = Itinerary.objects.filter(is_active=True).annotate(
-        days_total=Count('days', distinct=True)
-    ).order_by('order', 'duration_days')[:6]
-    featured_destinations = Destination.objects.filter(is_verified=True).only(
-        'id', 'title', 'slug', 'category', 'location_name', 'main_image', 'created_at', 'best_time_to_visit'
-    ).order_by('-created_at')[:8]
-    secret_spots = Spots.objects.all().only('id', 'name', 'photo', 'rating', 'price').order_by('-rating')[:6]
-    local_food = FoodItem.objects.all().only('id', 'name', 'photo', 'rating', 'price').order_by('-rating')[:6]
-    emergency_top = EmergencyContact.objects.filter(is_active=True).order_by('order')[:3]
-    partners = Partner.objects.filter(is_active=True, is_featured=True).only(
-        'id', 'business_name', 'slug', 'partner_type', 'short_tagline', 'logo', 'cover_image'
-    )[:4]
+    itineraries = list(
+        Itinerary.objects.filter(is_active=True).annotate(
+            days_total=Count('days', distinct=True)
+        ).order_by('order', 'duration_days')[:6]
+    )
+    featured_destinations = list(
+        Destination.objects.filter(is_verified=True).only(
+            'id', 'title', 'slug', 'category', 'location_name', 'main_image', 'created_at', 'best_time_to_visit'
+        ).order_by('-created_at')[:8]
+    )
+    secret_spots = list(
+        Spots.objects.select_related('category', 'uploaded_by')
+        .order_by('-rating')[:6]
+    )
+    local_food = list(
+        FoodItem.objects.select_related('uploaded_by')
+        .order_by('-rating')[:6]
+    )
+    emergency_top = list(
+        EmergencyContact.objects.filter(is_active=True).only(
+            'id', 'name', 'category', 'phone_number', 'order'
+        ).order_by('order')[:3]
+    )
+    partners = list(
+        Partner.objects.filter(is_active=True, is_featured=True).only(
+            'id', 'business_name', 'slug', 'partner_type', 'short_tagline', 'logo', 'cover_image'
+        )[:4]
+    )
 
     context = {
         'active_tag': active_tag,
@@ -187,6 +203,8 @@ def itinerary_list(request):
         elif duration == '3+':
             itineraries = itineraries.filter(duration_days__gte=3)
 
+    itineraries = list(itineraries)
+
     context = {
         'itineraries': itineraries,
         'selected_audience': audience,
@@ -221,7 +239,7 @@ def itinerary_detail(request, slug):
                     'type': stop.get_stop_type_display(),
                 })
 
-    related_itineraries = Itinerary.objects.filter(is_active=True).exclude(pk=itinerary.pk)[:3]
+    related_itineraries = list(Itinerary.objects.filter(is_active=True).exclude(pk=itinerary.pk)[:3])
 
     context = {
         'itinerary': itinerary,
@@ -235,12 +253,15 @@ def itinerary_detail(request, slug):
 def near_me_view(request):
     """
     Smart Live GPS Radar with client-side Haversine distance calculator.
-    Pre-populates verified destinations, food, spots, and emergency places with coordinates.
+    Pre-populates verified destinations, spots, and emergency places with coordinates.
     """
-    destinations = Destination.objects.filter(is_verified=True).exclude(latitude__isnull=True).exclude(longitude__isnull=True)
-    spots = Spots.objects.all()
-    food = FoodItem.objects.all()
-    emergencies = EmergencyContact.objects.filter(is_active=True).exclude(latitude__isnull=True).exclude(longitude__isnull=True)
+    destinations = Destination.objects.filter(is_verified=True).exclude(latitude__isnull=True).exclude(longitude__isnull=True).only(
+        'id', 'title', 'category', 'latitude', 'longitude', 'main_image', 'slug', 'timings', 'entry_fees'
+    )
+    spots = Spots.objects.all().only('id', 'name', 'rating', 'photo', 'opening_hours', 'price')
+    emergencies = EmergencyContact.objects.filter(is_active=True).exclude(latitude__isnull=True).exclude(longitude__isnull=True).only(
+        'id', 'name', 'phone_number', 'latitude', 'longitude'
+    )
 
     places_data = []
     
@@ -358,12 +379,10 @@ def food_trail_view(request):
     """
     Taste of Ratnagiri Food & Culinary Trail Experience.
     """
-    food_items = FoodItem.objects.all().order_by('-rating')
-    food_destinations = Destination.objects.filter(category='Food', is_verified=True)
+    food_items = list(FoodItem.objects.select_related('uploaded_by').order_by('-rating'))
     
     context = {
         'food_items': food_items,
-        'food_destinations': food_destinations,
     }
     return render(request, 'companion/food_trail.html', context)
 
@@ -373,19 +392,21 @@ def explore_hub_view(request):
     Comprehensive Explore Gateway categorized by Beaches, Forts, Temples, Nature, and Culture.
     """
     category = request.GET.get('cat', '').strip()
-    destinations = Destination.objects.filter(is_verified=True)
+    destinations = Destination.objects.filter(is_verified=True).only(
+        'id', 'title', 'slug', 'category', 'location_name', 'main_image', 'description'
+    )
     
     if category:
         destinations = destinations.filter(category__iexact=category)
 
-    forts = Destination.objects.filter(category='Fort', is_verified=True)[:6]
-    beaches = Destination.objects.filter(category='Beach', is_verified=True)[:6]
-    temples = Destination.objects.filter(category='Temple', is_verified=True)[:6]
-    waterfalls = Destination.objects.filter(category='Waterfall', is_verified=True)[:6]
+    forts = list(Destination.objects.filter(category='Fort', is_verified=True).only('id', 'title', 'slug', 'location_name', 'main_image')[:6])
+    beaches = list(Destination.objects.filter(category='Beach', is_verified=True).only('id', 'title', 'slug', 'location_name', 'main_image')[:6])
+    temples = list(Destination.objects.filter(category='Temple', is_verified=True).only('id', 'title', 'slug', 'location_name', 'main_image')[:6])
+    waterfalls = list(Destination.objects.filter(category='Waterfall', is_verified=True).only('id', 'title', 'slug', 'location_name', 'main_image')[:6])
 
     context = {
         'selected_category': category,
-        'destinations': destinations,
+        'destinations': list(destinations),
         'forts': forts,
         'beaches': beaches,
         'temples': temples,

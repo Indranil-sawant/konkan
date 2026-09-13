@@ -30,10 +30,10 @@ def build_profile_context(profile):
     if average_review_rating is not None:
         average_review_rating = round(average_review_rating, 1)
 
-    recent_destinations = destination_qs.order_by('-created_at')[:3]
-    recent_spots = spot_qs.order_by('-created_at')[:3]
-    recent_food_items = food_qs.order_by('-created_at')[:3]
-    recent_reviews = review_qs.order_by('-created_at')[:3]
+    recent_destinations = list(destination_qs.only('id', 'title', 'slug', 'location_name', 'main_image', 'created_at').order_by('-created_at')[:3])
+    recent_spots = list(spot_qs.only('id', 'name', 'description', 'photo', 'created_at').order_by('-created_at')[:3])
+    recent_food_items = list(food_qs.only('id', 'name', 'description', 'photo', 'created_at').order_by('-created_at')[:3])
+    recent_reviews = list(review_qs.select_related('destination').order_by('-created_at')[:3])
 
     latest_items = []
     for destination in recent_destinations:
@@ -130,7 +130,7 @@ def build_profile_context(profile):
     }
 
 def users(request):
-    profiles = Profile.objects.all() 
+    profiles = list(Profile.objects.all()) 
     return render(request, 'users/users.html', {'profiles': profiles})
 
 

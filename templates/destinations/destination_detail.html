@@ -138,7 +138,7 @@
                         </div>
                         <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-slate-200 text-xs font-bold text-slate-700 shadow-xs">
                             <i class="fas fa-star text-amber-500"></i>
-                            <span>{{ reviews.count }} Verified Review{{ reviews.count|pluralize }}</span>
+                            <span>{{ reviews|length }} Verified Review{{ reviews|length|pluralize }}</span>
                         </div>
                     </div>
 

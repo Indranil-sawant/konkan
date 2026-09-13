@@ -18,11 +18,20 @@
             <p class="text-xs text-slate-500 font-medium max-w-2xl">{{ itinerary.tagline|default:itinerary.description }}</p>
         </div>
 
-        <div class="flex items-center gap-2.5 flex-shrink-0 self-stretch sm:self-auto">
+        <div class="flex flex-wrap items-center gap-2 flex-shrink-0 self-stretch sm:self-auto">
             <a href="{% url 'itinerary_detail' itinerary.slug %}" target="_blank" 
-               class="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition-all flex items-center justify-center gap-1.5 shadow-2xs">
-                <i class="fas fa-mobile-screen text-sky-600"></i>
-                <span>Live View &rarr;</span>
+               class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition-all flex items-center justify-center gap-1.5 shadow-2xs">
+                <i class="fas fa-external-link-alt text-sky-600 text-[10px]"></i>
+                <span>Live View</span>
+            </a>
+            <a href="{% url 'ops_itinerary_edit' itinerary.pk %}" 
+               class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition-all flex items-center justify-center gap-1.5 shadow-2xs" title="Edit Metadata">
+                <i class="fas fa-gear text-slate-500 text-[10px]"></i>
+                <span>Settings</span>
+            </a>
+            <a href="{% url 'ops_itinerary_delete' itinerary.pk %}" 
+               class="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold border border-rose-200 transition-all flex items-center justify-center shadow-2xs" title="Delete Itinerary">
+                <i class="fas fa-trash-can text-xs"></i>
             </a>
             <form action="{% url 'ops_itinerary_add_day' itinerary.pk %}" method="post" class="m-0 flex-1 sm:flex-none">
                 {% csrf_token %}

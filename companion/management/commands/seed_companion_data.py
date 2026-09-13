@@ -260,6 +260,29 @@ class Command(BaseCommand):
                 'longitude': 73.2950,
                 'is_verified': True,
                 'is_featured': True,
+            },
+            {
+                'business_name': 'Nivant Retreat',
+                'slug': 'nivant-retreat',
+                'partner_type': 'HOMESTAY',
+                'short_tagline': 'Cozy Homestay near Ganeshgule | Peaceful, Private & Close to the Sea',
+                'description': (
+                    "Experience the timeless charm of coastal Maharashtra with a relaxing stay, "
+                    "welcoming hospitality, and a serene atmosphere away from the hustle and bustle "
+                    "of city life. Whether you're visiting with family, friends, or loved ones, "
+                    "Nivant Retreat is an ideal place to unwind, explore nearby beaches and local "
+                    "attractions, and enjoy an authentic Konkan experience."
+                ),
+                'address': 'Near Ganeshgule Beach, Ratnagiri, Maharashtra 415616',
+                'phone': '+91 92707 34472',
+                'whatsapp': '+91 92707 34472',
+                'email': 'nivantretreat@gmail.com',
+                'website': 'https://www.instagram.com/nivantretreat/',
+                'google_maps_url': 'https://maps.google.com/?q=16.9080,73.2985',
+                'latitude': 16.9080,
+                'longitude': 73.2985,
+                'is_verified': True,
+                'is_featured': True,
             }
         ]
 
@@ -662,6 +685,17 @@ class Command(BaseCommand):
                 'custom_welcome_message': 'Detecting closest beaches, sea forts, restaurants, and fuel pumps around you.',
                 'tap_count': 210,
                 'unique_visitor_count': 160,
+            },
+            {
+                'tag_uid': 'RATNA-NIVANT-01',
+                'title': 'Nivant Retreat - Guest Room NFC Concierge',
+                'tag_type': 'HOTEL',
+                'target_experience': 'PARTNER_PAGE',
+                'assigned_partner': partner_objs.get('nivant-retreat'),
+                'custom_welcome_title': 'Welcome to Nivant Retreat 🌴',
+                'custom_welcome_message': 'Your peaceful coastal staycation in Ratnagiri. Beach is just 4 km away! Tap here for curated Konkan itineraries, food spots, and instant concierge assistance.',
+                'tap_count': 56,
+                'unique_visitor_count': 42,
             }
         ]
 

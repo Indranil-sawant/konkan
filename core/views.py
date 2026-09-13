@@ -8,11 +8,24 @@ from food.models import FoodItem
 
 
 def home(request):
-    featured_destinations = list(Destination.objects.filter(is_verified=True).order_by('-created_at')[:8])
+    featured_destinations = list(
+        Destination.objects.filter(is_verified=True)
+        .only('id', 'title', 'slug', 'category', 'location_name', 'main_image', 'description', 'best_time_to_visit', 'is_verified')
+        .order_by('-created_at')[:8]
+    )
     categories = [c[0] for c in Destination.CATEGORY_CHOICES]
-    trending_forts = list(Destination.objects.filter(category='Fort', is_verified=True)[:4])
-    featured_spots = list(Spots.objects.all().order_by('-rating')[:6])
-    featured_food = list(FoodItem.objects.all().order_by('-rating')[:6])
+    trending_forts = list(
+        Destination.objects.filter(category='Fort', is_verified=True)
+        .only('id', 'title', 'slug', 'main_image')[:4]
+    )
+    featured_spots = list(
+        Spots.objects.select_related('category', 'uploaded_by')
+        .order_by('-rating')[:6]
+    )
+    featured_food = list(
+        FoodItem.objects.select_related('uploaded_by')
+        .order_by('-rating')[:6]
+    )
 
     context = {
         'featured_destinations': featured_destinations,
@@ -29,17 +42,25 @@ def search(request):
     is_json = request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.GET.get('format') == 'json'
 
     if query:
-        destination_results = Destination.objects.filter(
-            Q(title__icontains=query) | Q(location_name__icontains=query),
-            is_verified=True
-        ).only('id', 'title', 'slug', 'category', 'location_name', 'main_image')[:10]
+        destination_results = list(
+            Destination.objects.filter(
+                Q(title__icontains=query) | Q(location_name__icontains=query),
+                is_verified=True
+            ).only('id', 'title', 'slug', 'category', 'location_name', 'main_image', 'description')[:10]
+        )
 
-        spot_results = Spots.objects.filter(name__icontains=query).only('id', 'name', 'photo', 'rating')[:6]
-        food_results = FoodItem.objects.filter(name__icontains=query).only('id', 'name', 'photo', 'rating')[:6]
+        spot_results = list(
+            Spots.objects.filter(name__icontains=query)
+            .select_related('category')[:6]
+        )
+        food_results = list(
+            FoodItem.objects.filter(name__icontains=query)
+            .select_related('uploaded_by')[:6]
+        )
     else:
-        destination_results = Destination.objects.none()
-        spot_results = Spots.objects.none()
-        food_results = FoodItem.objects.none()
+        destination_results = []
+        spot_results = []
+        food_results = []
 
     if is_json:
         data = {
@@ -57,7 +78,7 @@ def search(request):
             ],
             'spots': [
                 {
-                    'id': s.id,
+                    'id': str(s.id),
                     'title': s.name,
                     'url': reverse('details_spots', kwargs={'pk': s.id}),
                     'image': s.photo.url if s.photo else '/static/images/default_spot.jpg'
@@ -66,9 +87,9 @@ def search(request):
             ],
             'food': [
                 {
-                    'id': f.id,
+                    'id': str(f.id),
                     'title': f.name,
-                    'url': reverse('food_details', kwargs={'pk': f.id}),
+                    'url': reverse('details', kwargs={'pk': f.id}),
                     'image': f.photo.url if f.photo else '/static/images/default_food.jpg'
                 }
                 for f in food_results

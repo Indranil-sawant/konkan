@@ -9,8 +9,8 @@ from .forms import SpotsForm
 # Create your views here.
 
 def spots_home(request):
-    spots = Spots.objects.all()
-    context = { 'spots': spots }
+    spots = list(Spots.objects.select_related('category', 'uploaded_by').prefetch_related('tags').all())
+    context = {'spots': spots}
     return render(request, 'spots/index.html', context)
 
 @login_required
@@ -63,6 +63,6 @@ def delete_spot(request, pk):
 
 
 def home3(request, pk):
-    spot = get_object_or_404(Spots, id=pk)
+    spot = get_object_or_404(Spots.objects.select_related('category', 'uploaded_by').prefetch_related('tags'), id=pk)
     context = {'spots': spot}
     return render(request, 'spots/details.html', context)

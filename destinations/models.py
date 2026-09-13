@@ -30,6 +30,14 @@ class Destination(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['is_verified', '-created_at'], name='dest_verified_created_idx'),
+            models.Index(fields=['is_verified', 'category'], name='dest_verified_category_idx'),
+            models.Index(fields=['category', '-created_at'], name='dest_category_created_idx'),
+        ]
+
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.title) or 'destination'

@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <h2 class="font-display font-black text-2xl text-slate-900">Destinations</h2>
-                    <span class="text-xs text-slate-500 font-medium">{{ destination_results.count }} landmark{{ destination_results.count|pluralize }} found</span>
+                    <span class="text-xs text-slate-500 font-medium">{{ destination_results|length }} landmark{{ destination_results|length|pluralize }} found</span>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                 </div>
                 <div>
                     <h2 class="font-display font-black text-2xl text-slate-900">Hidden Spots</h2>
-                    <span class="text-xs text-slate-500 font-medium">{{ spot_results.count }} secret spot{{ spot_results.count|pluralize }} found</span>
+                    <span class="text-xs text-slate-500 font-medium">{{ spot_results|length }} secret spot{{ spot_results|length|pluralize }} found</span>
                 </div>
             </div>
 
@@ -142,7 +142,7 @@
                 </div>
                 <div>
                     <h2 class="font-display font-black text-2xl text-slate-900">Coastal Cuisine</h2>
-                    <span class="text-xs text-slate-500 font-medium">{{ food_results.count }} dish{{ food_results.count|pluralize:"es" }} found</span>
+                    <span class="text-xs text-slate-500 font-medium">{{ food_results|length }} dish{{ food_results|length|pluralize:"es" }} found</span>
                 </div>
             </div>
 

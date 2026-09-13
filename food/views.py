@@ -14,7 +14,7 @@ def main(request):
 
 
 def home(request):
-    food_items = FoodItem.objects.all()
+    food_items = list(FoodItem.objects.select_related('uploaded_by').all())
     context = {'food_items': food_items}
     return render(request, 'food/index.html', context)
 
@@ -68,6 +68,6 @@ def delete_food(request, pk):
 
 
 def home3(request, pk):
-    food_items = get_object_or_404(FoodItem, id=pk)
+    food_items = get_object_or_404(FoodItem.objects.select_related('uploaded_by'), id=pk)
     context = {'food_items': food_items}
     return render(request, 'food/details.html', context)

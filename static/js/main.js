@@ -16,21 +16,24 @@
 
         const toast = document.createElement('div');
         const bgColors = {
-            success: 'bg-emerald-800 text-white border-emerald-700',
-            info: 'bg-slate-900 text-white border-slate-700',
-            warning: 'bg-amber-800 text-white border-amber-700',
-            error: 'bg-rose-800 text-white border-rose-700'
+            success: 'bg-emerald-900 text-white border-emerald-700 shadow-emerald-900/30',
+            info: 'bg-slate-900 text-white border-slate-700 shadow-slate-900/30',
+            warning: 'bg-amber-900 text-white border-amber-700 shadow-amber-900/30',
+            error: 'bg-rose-900 text-white border-rose-700 shadow-rose-900/30'
         };
 
         const icons = {
-            success: 'fa-check-circle text-emerald-300',
-            info: 'fa-circle-info text-sky-300',
-            warning: 'fa-triangle-exclamation text-amber-300',
-            error: 'fa-circle-exclamation text-rose-300'
+            success: 'fa-check-circle text-emerald-400',
+            info: 'fa-circle-info text-sky-400',
+            warning: 'fa-triangle-exclamation text-amber-400',
+            error: 'fa-circle-exclamation text-rose-400'
         };
 
-        toast.className = lex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border text-xs font-semibold transform transition-all duration-300 translate-y-3 opacity-0 pointer-events-auto ;
-        toast.innerHTML = <i class="fas  text-sm flex-shrink-0"></i><span></span>;
+        const colorClass = bgColors[type] || bgColors.info;
+        const iconClass = icons[type] || icons.info;
+
+        toast.className = `flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border text-xs font-semibold transform transition-all duration-300 translate-y-3 opacity-0 pointer-events-auto ${colorClass}`;
+        toast.innerHTML = `<i class="fas ${iconClass} text-sm flex-shrink-0"></i><span>${message}</span>`;
 
         container.appendChild(toast);
 
@@ -80,6 +83,74 @@
     // --------------------------------------------------------------------------
     // 3. OPTIMISTIC UI: SAVE TO TRIP / BOOKMARK
     // --------------------------------------------------------------------------
+    window.updateMobileBadge = function() {
+        let saved = [];
+        try {
+            saved = JSON.parse(localStorage.getItem('konkan_saved_places') || localStorage.getItem('konkan_saved_trip') || '[]');
+        } catch (e) {
+            saved = [];
+        }
+        const badge = document.getElementById('mobile-trip-count-badge');
+        if (badge) {
+            if (saved.length > 0) {
+                badge.innerText = saved.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+    };
+
+    window.savePlaceToTrip = function(id, title, category, slug, btn) {
+        let saved = [];
+        try {
+            saved = JSON.parse(localStorage.getItem('konkan_saved_places') || localStorage.getItem('konkan_saved_trip') || '[]');
+        } catch (err) {
+            saved = [];
+        }
+
+        const existingIdx = saved.findIndex(item => String(item.id) === String(id));
+        const cleanTitle = title || 'Place';
+
+        if (existingIdx !== -1) {
+            // Remove from saved trip
+            saved.splice(existingIdx, 1);
+            localStorage.setItem('konkan_saved_places', JSON.stringify(saved));
+            localStorage.setItem('konkan_saved_trip', JSON.stringify(saved));
+
+            if (btn) {
+                const icon = btn.querySelector('i');
+                if (icon) icon.className = 'far fa-bookmark text-slate-400';
+                btn.classList.remove('text-ocean-mid', 'bg-emerald-50');
+            }
+            window.showToast(`Removed "${cleanTitle}" from your trip`, 'info');
+        } else {
+            // Add to saved trip
+            saved.push({
+                id: String(id),
+                title: cleanTitle,
+                category: category || 'Landmark',
+                slug: slug || '',
+                addedAt: new Date().toISOString()
+            });
+            localStorage.setItem('konkan_saved_places', JSON.stringify(saved));
+            localStorage.setItem('konkan_saved_trip', JSON.stringify(saved));
+
+            if (btn) {
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = 'fas fa-bookmark text-ocean-mid animate-bounce';
+                    setTimeout(() => icon.classList.remove('animate-bounce'), 800);
+                }
+                btn.classList.add('text-ocean-mid');
+            }
+            window.showToast(`Saved "${cleanTitle}" to your trip!`, 'success');
+        }
+
+        window.updateMobileBadge();
+        window.dispatchEvent(new Event('storage'));
+    };
+
     function initOptimisticTripSaves() {
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('[data-save-trip]');
@@ -92,58 +163,15 @@
             const placeTitle = btn.getAttribute('data-place-title') || 'Place';
             const placeCategory = btn.getAttribute('data-place-category') || 'Landmark';
             const placeSlug = btn.getAttribute('data-place-slug') || '';
-            const placeImage = btn.getAttribute('data-place-image') || '';
 
-            let saved = [];
-            try {
-                saved = JSON.parse(localStorage.getItem('konkan_saved_places') || '[]');
-            } catch (err) {
-                saved = [];
-            }
-
-            const existingIdx = saved.findIndex(item => String(item.id) === String(placeId));
-            const icon = btn.querySelector('i');
-
-            if (existingIdx !== -1) {
-                // Remove from trip
-                saved.splice(existingIdx, 1);
-                localStorage.setItem('konkan_saved_places', JSON.stringify(saved));
-                
-                if (icon) {
-                    icon.className = 'far fa-bookmark text-slate-400';
-                }
-                btn.classList.remove('text-ocean-mid');
-                window.showToast(Removed "" from My Trip, 'info');
-            } else {
-                // Add to trip
-                saved.push({
-                    id: placeId,
-                    title: placeTitle,
-                    category: placeCategory,
-                    slug: placeSlug,
-                    image: placeImage,
-                    added_at: new Date().toISOString()
-                });
-                localStorage.setItem('konkan_saved_places', JSON.stringify(saved));
-
-                if (icon) {
-                    icon.className = 'fas fa-bookmark text-ocean-mid animate-bounce';
-                    setTimeout(() => icon.classList.remove('animate-bounce'), 800);
-                }
-                btn.classList.add('text-ocean-mid');
-                window.showToast(Saved "" to My Trip!, 'success');
-            }
-
-            // Broadcast storage event for other tabs/components
-            window.dispatchEvent(new Event('storage'));
+            window.savePlaceToTrip(placeId, placeTitle, placeCategory, placeSlug, btn);
         });
     }
 
-    // Sync saved bookmark states on initial page load
     function syncSavedBookmarkIcons() {
         let saved = [];
         try {
-            saved = JSON.parse(localStorage.getItem('konkan_saved_places') || '[]');
+            saved = JSON.parse(localStorage.getItem('konkan_saved_places') || localStorage.getItem('konkan_saved_trip') || '[]');
         } catch (e) {
             saved = [];
         }
@@ -160,6 +188,8 @@
                 btn.classList.remove('text-ocean-mid');
             }
         });
+
+        window.updateMobileBadge();
     }
 
     // --------------------------------------------------------------------------
@@ -190,23 +220,26 @@
             debounceTimer = setTimeout(() => {
                 activeAbortController = new AbortController();
                 resultsContainer.classList.remove('hidden');
-                resultsContainer.innerHTML = 
+                resultsContainer.innerHTML = `
                     <div class="p-4 text-center text-xs text-slate-400">
                         <i class="fas fa-spinner fa-spin mr-1.5 text-ocean-mid"></i> Searching Ratnagiri...
                     </div>
-                ;
+                `;
 
-                fetch(/search/?format=json&q=, {
+                fetch(`/search/?format=json&q=${encodeURIComponent(q)}`, {
                     signal: activeAbortController.signal,
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) throw new Error('Search failed');
+                    return res.json();
+                })
                 .then(data => {
                     renderLiveSearchResults(data, resultsContainer);
                 })
                 .catch(err => {
                     if (err.name !== 'AbortError') {
-                        resultsContainer.innerHTML = <div class="p-3 text-xs text-rose-500 text-center">Search error. Press Enter for full results.</div>;
+                        resultsContainer.innerHTML = '<div class="p-3 text-xs text-rose-500 text-center">Search error. Press Enter for full results.</div>';
                     }
                 });
             }, 200);
@@ -219,7 +252,7 @@
         const hasFood = data.food && data.food.length > 0;
 
         if (!hasDest && !hasSpots && !hasFood) {
-            container.innerHTML = <div class="p-4 text-center text-xs text-slate-400">No matching places found. Try "Beach", "Fort", or "Mango".</div>;
+            container.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">No matching places found. Try "Beach", "Fort", or "Mango".</div>';
             return;
         }
 
@@ -228,32 +261,38 @@
         if (hasDest) {
             html += '<div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-3 py-1">Landmarks & Beaches</div>';
             data.destinations.forEach(item => {
-                html += 
-                    <a href="" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 transition-colors group">
-                        <img src="" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-slate-200" loading="lazy">
+                const imgHtml = item.image 
+                    ? `<img src="${item.image}" alt="${item.title || ''}" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-slate-200" loading="lazy">` 
+                    : `<div class="w-9 h-9 rounded-lg bg-sky-100 flex items-center justify-center text-sky-600 flex-shrink-0"><i class="fas fa-map-pin text-xs"></i></div>`;
+                html += `
+                    <a href="${item.url || '#'}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 transition-colors group">
+                        ${imgHtml}
                         <div class="min-w-0 flex-1">
-                            <div class="text-xs font-bold text-slate-800 group-hover:text-ocean-mid truncate"></div>
-                            <div class="text-[10px] text-slate-500 truncate"> ? </div>
+                            <div class="text-xs font-bold text-slate-800 group-hover:text-ocean-mid truncate">${item.title || ''}</div>
+                            <div class="text-[10px] text-slate-500 truncate">${item.category || ''} • ${item.location || 'Ratnagiri'}</div>
                         </div>
                         <i class="fas fa-chevron-right text-[10px] text-slate-300 group-hover:text-ocean-mid"></i>
                     </a>
-                ;
+                `;
             });
         }
 
         if (hasFood) {
             html += '<div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-3 py-1 mt-2">Local Flavors</div>';
             data.food.forEach(item => {
-                html += 
-                    <a href="" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 transition-colors group">
-                        <img src="" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-slate-200" loading="lazy">
+                const imgHtml = item.image 
+                    ? `<img src="${item.image}" alt="${item.title || ''}" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-slate-200" loading="lazy">` 
+                    : `<div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0"><i class="fas fa-utensils text-xs"></i></div>`;
+                html += `
+                    <a href="${item.url || '#'}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 transition-colors group">
+                        ${imgHtml}
                         <div class="min-w-0 flex-1">
-                            <div class="text-xs font-bold text-slate-800 group-hover:text-sand-coral truncate"></div>
+                            <div class="text-xs font-bold text-slate-800 group-hover:text-sand-coral truncate">${item.title || ''}</div>
                             <div class="text-[10px] text-slate-500">Konkan Cuisine</div>
                         </div>
                         <i class="fas fa-chevron-right text-[10px] text-slate-300 group-hover:text-sand-coral"></i>
                     </a>
-                ;
+                `;
             });
         }
 
@@ -273,7 +312,7 @@
         const prefetchedUrls = new Set();
 
         function prefetch(url) {
-            if (!url || prefetchedUrls.has(url) || url.startsWith('http') && !url.includes(window.location.host)) return;
+            if (!url || prefetchedUrls.has(url) || (url.startsWith('http') && !url.includes(window.location.host))) return;
             prefetchedUrls.add(url);
 
             const link = document.createElement('link');
@@ -283,14 +322,14 @@
         }
 
         document.addEventListener('mouseover', function(e) {
-            const a = e.target.closest('a[href^="/itineraries/"], a[href^="/destinations/"], a[href^="/companion/"], a[href^="/near-me/"]');
+            const a = e.target.closest('a[href^="/itineraries/"], a[href^="/destinations/"], a[href^="/companion/"], a[href^="/near-me/"], a[href^="/food/"], a[href^="/spots/"]');
             if (a && a.href) {
                 prefetch(a.href);
             }
         }, { passive: true });
 
         document.addEventListener('touchstart', function(e) {
-            const a = e.target.closest('a[href^="/itineraries/"], a[href^="/destinations/"], a[href^="/companion/"], a[href^="/near-me/"]');
+            const a = e.target.closest('a[href^="/itineraries/"], a[href^="/destinations/"], a[href^="/companion/"], a[href^="/near-me/"], a[href^="/food/"], a[href^="/spots/"]');
             if (a && a.href) {
                 prefetch(a.href);
             }

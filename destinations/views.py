@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Destination
@@ -8,9 +8,9 @@ from reviews.models import Review
 from reviews.forms import ReviewForm 
 
 def destination_list(request):
-    query = request.GET.get('q')
-    category = request.GET.get('category')
-    destinations = Destination.objects.filter(is_verified=True)
+    query = request.GET.get('q', '').strip()
+    category = request.GET.get('category', '').strip()
+    destinations = Destination.objects.filter(is_verified=True).select_related('submitted_by')
 
     if query:
         destinations = destinations.filter(
@@ -20,15 +20,17 @@ def destination_list(request):
     if category:
         destinations = destinations.filter(category=category)
 
+    destinations_list = list(destinations)
+
     context = {
-        'destinations': destinations,
+        'destinations': destinations_list,
         'category': category,
         'query': query
     }
     return render(request, 'destinations/destination_list.html', context)
 
 def temples(request):
-    destinations = Destination.objects.filter(category='Temple', is_verified=True)
+    destinations = list(Destination.objects.filter(category='Temple', is_verified=True).select_related('submitted_by'))
     context = {
         'destinations': destinations,
         'category': 'Temple',
@@ -54,11 +56,15 @@ def create_destination(request):
     return render(request, 'destinations/destination_form.html', {'form': form})
 
 def destination_detail(request, slug):
+    reviews_prefetch = Prefetch(
+        'reviews',
+        queryset=Review.objects.select_related('user').order_by('-created_at')
+    )
     destination = get_object_or_404(
-        Destination.objects.select_related('submitted_by').prefetch_related('gallery', 'reviews__user'),
+        Destination.objects.select_related('submitted_by').prefetch_related('gallery', reviews_prefetch),
         slug=slug
     )
-    reviews = destination.reviews.all().order_by('-created_at')
+    reviews = destination.reviews.all()
     
     if request.method == 'POST':
         form = ReviewForm(request.POST)

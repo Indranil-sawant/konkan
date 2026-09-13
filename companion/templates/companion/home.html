@@ -158,7 +158,7 @@
                     <h2 class="font-display font-black text-2xl sm:text-3xl text-slate-900 mt-0.5">Curated Ratnagiri Itineraries</h2>
                 </div>
                 <a href="{% url 'itinerary_list' %}" class="text-xs font-bold text-ocean-mid hover:underline flex items-center gap-1">
-                    View All ({{ itineraries.count }}+) <i class="fas fa-chevron-right text-[10px]"></i>
+                    View All ({{ itineraries|length }}+) <i class="fas fa-chevron-right text-[10px]"></i>
                 </a>
             </div>
 
@@ -229,7 +229,7 @@
                     <h2 class="font-display font-black text-2xl sm:text-3xl text-slate-900 mt-0.5">Iconic Ratnagiri Places</h2>
                 </div>
                 <a href="{% url 'destination_list' %}" class="text-xs font-bold text-ocean-mid hover:underline flex items-center gap-1">
-                    All Places ({{ featured_destinations.count }}+) <i class="fas fa-chevron-right text-[10px]"></i>
+                    All Places ({{ featured_destinations|length }}+) <i class="fas fa-chevron-right text-[10px]"></i>
                 </a>
             </div>
 

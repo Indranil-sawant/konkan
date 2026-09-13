@@ -1,4 +1,4 @@
-﻿import csv
+import csv
 import io
 import json
 from datetime import timedelta
@@ -9,6 +9,10 @@ from companion.models import (
     EmergencyContact, FAQ, TravelTip, Announcement, AdminAuditLog
 )
 from destinations.models import Destination
+
+
+from django.core.cache import cache
+from django.db.models.functions import TruncDate
 
 
 def log_audit_action(user, action, resource_type, resource_name, details=None):
@@ -30,6 +34,11 @@ def log_audit_action(user, action, resource_type, resource_name, details=None):
 
 
 def get_operations_stats():
+    cache_key = 'ops_dashboard_stats'
+    cached = cache.get(cache_key)
+    if cached:
+        return cached
+
     now = timezone.now()
     seven_days_ago = now - timedelta(days=7)
     thirty_days_ago = now - timedelta(days=30)
@@ -58,7 +67,7 @@ def get_operations_stats():
     unassigned_tags = NFCTag.objects.filter(assigned_partner__isnull=True).count()
     unassigned_destinations = Destination.objects.filter(category='').count()
 
-    return {
+    stats = {
         'total_destinations': total_destinations,
         'verified_destinations': verified_destinations,
         'total_itineraries': total_itineraries,
@@ -79,42 +88,55 @@ def get_operations_stats():
         'unassigned_tags': unassigned_tags,
         'unassigned_destinations': unassigned_destinations,
     }
+    cache.set(cache_key, stats, 45)
+    return stats
 
 
 def get_chart_analytics(days=14):
+    cache_key = f'ops_chart_analytics_{days}'
+    cached = cache.get(cache_key)
+    if cached:
+        return cached
+
     now = timezone.now()
     dates = [(now - timedelta(days=i)).date() for i in range(days - 1, -1, -1)]
+    start_date = dates[0]
     
-    daily_taps = []
-    daily_labels = []
-    for d in dates:
-        count = NFCTapEvent.objects.filter(
-            tapped_at__year=d.year,
-            tapped_at__month=d.month,
-            tapped_at__day=d.day
-        ).count()
-        daily_taps.append(count)
-        daily_labels.append(d.strftime('%b %d'))
+    # Single SQL aggregation grouped by TruncDate instead of loop queries
+    events = (
+        NFCTapEvent.objects.filter(
+            tapped_at__date__gte=start_date,
+            tapped_at__date__lte=dates[-1]
+        )
+        .annotate(tap_day=TruncDate('tapped_at'))
+        .values('tap_day')
+        .annotate(total=Count('id'))
+    )
+    taps_by_day = {e['tap_day']: e['total'] for e in events}
+    daily_taps = [taps_by_day.get(d, 0) for d in dates]
+    daily_labels = [d.strftime('%b %d') for d in dates]
 
-    top_tags = NFCTag.objects.filter(tap_count__gt=0).order_by('-tap_count')[:5]
+    top_tags = list(NFCTag.objects.filter(tap_count__gt=0).order_by('-tap_count')[:5])
     top_tags_labels = [t.tag_uid for t in top_tags]
     top_tags_data = [t.tap_count for t in top_tags]
 
-    category_counts = Destination.objects.values('category').annotate(total=Count('id')).order_by('-total')[:6]
+    category_counts = list(Destination.objects.values('category').annotate(total=Count('id')).order_by('-total')[:6])
     category_labels = [c['category'] or 'Uncategorized' for c in category_counts]
     category_data = [c['total'] for c in category_counts]
 
-    partner_tags = NFCTag.objects.values('assigned_partner__business_name').annotate(total=Count('id')).order_by('-total')[:5]
+    partner_tags = list(NFCTag.objects.values('assigned_partner__business_name').annotate(total=Count('id')).order_by('-total')[:5])
     partner_labels = [item['assigned_partner__business_name'] or 'Unassigned' for item in partner_tags]
     partner_data = [item['total'] for item in partner_tags]
 
-    mobile_count = NFCTapEvent.objects.filter(device_type__icontains='Mobile').count()
-    desktop_count = NFCTapEvent.objects.filter(device_type__icontains='Desktop').count()
-    tablet_count = NFCTapEvent.objects.filter(device_type__icontains='Tablet').count()
+    device_qs = list(NFCTapEvent.objects.values('device_type').annotate(total=Count('id')).order_by())
+    device_map = {item['device_type'].capitalize(): item['total'] for item in device_qs}
+    mobile_count = device_map.get('Mobile', 0)
+    desktop_count = device_map.get('Desktop', 0)
+    tablet_count = device_map.get('Tablet', 0)
     if mobile_count == 0 and desktop_count == 0 and tablet_count == 0:
         mobile_count = 1
 
-    return {
+    chart_data = {
         'daily_labels': daily_labels,
         'daily_taps': daily_taps,
         'top_tags_labels': top_tags_labels,
@@ -126,6 +148,8 @@ def get_chart_analytics(days=14):
         'device_labels': ['Mobile', 'Desktop', 'Tablet'],
         'device_data': [mobile_count, desktop_count, tablet_count],
     }
+    cache.set(cache_key, chart_data, 45)
+    return chart_data
 
 
 def generate_bulk_tags(data_or_prefix, count=None, batch_id=None, default_landing_view="HOME", partner=None, user=None):

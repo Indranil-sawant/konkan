@@ -152,7 +152,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
+    'django.middleware.gzip.GZipMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -207,12 +207,14 @@ if 'test' in sys.argv:
         }
     }
 elif DATABASE_URL:
+    db_config = dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=True
+    )
+    db_config['CONN_HEALTH_CHECKS'] = True
     DATABASES = {
-        'default': dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True
-        )
+        'default': db_config
     }
 else:
     DATABASES = {
@@ -305,6 +307,7 @@ else:
     DEFAULT_STORAGE_BACKEND = "django.core.files.storage.FileSystemStorage"
 
 WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
 
 STORAGES = {
     "default": {

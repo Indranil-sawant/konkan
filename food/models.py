@@ -36,8 +36,16 @@ class FoodItem(models.Model):
     best_time_to_eat = models.CharField(max_length=100, blank=True, null=True)
 
     # System fields
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-rating', '-created_at']
+        indexes = [
+            models.Index(fields=['-rating'], name='food_rating_idx'),
+            models.Index(fields=['-created_at'], name='food_created_idx'),
+            models.Index(fields=['name'], name='food_name_idx'),
+        ]
 
     def __str__(self):
         return self.name

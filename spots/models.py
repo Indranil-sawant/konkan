@@ -43,8 +43,16 @@ class Spots(models.Model):
     map_link = models.URLField(blank=True, null=True, help_text="Google Maps URL")
 
     # System fields
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-rating'], name='spots_rating_idx'),
+            models.Index(fields=['-created_at'], name='spots_created_idx'),
+            models.Index(fields=['name'], name='spots_name_idx'),
+        ]
 
     def __str__(self):
         return self.name

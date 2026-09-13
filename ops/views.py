@@ -240,6 +240,48 @@ def itinerary_create(request):
         'page_title': 'Create New Itinerary',
         'active_nav': 'itineraries',
         'form': form,
+        'is_edit': False,
+    })
+
+
+@staff_required
+def itinerary_edit(request, pk):
+    itinerary = get_object_or_404(Itinerary, pk=pk)
+    if request.method == 'POST':
+        form = ItineraryForm(request.POST, request.FILES, instance=itinerary)
+        if form.is_valid():
+            try:
+                itin = form.save()
+                log_audit_action(request.user, 'UPDATE', 'Itinerary', itin.title, {'id': itin.pk})
+                messages.success(request, f'Itinerary "{itin.title}" updated successfully.')
+                return redirect('ops_itineraries_list')
+            except Exception as e:
+                messages.error(request, f'Error updating itinerary: {str(e)}')
+    else:
+        form = ItineraryForm(instance=itinerary)
+
+    return render(request, 'ops/itinerary_form.html', {
+        'page_title': f'Edit Itinerary: {itinerary.title}',
+        'active_nav': 'itineraries',
+        'form': form,
+        'itinerary': itinerary,
+        'is_edit': True,
+    })
+
+
+@staff_required
+def itinerary_delete(request, pk):
+    itinerary = get_object_or_404(Itinerary, pk=pk)
+    if request.method == 'POST':
+        title = itinerary.title
+        itinerary.delete()
+        log_audit_action(request.user, 'DELETE', 'Itinerary', title, {'id': pk})
+        messages.success(request, f'Itinerary "{title}" deleted successfully.')
+        return redirect('ops_itineraries_list')
+    return render(request, 'ops/confirm_delete.html', {
+        'object': itinerary.title,
+        'type': 'Itinerary',
+        'cancel_url': reverse('ops_itineraries_list')
     })
 
 
@@ -434,12 +476,28 @@ def nfc_detail(request, pk):
 
 
 @staff_required
+def nfc_delete(request, pk):
+    tag = get_object_or_404(NFCTag, pk=pk)
+    if request.method == 'POST':
+        uid = tag.tag_uid
+        tag.delete()
+        log_audit_action(request.user, 'DELETE', 'NFC Tag', uid, {'id': pk})
+        messages.success(request, f'NFC Tag [{uid}] deleted successfully.')
+        return redirect('ops_nfc_list')
+    return render(request, 'ops/confirm_delete.html', {
+        'object': f'[{tag.tag_uid}] {tag.title}',
+        'type': 'NFC Tag',
+        'cancel_url': reverse('ops_nfc_list')
+    })
+
+
+@staff_required
 def nfc_toggle_status(request, pk):
     tag = get_object_or_404(NFCTag, pk=pk)
     tag.is_active = not tag.is_active
     tag.save()
     log_audit_action(request.user, 'STATUS_CHANGE', 'NFC Tag', tag.tag_uid, {'is_active': tag.is_active})
-    status_str = "Active ??" if tag.is_active else "Paused ??"
+    status_str = "Active" if tag.is_active else "Paused"
     messages.success(request, f'Tag [{tag.tag_uid}] status changed to {status_str}.')
     return redirect('ops_nfc_list')
 
@@ -634,6 +692,33 @@ def tip_create(request):
 
 
 @staff_required
+def tip_edit(request, pk):
+    tip = get_object_or_404(TravelTip, pk=pk)
+    if request.method == 'POST':
+        form = TravelTipForm(request.POST, instance=tip)
+        if form.is_valid():
+            form.save()
+            log_audit_action(request.user, 'UPDATE', 'Travel Tip', tip.title)
+            messages.success(request, 'Travel Tip updated.')
+            return redirect('ops_content_hub')
+    else:
+        form = TravelTipForm(instance=tip)
+    return render(request, 'ops/generic_form.html', {'page_title': f'Edit Tip: {tip.title}', 'active_nav': 'content', 'form': form, 'back_url': reverse('ops_content_hub')})
+
+
+@staff_required
+def tip_delete(request, pk):
+    tip = get_object_or_404(TravelTip, pk=pk)
+    if request.method == 'POST':
+        title = tip.title
+        tip.delete()
+        log_audit_action(request.user, 'DELETE', 'Travel Tip', title)
+        messages.success(request, f'Travel Tip "{title}" deleted.')
+        return redirect('ops_content_hub')
+    return render(request, 'ops/confirm_delete.html', {'object': tip.title, 'type': 'Travel Tip', 'cancel_url': reverse('ops_content_hub')})
+
+
+@staff_required
 def emergency_create(request):
     if request.method == 'POST':
         form = EmergencyContactForm(request.POST)
@@ -648,6 +733,33 @@ def emergency_create(request):
 
 
 @staff_required
+def emergency_edit(request, pk):
+    contact = get_object_or_404(EmergencyContact, pk=pk)
+    if request.method == 'POST':
+        form = EmergencyContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            log_audit_action(request.user, 'UPDATE', 'Emergency Contact', contact.name)
+            messages.success(request, f'Emergency contact "{contact.name}" updated.')
+            return redirect('ops_content_hub')
+    else:
+        form = EmergencyContactForm(instance=contact)
+    return render(request, 'ops/generic_form.html', {'page_title': f'Edit Contact: {contact.name}', 'active_nav': 'content', 'form': form, 'back_url': reverse('ops_content_hub')})
+
+
+@staff_required
+def emergency_delete(request, pk):
+    contact = get_object_or_404(EmergencyContact, pk=pk)
+    if request.method == 'POST':
+        name = contact.name
+        contact.delete()
+        log_audit_action(request.user, 'DELETE', 'Emergency Contact', name)
+        messages.success(request, f'Emergency contact "{name}" deleted.')
+        return redirect('ops_content_hub')
+    return render(request, 'ops/confirm_delete.html', {'object': f'{contact.name} ({contact.phone_number})', 'type': 'Emergency Contact', 'cancel_url': reverse('ops_content_hub')})
+
+
+@staff_required
 def announcement_create(request):
     if request.method == 'POST':
         form = AnnouncementForm(request.POST)
@@ -659,6 +771,33 @@ def announcement_create(request):
     else:
         form = AnnouncementForm()
     return render(request, 'ops/generic_form.html', {'page_title': 'Create Alert / Announcement', 'active_nav': 'content', 'form': form, 'back_url': reverse('ops_content_hub')})
+
+
+@staff_required
+def announcement_edit(request, pk):
+    ann = get_object_or_404(Announcement, pk=pk)
+    if request.method == 'POST':
+        form = AnnouncementForm(request.POST, instance=ann)
+        if form.is_valid():
+            form.save()
+            log_audit_action(request.user, 'UPDATE', 'Announcement', ann.title)
+            messages.success(request, 'Announcement updated.')
+            return redirect('ops_content_hub')
+    else:
+        form = AnnouncementForm(instance=ann)
+    return render(request, 'ops/generic_form.html', {'page_title': f'Edit Announcement: {ann.title}', 'active_nav': 'content', 'form': form, 'back_url': reverse('ops_content_hub')})
+
+
+@staff_required
+def announcement_delete(request, pk):
+    ann = get_object_or_404(Announcement, pk=pk)
+    if request.method == 'POST':
+        title = ann.title
+        ann.delete()
+        log_audit_action(request.user, 'DELETE', 'Announcement', title)
+        messages.success(request, f'Announcement "{title}" deleted.')
+        return redirect('ops_content_hub')
+    return render(request, 'ops/confirm_delete.html', {'object': ann.title, 'type': 'Announcement', 'cancel_url': reverse('ops_content_hub')})
 
 
 # ==============================================================================

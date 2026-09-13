@@ -106,8 +106,11 @@
                         <a href="{% url 'nfc_qr_view' tag.tag_uid %}" target="_blank" class="p-2 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 transition-colors" title="QR Code">
                             <i class="fas fa-qrcode text-xs"></i>
                         </a>
-                        <a href="{% url 'ops_nfc_detail' tag.pk %}" class="px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold transition-colors">
+                        <a href="{% url 'ops_nfc_detail' tag.pk %}" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors">
                             Manage
+                        </a>
+                        <a href="{% url 'ops_nfc_delete' tag.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Delete Tag">
+                            <i class="fas fa-trash-can text-xs"></i>
                         </a>
                     </div>
                 </div>
@@ -201,6 +204,9 @@
                                     </a>
                                     <a href="{% url 'ops_nfc_detail' tag.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Tag Control Panel">
                                         <i class="fas fa-gear text-xs"></i>
+                                    </a>
+                                    <a href="{% url 'ops_nfc_delete' tag.pk %}" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Delete NFC Tag">
+                                        <i class="fas fa-trash-can text-xs"></i>
                                     </a>
                                 </div>
                             </td>
